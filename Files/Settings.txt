@@ -1,0 +1,1 @@
+{"DefaultMoney":100,"DebtLimit":300,"Interest":0.25,"DefaultInstability":0.1,"SingleClient":true,"Started":false}

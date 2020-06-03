@@ -1,0 +1,115 @@
+﻿nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  font-size: 14px;
+  background-color: #111;
+  overflow: hidden;
+}
+@media screen and (orientation: landscape) {
+  nav {
+    flex-direction: column;
+    width: 14%;
+    height: 100%;
+  }
+  main {
+    width: 86%;
+    float: right;
+  }
+  nav>a {
+    padding: 20px 0;
+    width: 100%;
+  }
+}
+@media screen and (orientation: portrait) {
+  nav {
+    flex-direction: row;
+  }
+  main {
+    margin-top: 57px;
+  }
+  nav, nav>a {
+    padding: 0;
+    width: 100%;
+    height: 57px;
+    line-height: 57px;
+  }
+  @media screen and (max-width: 500px) {
+    nav, nav>a {
+      font-size: 11px;
+      height: 48px;
+      line-height: 48px;
+    }
+    main {
+      margin-top: 48px;
+    }
+  }
+}
+a, a:hover, a:visited, a:active, .link-like {
+  color: #ff6;
+  text-decoration: none;
+  cursor: pointer;
+}
+nav>a, nav>a:hover, nav>a:visited, nav>a:active {
+  color: inherit; 
+}
+
+body, p {
+  font: 12px Verdana, sans-serif;
+  user-select: none;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+td {
+  text-align: right;
+  padding: 5px 0;
+}
+td:first-child {
+  text-align: left;
+}
+input, button, select, option {
+  border: none;
+  outline: none;
+  width: 45%;
+  padding: 10px;
+  box-sizing: content-box;
+  text-align: center;
+}
+@media screen and (max-width: 600px) {
+  input, button, select, option {
+    width: 70%;
+  }
+}
+input[type=checkbox] {
+  width: 20px;
+}
+button {
+  background-color: #0f0;
+}
+svg {
+  width: 100%;
+  font-size: 8px;
+}
+ul.validation-errors {
+  color: #f22;
+  list-style-type: none;
+}
+svg polyline {
+  z-index: -1;
+}
+svg a {
+  z-index: 1;
+}
+svg.diagram {
+  width: 90%;
+  border: 5px dotted #777;
+}

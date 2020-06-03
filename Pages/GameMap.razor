@@ -1,0 +1,42 @@
+@inject Services.IMap map;
+@inject Services.IPlayersLoader players;
+
+@code{
+    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public bool IsActive { get; set; }
+    [Parameter] public Action<string, State.Province?, State.Province?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    State.Shape? From = null;
+    void OnClick(State.Shape clicked)
+    {
+        if (IsActive)
+        {
+            if (From == null)
+            {
+                if (clicked.Province.IsControlledBy(Player))
+                {
+                    From = clicked;
+                    this.StateHasChanged();
+                }
+                else if (clicked.Province is State.Land ld && !ld.Occupied)
+                {
+                    Switch("CmdPurchase", ld, ld, null);
+                }
+            }
+            else if (From.Province != clicked.Province)
+            {
+                Switch("CmdMove", From.Province, clicked.Province, null);
+            }
+            else if (From.Province is State.Land)
+            {
+                Switch("CmdRecruit", From.Province, From.Province, null);
+            }
+            else
+            {
+                From = null;
+                this.StateHasChanged();
+            }
+        }
+    }
+    State.Color ColorFn(State.Province province) => Shape.ColorOf(province).Darken(light: province == From?.Province ? (byte)120 : (byte)255);
+}
+<Map Width="1000" Height="1000" Shapes="@map.Shapes" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="8"/>

@@ -1,0 +1,49 @@
+@inject Services.IPlayersLoader players;
+
+@code{
+    [Parameter] public int? Active { get; set; }
+    [Parameter] public Action<string, State.Land?, State.Land?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public int LoggedIn { get; set; }
+    [Parameter] public Action NextTurn { get; set; } = (() => { });
+    [Parameter] public Action LogOut { get; set; } = (() => { });
+    [Parameter] public string This { get; set; } = "";
+    string ClassFor(params string[] items) => items.Contains(This) ? "this" : "";
+    void GoTo(string s) => Switch(s, null, null, null);
+}
+
+<style>
+    nav>a:hover {
+        background-color: @(players[LoggedIn].Color.ToString() + "60");
+    }
+    nav>a.this {
+        background-color: @(players[LoggedIn].Color.ToString());
+    }
+</style>
+
+<nav>
+    @if (LoggedIn == Active) {
+        <a @onclick="NextTurn">Konec</a>
+    } else {
+        <a @onclick="LogOut">Odhlášení</a>
+    }
+    <a class="@ClassFor("")" @onclick="@(() => GoTo(""))">Imperit</a>
+    <a class="@ClassFor("Players")" @onclick="@(() => GoTo("Players"))"><Money>@players[LoggedIn].Money</Money></a>
+    <a class="@ClassFor("History", "Powers")" @onclick="@(() => GoTo("Powers"))">Historie</a>
+    <a class="@ClassFor("Preview")" @onclick="@(() => GoTo("Preview"))">Náhled</a>
+    @if(This == "CmdMove")
+    {
+        <a class="this">Přesun</a>
+    }
+    @if(This == "CmdRecruit")
+    {
+        <a class="this">Verbování</a>
+    }
+    @if(This == "CmdLoan")
+    {
+        <a class="this">Úvěr</a>
+    }
+    @if(This == "CmdTransaction")
+    {
+        <a class="this">Transakce</a>
+    }
+</nav>

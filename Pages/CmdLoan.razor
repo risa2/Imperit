@@ -1,0 +1,30 @@
+@inject Services.IActionWriter actions;
+@inject Services.ISettingsLoader sl;
+
+@code{
+    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public Action Return { get; set; } = (() => { });
+    int BorrowedAmount { get; set; } = 1;
+    uint Debt => sl.Settings.LoanDebt((uint)BorrowedAmount, Player.Credibility);
+    bool Error = false;
+    void DoBorrow()
+    {
+        var debt = sl.Settings.LoanDebt((uint)BorrowedAmount, Player.Credibility);
+        var loan = new Dynamics.Commands.Loan(sl.Settings, Player, (uint)BorrowedAmount, debt);
+        if (actions.Add(loan))
+        {
+            Return();
+        }
+        else
+        {
+            Error = true;
+        }
+    }
+}
+@if (Error)
+{
+    <p>Příliš vysoká částka. Celkový dluh nesmí překročit <Money>@sl.Settings.DebtLimit</Money></p>
+}
+<label>Vypůjčený obnos:<br/><input @bind-value="BorrowedAmount" @bind-value:event="oninput" min="1"/><br/></label>
+<label>Splácený obnos:<br/><input value="@Debt" disabled="disabled"/><br/></label>
+<button @onclick="DoBorrow">Půjčit si</button>

@@ -1,0 +1,75 @@
+@inject Services.IPlayersPowers powers;
+@inject Services.IPlayersLoader players;
+
+@code{
+    [Parameter] public Action<string, State.Land?, State.Land?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    static string Polyline(IEnumerable<int> y_values, int count, int max_y, int x_offset, int y_offset, int width, int height)
+    {
+        return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
+    }
+    static int TotalPower(State.PlayerPower pp) => (int)(pp.Money + pp.Soldiers + pp.Income * 5 - pp.Debt);
+    static int ShortPeriodPower(State.PlayerPower pp) => (int)(pp.Money + pp.Soldiers);
+    static int[][] PowersOfPlayers(State.PlayerPower[][] playerPowers, int player_count, Func<State.PlayerPower, int> get) => Enumerable.Range(0, player_count).Select(i => playerPowers.Select(pl_powers => get(pl_powers[i])).ToArray()).ToArray();
+    static int[] PowersOfAveragePlayer(State.PlayerPower[][] playerPowers, Func<State.PlayerPower, int> get) => playerPowers.Select(pl_powers => (int)pl_powers.Select(pp => get(pp)).Average()).ToArray();
+    static int Div(int a, int b) => b == 0 ? a : a / b;
+}
+
+@if (powers.Powers.Length < 2)
+{
+    <p>Hra sotva začala, co tady deláš?</p>
+}
+else
+{
+    <p>Roků @powers.Powers.Length trvalo to,</p>
+    <p>lidé se dost vraždili,</p>
+    <p>a přitom šlo jenom o to,</p>
+    <p>vladnout aspoň na chvíli.</p>
+    <br/>
+    <div @onclick="@(() => Switch("History", null, null, null))">
+        <p>Lze přejít na letopisy,</p>
+        <p>právě tady kliknutím,</p>
+        <p>nechceš-li číst dlouhé spisy,</p>
+        <p>tak tě vážně nenutím.</p>
+    </div>
+    <br/>
+    <p>Chci, tak praví lví duch,</p>
+    <p>zde sníženou o dluh,</p>
+    <p>vidíš cenu, již mají tvé statky,</p>
+    <p>než dlouhý mír lepší je krátký.</p>
+    var total = PowersOfPlayers(powers.Powers, players.Count, TotalPower);
+    var total_avg = PowersOfAveragePlayer(powers.Powers, TotalPower);
+    var total_max = total.SelectMany(i => i).Max();
+    <svg viewBox="-10 -10 1220 620" class="diagram">
+        @for (int i = 0; i < total.Length; ++i)
+        {
+            <polyline points="@Polyline(total[i], powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
+        }
+        <polyline points="@Polyline(total_avg, powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
+    </svg>
+    <p>Pohleď, jak nám vzrůstá jmění,</p>
+    <p>víc je víc, to se nemění,</p>
+    <p>mlať si, ale věz do koho,</p>
+    <p>věcí musíš minout mnoho.</p>
+    <svg viewBox="-10 -10 1220 620" class="diagram">
+        @for (int player_index = 0; player_index < total.Length; ++player_index)
+        {
+            <polyline points="@Polyline(total[player_index].Skip(1).Select((_,i) =>
+                        Div(1000*total[player_index][i+1],total[player_index][i])-500), powers.Powers.Length, 1000, 0, 0, 1200, 600)"
+                      fill="none" stroke="@players[player_index].Color" stroke-width="2"></polyline>
+        }
+    </svg>
+    <p>Kdyby měly nastat boje,</p>
+    <p>peníze, vojsko mít hleď,</p>
+    <p>proto tento graf na to je,</p>
+    <p>kdyby válka přišla teď.</p>
+    var shorts = PowersOfPlayers(powers.Powers, players.Count, ShortPeriodPower);
+    var shorts_avg = PowersOfAveragePlayer(powers.Powers, ShortPeriodPower);
+    var shorts_max = shorts.SelectMany(i => i).Max();
+    <svg viewBox="-10 -10 1220 620" class="diagram">
+        @for (int i = 0; i < shorts.Length; ++i)
+        {
+            <polyline points="@Polyline(shorts[i], powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
+        }
+        <polyline points="@Polyline(shorts_avg, powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
+    </svg>
+}

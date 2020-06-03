@@ -1,0 +1,27 @@
+@inject Services.IActionWriter actions;
+@inject Services.ISettingsLoader sl;
+
+@code{
+    [Parameter] public Action Return { get; set; } = (() => { });
+    [Parameter] public State.Land Land { get; set; }
+    [Parameter] public State.Player Player { get; set; }
+    int Recruited { get; set; }
+    protected override void OnInitialized()
+    {
+        Recruited = (int)Player.Money;
+    }
+    void DoRecruit()
+    {
+        var recruitment = new Dynamics.Commands.Recruitment(sl.Settings, Player, Land, (uint)Recruited);
+        if (actions.Add(recruitment))
+        {
+            Return();
+        }
+    }
+}
+@if (Recruited > Player.Money)
+{
+    <p>Můžeš si dovolit naverbovat jen @Player.Money vojáků</p>
+}
+<label>Počet vojáků:<br/><input @bind-value="Recruited" @bind-value:event="oninput" min="1" max="@Player.Money"/><br/></label>
+<button @onclick="DoRecruit">Verbovat</button>

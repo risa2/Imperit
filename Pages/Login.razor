@@ -1,0 +1,45 @@
+@inject Services.IPlayersLoader players;
+@inject Services.ISettingsLoader sl;
+
+@if (Wrong)
+{
+    <p>Zadané heslo není správné. Zkus to ještě jednou!</p>
+}
+@if (players.Count > 0)
+{
+    <EditForm Model="@model" OnSubmit="LoginAction">
+        <DataAnnotationsValidator/><ValidationSummary/>
+        <label>Hráč:<br/>
+        <InputSelect @bind-Value="model.IdString">
+            @foreach (var player in players.Where(pl => pl.IsHuman))
+            {
+                <option value="@player.Id">@(player.Name)</option>
+            }
+        </InputSelect><br/></label>
+        <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
+        <button type="submit">Přihlásit se</button>
+    </EditForm>
+}
+@if(!sl.Settings.Started)
+{
+    <p><a href="/registration">Zaregistrovat se můžeš zde</a></p>
+}
+
+@code{
+    [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+    Models.Login model = new Models.Login();
+    bool Wrong = false;
+    void LoginAction()
+    {
+        var playerId = int.Parse(model.IdString);
+        if (players[playerId].Password == State.Password.FromString(model.Password))
+        {
+            LogIn(playerId);
+        }
+        else
+        {
+            Wrong = true;
+            model.Password = "";
+        }
+    }
+}

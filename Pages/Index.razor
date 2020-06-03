@@ -1,0 +1,18 @@
+﻿@page "/"
+
+@code{
+    int? LoggedIn = null;
+    void SetLoggedIn(int? player)
+    {
+        LoggedIn = player;
+        this.StateHasChanged();
+    }
+}
+@if (LoggedIn is int loggedIn)
+{
+    <MainSwitch LoggedIn="@loggedIn" LogOut="@(() => SetLoggedIn(null))"/>
+}
+else
+{
+    <Login LogIn="SetLoggedIn"/>
+}

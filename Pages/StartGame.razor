@@ -1,0 +1,29 @@
+@page "/startgame"
+
+@inject Services.INewGame new_game;
+@inject Services.ISettingsLoader sl;
+@inject Services.IPlayersLoader players;
+@inject Services.IPassword pw;
+@inject NavigationManager navigationManager;
+
+@if(players.Count >= 2 && !sl.Settings.Started)
+{
+    <label for="pwd">Heslo:<br/><input id="pwd" type="password" @bind-value="@Password"/><br/></label>
+    <button @onclick="Start">Zahájit</button>
+}
+else
+{
+    <p>Hru nelze zahájit, neboť buď ještě probíhá ta předchozí (novou <a href="/newgame">vytvoříš zde</a>), nebo se ještě nezaregistrovali ani dva hráči (seznam hráčů <a href="/">zde</a>).</p>
+}
+
+@code{
+    string Password { get; set; } = "";
+    void Start()
+    {
+        if (pw.IsCorrect(Password))
+        {
+            new_game.Start();
+            navigationManager.NavigateTo("/");
+        }
+    }
+}

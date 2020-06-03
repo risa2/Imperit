@@ -1,0 +1,31 @@
+@inject Services.IActionWriter actions;
+@inject Services.ISettingsLoader sl;
+@inject Services.IProvincesLoader pr;
+
+@code{
+    [Parameter] public Action Return { get; set; } = (() => { });
+    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public State.Land Land { get; set; }
+    Dynamics.Commands.Purchase? purchase;
+    protected override void OnInitialized() => purchase = new Dynamics.Commands.Purchase(sl.Settings, Player, Land, pr.Provinces);
+    void DoPurchase()
+    {
+        if (actions.Add(purchase!))
+        {
+            Return();
+        }
+    }
+}
+@if(Land.Price > Player.Money)
+{
+    <p>Nemáš dost peněz na to, aby sis provincii @Land.Name mohl koupit. Stojí <Money>@Land.Price</Money></p>
+}
+else if (purchase == null || !purchase.Allowed)
+{
+    Return();
+}
+else
+{
+    <p>Provincie @Land.Name stojí <Money>@Land.Price</Money> a ty máš <Money>@Player.Money</Money>. Chceš ji koupit?</p>
+    <button @onclick="DoPurchase">Koupit</button>
+}

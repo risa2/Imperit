@@ -1,0 +1,14 @@
+@inject Services.IPlayersLoader pl;
+@inject Services.IProvincesLoader pr;
+@inject Services.IActionWriter actions;
+@inject Services.IActivePlayer active;
+@inject Services.IMap map;
+
+@{
+    var players = pl.MakeCopy().ToArray();
+    var provinces = new State.Provinces(pr.Provinces.MakeCopy().ToArray(), pr.Provinces.Graph);
+    actions.ApplyActions(players, provinces, active.Id, (x => !(x is Dynamics.Actions.Instability)));
+    var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape.ToArray(), shape.Center, province));
+}
+
+<Map Width="1000" Height="1000" Shapes="@shapes" Mountains="@map.Mountains" FontSize="8"/>

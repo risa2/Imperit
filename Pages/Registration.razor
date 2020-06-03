@@ -1,0 +1,49 @@
+@page "/registration"
+
+@inject Services.ISettingsLoader sl;
+@inject Services.IProvincesLoader pr;
+@inject Services.IMap map;
+@inject Services.INewGame newgame;
+@inject NavigationManager navigationManager;
+
+@if(!sl.Settings.Started)
+{
+    <label>Jméno:<br/><input type="text" @bind-value="@Username"/></label><br/>
+    <label>Robot (když to vybereš, bude za tebe hrát automat):<input type="checkbox" @bind-value="@IsRobot"/></label><br/>
+    <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
+    <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
+    <p>Vyber si zemi, kde budeš začínat:</p>
+    <Map Shapes="@map.Shapes" Mountains="@map.Mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="8"/>
+    <button @onclick="OnSubmit">Registrovat</button>
+}
+else
+{
+    <p>Příliš pozdě. Hra už začala. <a href="/">Vrátit se zpět.</a></p>
+}
+    
+@code{
+    string Username { get; set; } = "";
+    string Password { get; set; } = "";
+    string ColorStr { get; set; } = "#0000FF";
+    bool IsRobot { get; set; } = false;
+    State.Color Color => State.Color.Parse(ColorStr);
+    State.Shape? Selected = null;
+    static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
+    State.Color ColorFn(State.Province prov) => prov == Selected?.Province ? Color : IsValidLand(prov) ? new State.Color(0, 0, 0) : Shape.ColorOf(prov);
+    void OnClick(State.Shape s)
+    {
+        if (IsValidLand(s.Province))
+        {
+            Selected = s;
+            this.StateHasChanged();
+        }
+    }
+    void OnSubmit()
+    {
+        if (Username != "" && Password != "" && Selected != null)
+        {
+            newgame.Registration(Username, State.Password.FromString(Password), Color, (Selected.Province as State.Land)!, !IsRobot);
+            navigationManager.NavigateTo("/");
+        }
+    }
+}

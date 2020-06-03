@@ -1,0 +1,68 @@
+@inject Services.IActionReader actions;
+@inject Services.IActivePlayer active;
+@inject Services.IPlayersLoader players;
+@inject Services.IProvincesLoader pr;
+
+@code{
+    [Parameter] public State.Player LoggedIn { get; set; }
+    [Parameter] public Action<string, State.Land?, State.Land?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    void Borrow()
+    {
+    Switch("CmdLoan", null, null, null);
+    }
+           void Donate(int player)
+        {    Switch("CmdTransaction", null, null, player);
+    }
+
+}
+<p>Přihlášen: <Player Who="@LoggedIn"/></p>
+<p>Hraje: <Player Who="@players[active.Id]"/></p>
+<br/>
+
+<table>
+@foreach (var player in players)
+{
+    <tr>
+    @if(player.Alive)
+    {
+        <td><Player Who="@player"/></td>
+        <td><Money>@player.Money</Money></td>
+        <td>(+<Money>@player.Income</Money>)</td>
+        <td>@((int)(player.Credibility*100))&#x2764;</td>
+        @if(player == LoggedIn)
+        {
+            <td class="link-like" @onclick="Borrow">Půjčka</td>
+        }
+        else
+        {
+            <td class="link-like" @onclick="@(() => Donate(player.Id))">Věnovat</td>
+        }
+    }
+    else
+    {
+        <td><Player Who="@player"/></td>
+        <td colspan="4">je na tom jako Bůh</td>
+    }
+    </tr>
+}
+</table>
+<br/>
+@foreach (var action in actions.Actions)
+{
+    @if(action is Dynamics.Actions.Attack attack)
+    {
+        <p><Player Who="@((attack.Army as State.PlayerArmy)!.Player)"/> pochoduje s @attack.Soldiers vojáky směr <Province This="pr.Provinces[attack.Province]"/> s úmyslem zaútočit</p>
+    }
+    else if(action is Dynamics.Actions.Instability instability && pr.Provinces[instability.Land] is State.Land lnd && lnd.Occupied && !(instability.LoyalTo is int loyalTo && lnd.IsControlledBy(players[loyalTo])))
+    {
+        <p>Riziko odtržení země <Province This="pr.Provinces[instability.Land]"/>: @((lnd.Instability * 100 + 0.15).ToString("0.0")) %</p>
+    }
+    else if(action is Dynamics.Actions.Reinforcement reinforcement)
+    {
+        <p>Do provincie <Province This="pr.Provinces[reinforcement.Province]"/> dorazí na pomoc @reinforcement.Soldiers vojáků</p>
+    }
+    else if(action is Dynamics.Actions.Repayment repayment)
+    {
+        <p><Player Who="players[repayment.Debtor]"/> &ndash; dluh: <Money>@repayment.Remaining</Money>, splátka: <Money>@repayment.RepaymentAmount</Money>/kolo</p>
+    }
+}

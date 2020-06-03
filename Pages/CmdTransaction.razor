@@ -1,0 +1,28 @@
+@inject Services.IActionWriter actions;
+
+@code{
+    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public State.Player Associate { get; set; }
+    [Parameter] public Action Return { get; set; } = (() => { });
+    uint DonatedAmount { get; set; } = 1;
+    bool Error = false;
+    void DoDonate()
+    {
+        var donation = new Dynamics.Commands.Donation(Player, Associate, DonatedAmount);
+        if (actions.Add(donation))
+        {
+            Return();
+        }
+        else
+        {
+            Error = true;
+        }
+    }
+}
+@if (Error)
+{
+    <p>Příliš vysoká částka. Můžeš věnovat nejvýše tolik, kolik máš, minus tvůj dluh.</p>
+}
+<label>Darovaná částka:<br/><input @bind-value="DonatedAmount" min="1"/><br/></label>
+<label>Příjemce:<br/><input type="text" value="@Associate.Name" disabled="disabled"/><br/></label>
+<button @onclick="DoDonate">Věnovat</button>

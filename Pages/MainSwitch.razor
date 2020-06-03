@@ -1,0 +1,114 @@
+@inject Services.ISettingsLoader sl;
+@inject Services.IPlayersLoader players;
+@inject Services.IProvincesLoader pr;
+@inject Services.IActionWriter actions;
+@inject Services.IActivePlayer active;
+@inject Services.IPlayersPowers powers;
+
+@code{
+    [Parameter] public int LoggedIn { get; set; }
+    [Parameter] public Action LogOut { get; set; } = (() => { });
+    string Mode = "";
+    State.Province? From = null, To = null;
+    int? Associate = null;
+    void Switch(string mode = "", State.Province? from = null, State.Province? to = null, int? associate = null)
+    {
+        Mode = mode;
+        From = from;
+        Associate = associate;
+        To = to;
+        this.StateHasChanged();
+    }
+    bool IsRobotPlaying => !players[active.Id].IsHuman;
+    bool AreHumansAlive => players.Any(player => player.IsHuman && player.Alive);
+    void EndOfTurn()
+    {
+        actions.EndOfTurn(active.Id);
+        active.Next(players);
+    }
+    void DoRobotThinking()
+    {
+        foreach (var command in new Dynamics.Brain(players[active.Id]).Think(sl.Settings, players, pr.Provinces))
+        {
+            actions.Add(command);
+        }
+    }
+    void AllRobotsActions()
+    {
+        while (IsRobotPlaying && AreHumansAlive)
+        {
+            DoRobotThinking();
+            EndOfTurn();
+        }
+    }
+    void RobotThinkingIfRobotIsPlaying()
+    {
+        if (IsRobotPlaying)
+        {
+            DoRobotThinking();
+        }
+    }
+    void EndOfTurnAndRobots()
+    {
+        RobotThinkingIfRobotIsPlaying();
+        EndOfTurn();
+        AllRobotsActions();
+    }
+    void NextTurn()
+    {
+        if (LoggedIn == active.Id)
+        {
+            EndOfTurnAndRobots();
+            if (sl.Settings.SingleClient || !AreHumansAlive)
+            {
+                LoggedIn = active.Id;
+            }
+            pr.Save();
+            powers.Add(players);
+            Switch("");
+        }
+    }
+}
+<GameMenu NextTurn="NextTurn" LoggedIn="LoggedIn" LogOut="LogOut" Switch="Switch" Active="@active.Id" This="@Mode"/>
+<main>
+    @if (Mode == "Players")
+    {
+        <Players LoggedIn="@players[LoggedIn]" Switch="Switch"/>
+    }
+    else if (Mode == "History")
+    {
+        <History/>
+    }
+    else if (Mode == "Powers")
+    {
+        <Powers Switch="Switch"/>
+    }
+    else if (Mode == "Preview")
+    {
+        <Preview/>
+    }
+    else if (Mode == "CmdLoan")
+    {
+        <CmdLoan Player="@players[LoggedIn]" Return="@(() => Switch())"/>
+    }
+    else if (Mode == "CmdTransaction" && Associate is int associate)
+    {
+        <CmdTransaction Player="@players[LoggedIn]" Associate="@players[associate]" Return="@(() => Switch())"/>
+    }
+    else if (Mode == "CmdMove")
+    {
+        <CmdMove Player="@players[LoggedIn]" From="@From" To="@To" Return="@(() => Switch())"/>
+    }
+    else if (Mode == "CmdRecruit" && To is State.Land lan1)
+    {
+        <CmdRecruit Player="@players[LoggedIn]" Land="@lan1" Return="@(() => Switch())"/>
+    }
+    else if (Mode == "CmdPurchase" && To is State.Land lan2)
+    {
+        <CmdPurchase Player="@players[LoggedIn]" Land="@lan2" Return="@(() => Switch())"/>
+    }
+    else
+    {
+        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch"/>
+    }
+</main>

@@ -1,0 +1,92 @@
+{"Type":"S","Name":"Keltsk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"S","Name":"Severn\u00ED mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"P","Name":"Skotsko","Army":{"Type":"Peasant","Soldiers":85,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":85,"Player":0},"Earnings":17,"CanBoard":100,"Capacity":100,"IsStart":true}
+{"Type":"P","Name":"Kr\u00E1lovec","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":17,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Mazury","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"L","Name":"V\u00FDchodn\u00ED Pomo\u0159ansko","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"P","Name":"Kiel","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":24,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Z\u00E1padn\u00ED Pomo\u0159ansko","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"P","Name":"Anglie","Army":{"Type":"Peasant","Soldiers":155,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":155,"Player":0},"Earnings":31,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Mazov","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"L","Name":"Hamburg","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":true}
+{"Type":"L","Name":"Wales","Army":{"Type":"Peasant","Soldiers":90,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":90,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"L","Name":"Hannover","Army":{"Type":"Peasant","Soldiers":150,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":30,"IsStart":false}
+{"Type":"L","Name":"Nov\u00E1 marka","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":19,"IsStart":false}
+{"Type":"P","Name":"Nizozem\u00ED","Army":{"Type":"Peasant","Soldiers":155,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":155,"Player":0},"Earnings":30,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Braniborsko","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":false}
+{"Type":"L","Name":"Pozna\u0148sko","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":19,"IsStart":false}
+{"Type":"L","Name":"Anhaltsko","Army":{"Type":"Peasant","Soldiers":300,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":300,"Player":0},"Earnings":75,"IsStart":false}
+{"Type":"S","Name":"Pr\u016Fliv La Manche","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"L","Name":"Podkarpat\u00ED","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":false}
+{"Type":"L","Name":"Lod\u017E","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":25,"IsStart":true}
+{"Type":"L","Name":"Lublin","Army":{"Type":"Peasant","Soldiers":130,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":130,"Player":0},"Earnings":26,"IsStart":false}
+{"Type":"L","Name":"Vestf\u00E1lsko","Army":{"Type":"Peasant","Soldiers":120,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":120,"Player":0},"Earnings":24,"IsStart":true}
+{"Type":"L","Name":"Belgie","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":false}
+{"Type":"L","Name":"Slezsko","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":false}
+{"Type":"L","Name":"Hesensko","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":false}
+{"Type":"L","Name":"Durynsko","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":19,"IsStart":false}
+{"Type":"L","Name":"Sasko","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":false}
+{"Type":"L","Name":"Por\u00FDn\u00ED","Army":{"Type":"Peasant","Soldiers":130,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":130,"Player":0},"Earnings":26,"IsStart":false}
+{"Type":"P","Name":"Calais","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":22,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Normandie","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"CanBoard":0,"Capacity":0,"IsStart":false}
+{"Type":"L","Name":"\u010Cechy","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":25,"IsStart":true}
+{"Type":"L","Name":"Hali\u010D","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"IsStart":false}
+{"Type":"L","Name":"Breta\u0148","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"IsStart":false}
+{"Type":"L","Name":"Morava","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"IsStart":false}
+{"Type":"P","Name":"Bavorsko","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Alsasko-Lotrinsko","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
+{"Type":"L","Name":"Stuttgart","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
+{"Type":"L","Name":"Horn\u00ED Uhry","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":false}
+{"Type":"L","Name":"Loire","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":false}
+{"Type":"L","Name":"Pa\u0159\u00ED\u017E","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":true}
+{"Type":"S","Name":"Atlansk\u00FD oce\u00E1n","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"P","Name":"Rakousy","Army":{"Type":"Peasant","Soldiers":145,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":145,"Player":0},"Earnings":29,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Uhersko","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":25,"IsStart":true}
+{"Type":"L","Name":"Sedmihradsko","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":false}
+{"Type":"L","Name":"Tours","Army":{"Type":"Peasant","Soldiers":120,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":120,"Player":0},"Earnings":24,"IsStart":false}
+{"Type":"L","Name":"Burgundsko","Army":{"Type":"Peasant","Soldiers":120,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":120,"Player":0},"Earnings":24,"IsStart":false}
+{"Type":"P","Name":"\u0160v\u00FDcarsko","Army":{"Type":"Peasant","Soldiers":200,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":200,"Player":0},"Earnings":50,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"S","Name":"Bodensee","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"L","Name":"Akvit\u00E1nie","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":false}
+{"Type":"P","Name":"Ben\u00E1tsko","Army":{"Type":"Peasant","Soldiers":130,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":130,"Player":0},"Earnings":25,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Trentino","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":25,"IsStart":false}
+{"Type":"L","Name":"Lyon","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":25,"IsStart":false}
+{"Type":"L","Name":"Slovinsko","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
+{"Type":"L","Name":"Borogravie","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":18,"IsStart":false}
+{"Type":"L","Name":"Lombardie","Army":{"Type":"Peasant","Soldiers":130,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":130,"Player":0},"Earnings":26,"IsStart":false}
+{"Type":"P","Name":"Chorvatsko","Army":{"Type":"Peasant","Soldiers":135,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":135,"Player":0},"Earnings":26,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Piemont","Army":{"Type":"Peasant","Soldiers":130,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":130,"Player":0},"Earnings":26,"IsStart":false}
+{"Type":"L","Name":"Aosta","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":true}
+{"Type":"S","Name":"Jadersk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"P","Name":"Istrie","Army":{"Type":"Peasant","Soldiers":135,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":135,"Player":0},"Earnings":26,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Bosna","Army":{"Type":"Peasant","Soldiers":105,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":105,"Player":0},"Earnings":21,"IsStart":false}
+{"Type":"L","Name":"Okcit\u00E1nie","Army":{"Type":"Peasant","Soldiers":135,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":135,"Player":0},"Earnings":27,"IsStart":false}
+{"Type":"P","Name":"Marseille","Army":{"Type":"Peasant","Soldiers":150,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":29,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Bologna","Army":{"Type":"Peasant","Soldiers":135,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":135,"Player":0},"Earnings":27,"IsStart":false}
+{"Type":"P","Name":"Dalm\u00E1cie","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":27,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Genova","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":27,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"S","Name":"Ligursk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"L","Name":"Tosk\u00E1nsko","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
+{"Type":"L","Name":"Marche","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
+{"Type":"L","Name":"\u010Cern\u00E1 Hora","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":false}
+{"Type":"L","Name":"Navara","Army":{"Type":"Peasant","Soldiers":85,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":85,"Player":0},"Earnings":17,"IsStart":true}
+{"Type":"L","Name":"Umbrie","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":19,"IsStart":true}
+{"Type":"S","Name":"Tyrh\u00E9nsk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"L","Name":"Aragornie","Army":{"Type":"Peasant","Soldiers":135,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":135,"Player":0},"Earnings":27,"IsStart":false}
+{"Type":"P","Name":"Alb\u00E1nie","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":19,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Katal\u00E1nsko","Army":{"Type":"Peasant","Soldiers":150,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":29,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"\u0158\u00EDm","Army":{"Type":"Peasant","Soldiers":145,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":145,"Player":0},"Earnings":29,"IsStart":false}
+{"Type":"L","Name":"Abruzzo","Army":{"Type":"Peasant","Soldiers":145,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":145,"Player":0},"Earnings":29,"IsStart":false}
+{"Type":"S","Name":"St\u0159edozemn\u00ED mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"P","Name":"Korsika","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":35,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Molise","Army":{"Type":"Peasant","Soldiers":95,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":95,"Player":0},"Earnings":19,"IsStart":true}
+{"Type":"P","Name":"Apulie","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":24,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Neapol","Army":{"Type":"Peasant","Soldiers":155,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":155,"Player":0},"Earnings":30,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Sardinie","Army":{"Type":"Peasant","Soldiers":160,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":160,"Player":0},"Earnings":40,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Basilicata","Army":{"Type":"Peasant","Soldiers":150,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":30,"IsStart":false}
+{"Type":"S","Name":"J\u00F3nsk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
+{"Type":"L","Name":"Kal\u00E1brie","Army":{"Type":"Peasant","Soldiers":110,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":110,"Player":0},"Earnings":22,"IsStart":true}
+{"Type":"P","Name":"Kla\u010D","Army":{"Type":"Peasant","Soldiers":180,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":180,"Player":0},"Earnings":45,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"P","Name":"Sic\u00EDlie","Army":{"Type":"Peasant","Soldiers":150,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":40,"CanBoard":100,"Capacity":100,"IsStart":false}
+{"Type":"L","Name":"Litva","Army":{"Type":"Peasant","Soldiers":115,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":true}
+{"Type":"S","Name":"Baltsk\u00E9 mo\u0159e","Army":{"Type":"Peasant","Soldiers":0,"Player":0}}
