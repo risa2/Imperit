@@ -90,3 +90,4 @@
 {"Type":"P","Name":"Sic\u00EDlie","Army":{"Type":"Player","Soldiers":950,"Player":2},"DefaultArmy":{"Type":"Peasant","Soldiers":150,"Player":0},"Earnings":40,"CanBoard":100,"Capacity":100,"IsStart":false}
 {"Type":"L","Name":"Litva","Army":{"Type":"Player","Soldiers":593,"Player":4},"DefaultArmy":{"Type":"Peasant","Soldiers":115,"Player":0},"Earnings":23,"IsStart":true}
 {"Type":"S","Name":"Baltsk\u00E9 mo\u0159e","Army":{"Type":"Player","Soldiers":0,"Player":4}}
+{"Type":"L","Name":"Zakarpat\u00ED","Army":{"Type":"Player","Soldiers":3138,"Player":4},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":false}
