@@ -11,4 +11,4 @@
     var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape.ToArray(), shape.Center, province));
 }
 
-<Map Width="1000" Height="1000" Shapes="@shapes" Mountains="@map.Mountains" FontSize="8"/>
+<Map Width="1000" Height="1000" Shapes="@shapes" Mountains="@map.Mountains" FontSize="9"/>

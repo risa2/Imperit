@@ -13,7 +13,7 @@
     <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
     <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
     <p>Vyber si zemi, kde budeš začínat:</p>
-    <Map Shapes="@map.Shapes" Mountains="@map.Mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="8"/>
+    <Map Shapes="@map.Shapes" Mountains="@map.Mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="9"/>
     <button @onclick="OnSubmit">Registrovat</button>
 }
 else
