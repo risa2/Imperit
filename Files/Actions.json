@@ -25,9 +25,7 @@
 {"Type":"Earn","Player":0}
 {"Type":"Earn","Player":1}
 {"Type":"Earn","Player":2}
-{"Type":"Earn","Player":3}
-{"Type":"Earn","Player":4}
-{"Type":"Instability","Province":2,"Player":0}
+{"Type":"Instability","Province":2}
 {"Type":"Instability","Province":3}
 {"Type":"Instability","Province":4}
 {"Type":"Instability","Province":5}
@@ -44,9 +42,9 @@
 {"Type":"Instability","Province":16}
 {"Type":"Instability","Province":17}
 {"Type":"Instability","Province":19}
-{"Type":"Instability","Province":20,"Player":3}
+{"Type":"Instability","Province":20}
 {"Type":"Instability","Province":21}
-{"Type":"Instability","Province":22,"Player":1}
+{"Type":"Instability","Province":22,"Player":0}
 {"Type":"Instability","Province":23}
 {"Type":"Instability","Province":24}
 {"Type":"Instability","Province":25}
@@ -55,7 +53,7 @@
 {"Type":"Instability","Province":28}
 {"Type":"Instability","Province":29}
 {"Type":"Instability","Province":30}
-{"Type":"Instability","Province":31}
+{"Type":"Instability","Province":31,"Player":1}
 {"Type":"Instability","Province":32}
 {"Type":"Instability","Province":33}
 {"Type":"Instability","Province":34}
@@ -66,7 +64,7 @@
 {"Type":"Instability","Province":39}
 {"Type":"Instability","Province":40}
 {"Type":"Instability","Province":42}
-{"Type":"Instability","Province":43,"Player":4}
+{"Type":"Instability","Province":43,"Player":2}
 {"Type":"Instability","Province":44}
 {"Type":"Instability","Province":45}
 {"Type":"Instability","Province":46}
@@ -104,13 +102,11 @@
 {"Type":"Instability","Province":83}
 {"Type":"Instability","Province":84}
 {"Type":"Instability","Province":85}
-{"Type":"Instability","Province":87,"Player":2}
+{"Type":"Instability","Province":87}
 {"Type":"Instability","Province":88}
 {"Type":"Instability","Province":89}
 {"Type":"Instability","Province":90}
+{"Type":"Instability","Province":92}
 {"Type":"Mortality","Player":0}
 {"Type":"Mortality","Player":1}
 {"Type":"Mortality","Player":2}
-{"Type":"Mortality","Player":4}
-{"Type":"Attack","Province":17,"Army":{"Type":"Player","Soldiers":421,"Player":1}}
-{"Type":"Repayment","Player":1,"Debt":300,"Remaining":300}

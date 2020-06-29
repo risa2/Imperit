@@ -8,7 +8,7 @@ namespace Imperit.Load
     }
     public class File : IFile
     {
-        string path;
+        readonly string path;
         public File(string path) => this.path = path;
         public string Read() => System.IO.File.ReadAllText(path);
         public void Write(string str) => System.IO.File.WriteAllText(path, str);

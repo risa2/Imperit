@@ -5,8 +5,8 @@ namespace Imperit.Load
 {
     public class ProvincesLoader
     {
-        Writer<Province, State.Province, (State.Settings, IReadOnlyList<State.Player>)> provinces_loader;
-        Loader<Graph, State.Graph, bool> graph_loader;
+        readonly Writer<Province, State.Province, (State.Settings, IReadOnlyList<State.Player>)> provinces_loader;
+        readonly Loader<Graph, State.Graph, bool> graph_loader;
         public ProvincesLoader(IFile provinces, IFile graph, State.Settings settings, IReadOnlyList<State.Player> players)
         {
             provinces_loader = new Writer<Province, State.Province, (State.Settings, IReadOnlyList<State.Player>)>(provinces, (settings, players), Province.FromProvince);

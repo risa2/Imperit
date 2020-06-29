@@ -10,7 +10,7 @@ namespace Imperit.Services
     }
     public class ProvincesLoader : IProvincesLoader
     {
-        IServiceIO io;
+        readonly IServiceIO io;
         Load.ProvincesLoader loader;
         public State.Provinces Provinces { get; set; }
         public ProvincesLoader(IServiceIO io, ISettingsLoader settings, IPlayersLoader players)

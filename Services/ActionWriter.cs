@@ -1,43 +1,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Imperit.State;
 
 namespace Imperit.Services
 {
     public interface IActionWriter
     {
-        bool Add(Dynamics.ICommand command);
-        void ApplyActions(IList<Player> players, Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
+        bool Add(IEnumerable<Dynamics.ICommand> commands);
+        bool Add(params Dynamics.ICommand[] commands) => Add(commands as IEnumerable<Dynamics.ICommand>);
+        void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
         void EndOfTurn(int active);
         void NewGame();
         void StartGame(IEnumerable<Dynamics.IAction> actions);
     }
     public class ActionWriter : IActionWriter
     {
-        ISettingsLoader sl;
-        IPlayersLoader players;
-        IProvincesLoader pr;
-        Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> action_loader;
-        Load.Writer<Load.Command, Dynamics.ICommand, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> event_loader;
+        readonly IPlayersLoader players;
+        readonly IProvincesLoader pr;
+        readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> action_loader;
+        readonly Load.Writer<Load.Command, Dynamics.ICommand, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> event_loader;
         Dynamics.ActionQueue queue;
         public ActionWriter(ISettingsLoader sl, IPlayersLoader pl, IProvincesLoader pr, IServiceIO io)
         {
-            this.sl = sl;
             this.players = pl;
             this.pr = pr;
             action_loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Actions, (sl.Settings, players, pr.Provinces), Load.Action.FromAction);
             event_loader = new Load.Writer<Load.Command, Dynamics.ICommand, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Events, (sl.Settings, players, pr.Provinces), Load.Command.FromCommand);
             queue = new Dynamics.ActionQueue(new List<Dynamics.IAction>(action_loader.Load()));
         }
-        public bool Add(Dynamics.ICommand command)
+        public bool Add(IEnumerable<Dynamics.ICommand> commands)
         {
-            bool success = queue.Add(command, players, pr.Provinces);
+            bool success = false;
+            foreach(var command in commands)
+            {
+                success |= queue.Add(players, pr.Provinces, command);
+            }
             if (success)
             {
                 pr.Save();
                 action_loader.Save(queue);
-                event_loader.Add(command);
+                event_loader.Add(commands);
             }
             return success;
         }

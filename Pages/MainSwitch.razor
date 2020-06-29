@@ -28,10 +28,7 @@
     }
     void DoRobotThinking()
     {
-        foreach (var command in new Dynamics.Brain(players[active.Id]).Think(sl.Settings, players, pr.Provinces))
-        {
-            actions.Add(command);
-        }
+        actions.Add(new Dynamics.Brain(players[active.Id]).Think(sl.Settings, pr.Provinces));
     }
     void AllRobotsActions()
     {

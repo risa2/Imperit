@@ -44,13 +44,13 @@ namespace Imperit.Dynamics.Actions
             }
             return true;
         }
-        public (IAction, ICommand?) Interact(ICommand another)
+        public (IAction, bool) Interact(ICommand another)
         {
             if (another is Commands.Loan loan && loan.Player.Id == Debtor)
             {
-                return (new Repayment(settings, Debtor, Debt + loan.Debt, Remaining + loan.Debt), null);
+                return (new Repayment(settings, Debtor, Debt + loan.Debt, Remaining + loan.Debt), false);
             }
-            return (this, another);
+            return (this, true);
         }
         public int Priority => 200;
     }

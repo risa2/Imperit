@@ -11,17 +11,17 @@ namespace Imperit.Dynamics.Actions
             provinces[Province] = attacked;
             return action.Do(players, provinces, active);
         }
-        public override (IAction, ICommand?) Interact(ICommand another)
+        public override (IAction, bool) Interact(ICommand another)
         {
             if (another is Commands.Attack attack && Army.IsControlledBy(attack.Player) && attack.To.Id == Province)
             {
-                return (new Actions.Attack(Province, Army.Join(attack.Army)), null);
+                return (new Attack(Province, Army.Join(attack.Army)), false);
             }
             if (another is Commands.Purchase purchase && Army.IsControlledBy(purchase.Player) && purchase.Land.Id == Province)
             {
-                return (new Actions.Reinforcement(Province, Army), purchase);
+                return (new Reinforcement(Province, Army), true);
             }
-            return (this, another);
+            return (this, true);
         }
     }
 }

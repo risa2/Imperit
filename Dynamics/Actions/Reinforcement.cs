@@ -10,13 +10,13 @@ namespace Imperit.Dynamics.Actions
             provinces[Province] = provinces[Province].ReinforcedBy(Army);
             return new Nothing();
         }
-        public override (IAction, ICommand?) Interact(ICommand another)
+        public override (IAction, bool) Interact(ICommand another)
         {
             if (another is Commands.Reinforcement reinf && Army.IsControlledBy(reinf.Player) && reinf.To.Id == Province)
             {
-                return (new Actions.Reinforcement(Province, Army.Join(reinf.Army)), null);
+                return (new Reinforcement(Province, Army.Join(reinf.Army)), false);
             }
-            return (this, another);
+            return (this, true);
         }
     }
 }
