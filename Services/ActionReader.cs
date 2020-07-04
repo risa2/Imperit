@@ -8,10 +8,10 @@ namespace Imperit.Services
     }
     public class ActionReader : IActionReader
     {
-        ISettingsLoader sl;
-        IPlayersLoader players;
-        IProvincesLoader pr;
-        Load.IFile inout;
+        readonly ISettingsLoader sl;
+        readonly IPlayersLoader players;
+        readonly IProvincesLoader pr;
+        readonly Load.IFile inout;
         public ActionReader(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IServiceIO io)
         {
             this.sl = sl;

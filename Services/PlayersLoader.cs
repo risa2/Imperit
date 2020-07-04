@@ -4,11 +4,14 @@ using System.Linq;
 
 namespace Imperit.Services
 {
-    public interface IPlayersLoader : IArray<State.Player> { }
+    public interface IPlayersLoader : IArray<State.Player>
+    {
+        void Save();
+    }
     public class PlayersLoader : IPlayersLoader
     {
-        Load.Writer<Load.Player, State.Player, bool> loader;
-        List<State.Player> players;
+        readonly Load.Writer<Load.Player, State.Player, bool> loader;
+        readonly List<State.Player> players;
         public PlayersLoader(IServiceIO io)
         {
             loader = new Load.Writer<Load.Player, State.Player, bool>(io.Players, false, Load.Player.FromPlayer);
@@ -19,12 +22,9 @@ namespace Imperit.Services
         public State.Player this[int i]
         {
             get => players[i];
-            set
-            {
-                players[i] = value;
-                loader.Save(players);
-            }
+            set => players[i] = value;
         }
+        public void Save() => loader.Save(players);
         public void Add(State.Player player)
         {
             players.Add(player);
@@ -35,7 +35,7 @@ namespace Imperit.Services
             players.Clear();
             loader.Save(new State.Player[0]);
         }
-        public IEnumerator<State.Player> GetEnumerator() => (players as IEnumerable<State.Player>).GetEnumerator();
+        public IEnumerator<State.Player> GetEnumerator() => players.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => players.GetEnumerator();
 
         public int IndexOf(State.Player item) => players.IndexOf(item);

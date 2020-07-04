@@ -8,10 +8,10 @@ namespace Imperit.Services
     }
     public class CommandReader : ICommandReader
     {
-        ISettingsLoader sl;
-        IPlayersLoader players;
-        IProvincesLoader pr;
-        Load.IFile inout;
+        readonly ISettingsLoader sl;
+        readonly IPlayersLoader players;
+        readonly IProvincesLoader pr;
+        readonly Load.IFile inout;
         public CommandReader(ISettingsLoader sl, IPlayersLoader pl, IProvincesLoader pr, IServiceIO io)
         {
             this.sl = sl;

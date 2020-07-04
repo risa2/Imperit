@@ -2,7 +2,7 @@ namespace Imperit.State
 {
     public class PlayerArmy : IArmy
     {
-        private readonly Settings settings;
+        readonly Settings settings;
         public readonly Player Player;
         public uint Soldiers { get; }
         public PlayerArmy(Settings set, Player player, uint soldiers)

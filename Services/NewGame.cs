@@ -10,12 +10,12 @@ namespace Imperit.Services
     }
     public class NewGame : INewGame
     {
-        ISettingsLoader sl;
-        IPlayersLoader players;
-        IProvincesLoader pr;
-        IActionWriter writer;
-        IActivePlayer active;
-        IPlayersPowers powers;
+        readonly ISettingsLoader sl;
+        readonly IPlayersLoader players;
+        readonly IProvincesLoader pr;
+        readonly IActionWriter writer;
+        readonly IActivePlayer active;
+        readonly IPlayersPowers powers;
         public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionWriter writer, IActivePlayer active, IPlayersPowers powers)
         {
             this.sl = sl;

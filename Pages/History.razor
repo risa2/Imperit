@@ -1,29 +1,31 @@
 @inject Services.ICommandReader events;
+@inject Services.IProvincesLoader pr;
+@inject Services.IPlayersLoader players;
 
 @foreach (var evt in events.Events)
 {
     @if (evt is Dynamics.Commands.Attack attack)
     {
-        <p><Player Who="@attack.Player"/> útočí s @attack.Soldiers vojáky ze země @attack.From.Name na zemi @attack.To.Name</p>
+        <p><Player Who="@players[attack.Player]"/> útočí s @attack.Soldiers vojáky ze země @pr.Provinces[attack.From].Name na zemi @pr.Provinces[attack.To].Name</p>
     }
     else if (evt is Dynamics.Commands.Donation donation)
     {
-        <p><Player Who="@donation.Player"/> věnuje <Money>@donation.Amount</Money> hráči <Player Who="@donation.Recipient"/></p>
+        <p><Player Who="@players[donation.Player]"/> věnuje <Money>@donation.Amount</Money> hráči <Player Who="@players[donation.Recipient]"/></p>
     }
     else if (evt is Dynamics.Commands.Loan loan)
     {
-        <p><Player Who="@loan.Player"/> si bere úvěr na <Money>@loan.Amount</Money> a bude muset splatit <Money>@loan.Debt</Money></p>
+        <p><Player Who="@players[loan.Player]"/> si bere úvěr na <Money>@loan.Amount</Money> a bude muset splatit <Money>@loan.Debt</Money></p>
     }
     else if (evt is Dynamics.Commands.Purchase purchase)
     {
-        <p><Player Who="@purchase.Player"/> kupuje provincii @purchase.Land.Name</p>
+        <p><Player Who="@players[purchase.Player]"/> kupuje provincii @pr.Provinces[purchase.Land].Name</p>
     }
     else if (evt is Dynamics.Commands.Recruitment recruitment)
     {
-        <p><Player Who="@recruitment.Player"/> verbuje @recruitment.Soldiers vojáků v zemi @recruitment.Land.Name</p>
+        <p><Player Who="@players[recruitment.Player]"/> verbuje @recruitment.Soldiers vojáků v zemi @pr.Provinces[recruitment.Land].Name</p>
     }
     else if (evt is Dynamics.Commands.Reinforcement reinforcement)
     {
-        <p><Player Who="@reinforcement.Player"/> jde s @reinforcement.Soldiers vojáky ze země @reinforcement.From.Name na pomoc zemi @reinforcement.To.Name</p>
+        <p><Player Who="@players[reinforcement.Player]"/> jde s @reinforcement.Soldiers vojáky ze země @pr.Provinces[reinforcement.From].Name na pomoc zemi @pr.Provinces[reinforcement.To].Name</p>
     }
 }

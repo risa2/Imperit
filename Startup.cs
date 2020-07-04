@@ -28,6 +28,7 @@ namespace Imperit
             services.AddTransient<Services.ICommandReader, Services.CommandReader>();
             services.AddTransient<Services.IPassword, Services.Password>();
             services.AddTransient<Services.IPlayersPowers, Services.PlayersPowers>();
+            services.AddTransient<Services.IEndOfTurnManager, Services.EndOfTurnManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

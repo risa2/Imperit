@@ -10,7 +10,7 @@
 }
 @if (LoggedIn is int loggedIn)
 {
-    <MainSwitch LoggedIn="@loggedIn" LogOut="@(() => SetLoggedIn(null))"/>
+    <MainSwitch LoggedIn="@loggedIn" LogIn="SetLoggedIn"/>
 }
 else
 {

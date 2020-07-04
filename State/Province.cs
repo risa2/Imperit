@@ -31,7 +31,7 @@ namespace Imperit.State
 
         public override bool Equals(object? obj) => obj != null && obj is Province p && p.Id == Id;
         public override int GetHashCode() => Id.GetHashCode();
-        public static bool operator ==(Province? a, Province? b) => ((object?)a == null && (object?)b == null) || ((object?)a != null && a.Equals(b));
-        public static bool operator !=(Province? a, Province? b) => (((object?)a == null) != ((object?)b == null)) || ((object?)a != null && !a.Equals(b));
+        public static bool operator ==(Province? a, Province? b) => (a is null && b is null) || (a is object x && x.Equals(b));
+        public static bool operator !=(Province? a, Province? b) => ((a is null) != (b is null)) || (a is object x && !x.Equals(b));
     }
 }

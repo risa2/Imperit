@@ -14,37 +14,38 @@ namespace Imperit.Load
         public uint? Amount { get; set; }
         public uint? Debt { get; set; }
         public uint? Soldiers { get; set; }
+        public uint? Repayment { get; set; }
         public Dynamics.ICommand Convert(int i, (State.Settings, IReadOnlyList<State.Player>, State.Provinces) arg)
         {
-            (State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces) = arg;
+            (State.Settings settings, IReadOnlyList<State.Player> players, _) = arg;
             if (Type == "Commands.Attack")
-                return new Dynamics.Commands.Attack(provinces, players[Player ?? 0], provinces[Province ?? 0], provinces[To ?? 0], Army!.Convert(i, (settings, players)));
+                return new Dynamics.Commands.Attack(Player.Must(), Province.Must(), To.Must(), Army!.Convert(i, (settings, players)));
             if (Type == "Commands.Donation")
-                return new Dynamics.Commands.Donation(players[Player ?? 0], players[Recipient ?? 0], Amount ?? 0);
+                return new Dynamics.Commands.Donation(Player.Must(), Recipient.Must(), Amount.Must());
             if (Type == "Commands.Loan")
-                return new Dynamics.Commands.Loan(settings, players[Player ?? 0], Amount ?? 0, Debt ?? 0);
-            if (Type == "Commands.Purchase" && provinces[Province ?? 0] is State.Land L1)
-                return new Dynamics.Commands.Purchase(settings, players[Player ?? 0], L1, provinces);
-            if (Type == "Commands.Recruitment" && provinces[Province ?? 0] is State.Land L2)
-                return new Dynamics.Commands.Recruitment(settings, players[Player ?? 0], L2, Soldiers ?? 0);
+                return new Dynamics.Commands.Loan(Player.Must(), Amount.Must(), Debt.Must(), Repayment.Must());
+            if (Type == "Commands.Purchase")
+                return new Dynamics.Commands.Purchase(Player.Must(), Province.Must());
+            if (Type == "Commands.Recruitment")
+                return new Dynamics.Commands.Recruitment(Player.Must(), Province.Must(), Soldiers.Must());
             if (Type == "Commands.Reinforcement")
-                return new Dynamics.Commands.Reinforcement(provinces, players[Player ?? 0], provinces[Province ?? 0], provinces[To ?? 0], Army!.Convert(i, (settings, players)));
+                return new Dynamics.Commands.Reinforcement(Player.Must(), Province.Must(), To.Must(), Army!.Convert(i, (settings, players)));
             throw new System.Exception("Invalid type of Command: " + Type);
         }
         public static Command FromCommand(Dynamics.ICommand evt)
         {
             if (evt is Dynamics.Commands.Attack Attack)
-                return new Command() { Type = "Commands.Attack", Player = Attack.Player.Id, Province = Attack.From.Id, To = Attack.To.Id, Army = Army.FromArmy(Attack.Army) };
+                return new Command() { Type = "Commands.Attack", Player = Attack.Player, Province = Attack.From, To = Attack.To, Army = Army.FromArmy(Attack.Army) };
             if (evt is Dynamics.Commands.Donation Donation)
-                return new Command() { Type = "Commands.Donation", Player = Donation.Player.Id, Recipient = Donation.Recipient.Id, Amount = Donation.Amount };
+                return new Command() { Type = "Commands.Donation", Player = Donation.Player, Recipient = Donation.Recipient, Amount = Donation.Amount };
             if (evt is Dynamics.Commands.Loan Loan)
-                return new Command() { Type = "Commands.Loan", Player = Loan.Player.Id, Amount = Loan.Amount, Debt = Loan.Debt };
+                return new Command() { Type = "Commands.Loan", Player = Loan.Player, Amount = Loan.Amount, Debt = Loan.Debt, Repayment = Loan.Repayment };
             if (evt is Dynamics.Commands.Purchase Purchase)
-                return new Command() { Type = "Commands.Purchase", Player = Purchase.Player.Id, Province = Purchase.Land.Id };
+                return new Command() { Type = "Commands.Purchase", Player = Purchase.Player, Province = Purchase.Land };
             if (evt is Dynamics.Commands.Recruitment Recruitment)
-                return new Command() { Type = "Commands.Recruitment", Player = Recruitment.Player.Id, Province = Recruitment.Land.Id, Soldiers = Recruitment.Soldiers };
+                return new Command() { Type = "Commands.Recruitment", Player = Recruitment.Player, Province = Recruitment.Land, Soldiers = Recruitment.Soldiers };
             if (evt is Dynamics.Commands.Reinforcement Reinforcement)
-                return new Command() { Type = "Commands.Reinforcement", Player = Reinforcement.Player.Id, Province = Reinforcement.From.Id, To = Reinforcement.To.Id, Army = Army.FromArmy(Reinforcement.Army) };
+                return new Command() { Type = "Commands.Reinforcement", Player = Reinforcement.Player, Province = Reinforcement.From, To = Reinforcement.To, Army = Army.FromArmy(Reinforcement.Army) };
             throw new System.Exception("Invalid type of Command: " + evt);
         }
     }

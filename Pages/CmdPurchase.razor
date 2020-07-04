@@ -1,13 +1,14 @@
 @inject Services.IActionWriter actions;
 @inject Services.ISettingsLoader sl;
+@inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public State.Player Player { get; set; }
-    [Parameter] public State.Land Land { get; set; }
+    [Parameter] public State.Player? Player { get; set; }
+    [Parameter] public State.Land? Land { get; set; }
     Dynamics.Commands.Purchase? purchase;
-    protected override void OnInitialized() => purchase = new Dynamics.Commands.Purchase(sl.Settings, Player, Land, pr.Provinces);
+    protected override void OnInitialized() => purchase = new Dynamics.Commands.Purchase(Player!.Id, Land!.Id);
     void DoPurchase()
     {
         if (actions.Add(purchase!))
@@ -16,16 +17,16 @@
         }
     }
 }
-@if(Land.Price > Player.Money)
+@if (Land!.Price > Player!.Money)
 {
-    <p>Nemáš dost peněz na to, aby sis provincii @Land.Name mohl koupit. Stojí <Money>@Land.Price</Money></p>
+    <p>Nemáš dost peněz na to, aby sis provincii @Land!.Name mohl koupit. Stojí <Money>@Land!.Price</Money></p>
 }
-else if (purchase == null || !purchase.Allowed)
+else if (purchase == null || !purchase.Allowed(sl.Settings, players, pr.Provinces))
 {
     Return();
 }
 else
 {
-    <p>Provincie @Land.Name stojí <Money>@Land.Price</Money> a ty máš <Money>@Player.Money</Money>. Chceš ji koupit?</p>
+    <p>Provincie @Land!.Name stojí <Money>@Land!.Price</Money> a ty máš <Money>@Player!.Money</Money>. Chceš ji koupit?</p>
     <button @onclick="DoPurchase">Koupit</button>
 }

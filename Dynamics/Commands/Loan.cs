@@ -4,18 +4,21 @@ namespace Imperit.Dynamics.Commands
 {
     public class Loan : ICommand
     {
-        private readonly State.Settings settings;
-        public readonly State.Player Player;
-        public readonly uint Amount, Debt;
-        public Loan(State.Settings settings, State.Player player, uint amount, uint debt)
+        public readonly int Player;
+        public readonly uint Amount, Debt, Repayment;
+        public Loan(int player, uint amount, uint debt, uint repayment)
         {
-            this.settings = settings;
             Player = player;
             Amount = amount;
             Debt = debt;
+            Repayment = repayment;
         }
-        public bool Allowed => Debt <= settings.DebtLimit && Amount > 0;
-        public void Do(IList<State.Player> players, State.Provinces provinces) => players[Player.Id] = Player.GainMoney(Amount);
-        public IAction Consequences => new Actions.Repayment(settings, Player.Id, Debt, Debt);
+        public bool Allowed(State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces)
+            => Debt <= settings.DebtLimit && Amount > 0 && Repayment > 0;
+        public IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces)
+        {
+            players[Player] = players[Player].GainMoney(Amount);
+            return new Actions.Loan(settings, players, Player, Debt, Debt, Repayment);
+        }
     }
 }

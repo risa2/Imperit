@@ -7,7 +7,7 @@
 @{
     var players = pl.MakeCopy().ToArray();
     var provinces = new State.Provinces(pr.Provinces.MakeCopy().ToArray(), pr.Provinces.Graph);
-    actions.ApplyActions(players, provinces, active.Id, (x => !(x is Dynamics.Actions.Instability)));
+    actions.ApplyActions(players, provinces, active.Id, (x => (x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal)));
     var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape.ToArray(), shape.Center, province));
 }
 

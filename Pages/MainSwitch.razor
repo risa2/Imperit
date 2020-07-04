@@ -4,69 +4,36 @@
 @inject Services.IActionWriter actions;
 @inject Services.IActivePlayer active;
 @inject Services.IPlayersPowers powers;
+@inject Services.IEndOfTurnManager end;
 
 @code{
     [Parameter] public int LoggedIn { get; set; }
-    [Parameter] public Action LogOut { get; set; } = (() => { });
+    [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
     string Mode = "";
     State.Province? From = null, To = null;
-    int? Associate = null;
-    void Switch(string mode = "", State.Province? from = null, State.Province? to = null, int? associate = null)
+    State.Player? SelectedPlayer = null;
+    void Switch(string mode = "", State.Province? from = null, State.Province? to = null, State.Player? player = null)
     {
         Mode = mode;
         From = from;
-        Associate = associate;
         To = to;
+        SelectedPlayer = player;
         this.StateHasChanged();
-    }
-    bool IsRobotPlaying => !players[active.Id].IsHuman;
-    bool AreHumansAlive => players.Any(player => player.IsHuman && player.Alive);
-    void EndOfTurn()
-    {
-        actions.EndOfTurn(active.Id);
-        active.Next(players);
-    }
-    void DoRobotThinking()
-    {
-        actions.Add(new Dynamics.Brain(players[active.Id]).Think(sl.Settings, pr.Provinces));
-    }
-    void AllRobotsActions()
-    {
-        while (IsRobotPlaying && AreHumansAlive)
-        {
-            DoRobotThinking();
-            EndOfTurn();
-        }
-    }
-    void RobotThinkingIfRobotIsPlaying()
-    {
-        if (IsRobotPlaying)
-        {
-            DoRobotThinking();
-        }
-    }
-    void EndOfTurnAndRobots()
-    {
-        RobotThinkingIfRobotIsPlaying();
-        EndOfTurn();
-        AllRobotsActions();
     }
     void NextTurn()
     {
         if (LoggedIn == active.Id)
         {
-            EndOfTurnAndRobots();
-            if (sl.Settings.SingleClient || !AreHumansAlive)
+            int next = end.Next();
+            if (sl.Settings.SingleClient || !players[next].Alive)
             {
-                LoggedIn = active.Id;
+                LogIn(next);
             }
-            pr.Save();
-            powers.Add(players);
             Switch("");
         }
     }
 }
-<GameMenu NextTurn="NextTurn" LoggedIn="LoggedIn" LogOut="LogOut" Switch="Switch" Active="@active.Id" This="@Mode"/>
+<GameMenu NextTurn="NextTurn" LoggedIn="LoggedIn" LogOut="@(() => LogIn(null))" Switch="Switch" This="@Mode"/>
 <main>
     @if (Mode == "Players")
     {
@@ -88,21 +55,21 @@
     {
         <CmdLoan Player="@players[LoggedIn]" Return="@(() => Switch())"/>
     }
-    else if (Mode == "CmdTransaction" && Associate is int associate)
+    else if (Mode == "CmdTransaction")
     {
-        <CmdTransaction Player="@players[LoggedIn]" Associate="@players[associate]" Return="@(() => Switch())"/>
+        <CmdTransaction Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())"/>
     }
     else if (Mode == "CmdMove")
     {
         <CmdMove Player="@players[LoggedIn]" From="@From" To="@To" Return="@(() => Switch())"/>
     }
-    else if (Mode == "CmdRecruit" && To is State.Land lan1)
+    else if (Mode == "CmdRecruit" && To is State.Land L1)
     {
-        <CmdRecruit Player="@players[LoggedIn]" Land="@lan1" Return="@(() => Switch())"/>
+        <CmdRecruit Player="@players[LoggedIn]" Land="@L1" Return="@(() => Switch())"/>
     }
-    else if (Mode == "CmdPurchase" && To is State.Land lan2)
+    else if (Mode == "CmdPurchase" && To is State.Land L2)
     {
-        <CmdPurchase Player="@players[LoggedIn]" Land="@lan2" Return="@(() => Switch())"/>
+        <CmdPurchase Player="@players[LoggedIn]" Land="@L2" Return="@(() => Switch())"/>
     }
     else
     {

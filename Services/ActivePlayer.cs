@@ -11,23 +11,16 @@ namespace Imperit.Services
     }
     public class ActivePlayer : IActivePlayer
     {
-        Load.IFile inout;
-        public int Id { get; private set; }
-        public ActivePlayer(IServiceIO io)
-        {
-            inout = io.Active;
-            Id = int.Parse(inout.Read());
-        }
+        readonly Load.IFile inout;
+        public ActivePlayer(IServiceIO io) => inout = io.Active;
+        public int Id => int.Parse(inout.Read());
+        void SetIndex(int i) => inout.Write(i.ToString());
         public void Next(IReadOnlyList<State.Player> players)
         {
-            int next = Enumerable.Range(0, players.Count).Select(i => (i + Id + 1) % players.Count).FirstOr(i => players[i].Alive, -1);
+            int id = Id + 1;
+            int next = Enumerable.Range(0, players.Count).Select(i => (i + id) % players.Count).FirstOr(i => players[i].Alive, -1);
             SetIndex(next == -1 ? Id : next);
         }
         public void StartGame() => SetIndex(0);
-        private void SetIndex(int i)
-        {
-            Id = i;
-            inout.Write(i.ToString());
-        }
     }
 }

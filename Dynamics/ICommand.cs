@@ -4,8 +4,7 @@ namespace Imperit.Dynamics
 {
     public interface ICommand
     {
-        void Do(IList<State.Player> players, State.Provinces provinces);
-        IAction Consequences { get; }
-        bool Allowed { get; }
+        IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces);
+        bool Allowed(State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces);
     }
 }

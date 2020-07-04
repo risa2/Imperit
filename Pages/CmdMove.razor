@@ -1,18 +1,19 @@
 @inject Services.IActionWriter actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IProvincesLoader pr;
+@inject Services.IPlayersLoader players;
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public State.Province From { get; set; }
-    [Parameter] public State.Province To { get; set; }
-    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public State.Province? From { get; set; }
+    [Parameter] public State.Province? To { get; set; }
+    [Parameter] public State.Player? Player { get; set; }
     int Moving { get; set; }
     char Type { get; set; }
     int Limit { get; set; }
     protected override void OnInitialized()
     {
-        Type = From.IsAllyOf(To.Army) ? 'R' : 'A';
+        Type = From!.IsAllyOf(To!.Army) ? 'R' : 'A';
         Moving = Limit = (int)pr.Provinces.CanMove(From, To);
         if (Limit == 0)
         {
@@ -21,8 +22,8 @@
     }
     void DoMove()
     {
-        var move = Type == 'A' ? new Dynamics.Commands.Attack(pr.Provinces, Player, From, To, new State.PlayerArmy(sl.Settings, Player, (uint)Moving)) as Dynamics.Commands.Move
-                               : new Dynamics.Commands.Reinforcement(pr.Provinces, Player, From, To, new State.PlayerArmy(sl.Settings, Player, (uint)Moving));
+        var move = Type == 'A' ? new Dynamics.Commands.Attack(Player!.Id, From!.Id, To!.Id, new State.PlayerArmy(sl.Settings, Player, (uint)Moving)) as Dynamics.Commands.Move
+                               : new Dynamics.Commands.Reinforcement(Player!.Id, From!.Id, To!.Id, new State.PlayerArmy(sl.Settings, Player, (uint)Moving));
         if (actions.Add(move))
         {
             Return();
@@ -31,15 +32,26 @@
 }
 @if (Moving > Limit)
 {
-    <p>Z místa @From.Name na místo @To.Name se může přesunout nejvýše @Limit vojáků</p>
+    <p>Z místa @From!.Name na místo @To!.Name se může přesunout nejvýše @Limit vojáků</p>
 }
-<label>Počet vojáků:<br/><input @bind-value="Moving" @bind-value:event="oninput" min="1" max="@Limit"/><br/></label>
-@if(!From.IsAllyOf(To.Army))
+<label>Počet vojáků:<br /><input @bind-value="Moving" @bind-value:event="oninput" min="1" max="@Limit" /><br /></label>
+@if (!From!.IsAllyOf(To!.Army))
 {
-    <label>Typ přesunu:<br/>
-    <select @bind="Type">
-        <option value="A">Útok</option>
-        <option value="R">Podpora</option>
-    </select><br/></label>
+    <label>
+        Typ přesunu:<br />
+        <select @bind="Type">
+            <option value="A">Útok</option>
+            <option value="R">Podpora</option>
+        </select><br />
+    </label>
 }
-<button @onclick="DoMove">@if(Type=='A'){<text>Zaútočit</text>}else{<text>Jít na pomoc</text>}</button>
+<button @onclick="DoMove">
+    @if (Type == 'A')
+    {
+        <text>Zaútočit</text>
+    }
+    else
+    {
+        <text>Jít na pomoc</text>
+    }
+</button>

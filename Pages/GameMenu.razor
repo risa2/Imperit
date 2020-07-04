@@ -1,8 +1,8 @@
 @inject Services.IPlayersLoader players;
+@inject Services.IActivePlayer active;
 
 @code{
-    [Parameter] public int? Active { get; set; }
-    [Parameter] public Action<string, State.Land?, State.Land?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<string, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public int LoggedIn { get; set; }
     [Parameter] public Action NextTurn { get; set; } = (() => { });
     [Parameter] public Action LogOut { get; set; } = (() => { });
@@ -21,7 +21,7 @@
 </style>
 
 <nav>
-    @if (LoggedIn == Active) {
+    @if (LoggedIn == active.Id) {
         <a @onclick="NextTurn">Konec</a>
     } else {
         <a @onclick="LogOut">Odhlášení</a>

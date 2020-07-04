@@ -11,16 +11,14 @@ namespace Imperit.Services
     }
     public class PlayersPowers : IPlayersPowers
     {
-        ISettingsLoader settings;
-        IProvincesLoader provinces;
-        IActionReader actions;
-        Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool> loader;
-        public State.PlayerPower[][] Powers { get; private set; }
-        public PlayersPowers(IServiceIO io, ISettingsLoader settings, IProvincesLoader provinces, IActionReader actions)
+        readonly IProvincesLoader provinces;
+        readonly IActionReader actions;
+        readonly Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool> loader;
+        public State.PlayerPower[][] Powers { get; set; }
+        public PlayersPowers(IServiceIO io, IProvincesLoader provinces, IActionReader actions)
         {
             loader = new Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool>(io.Powers, false, Load.PlayersPowers.From);
             Powers = loader.Load().ToArray();
-            this.settings = settings;
             this.provinces = provinces;
             this.actions = actions;
         }
@@ -29,7 +27,7 @@ namespace Imperit.Services
         {
             var debts = new uint[players.Count()];
             var soldiers = new uint[players.Count()];
-            foreach (var Repayment in actions.Actions.Casted<Dynamics.Actions.Repayment, Dynamics.IAction>())
+            foreach (var Repayment in actions.Actions.Casted<Dynamics.Actions.Loan, Dynamics.IAction>())
             {
                 debts[Repayment.Debtor] += Repayment.Remaining;
             }

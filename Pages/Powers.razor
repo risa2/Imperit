@@ -2,16 +2,16 @@
 @inject Services.IPlayersLoader players;
 
 @code{
-    [Parameter] public Action<string, State.Land?, State.Land?, int?> Switch { get; set; } = ((a, x, y, z) => { });
-    static string Polyline(IEnumerable<int> y_values, int count, int max_y, int x_offset, int y_offset, int width, int height)
+    [Parameter] public Action<string, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    static string Polyline(IEnumerable<long> y_values, int count, long max_y, int x_offset, int y_offset, int width, int height)
     {
         return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
     }
-    static int TotalPower(State.PlayerPower pp) => (int)(pp.Money + pp.Soldiers + pp.Income * 5 - pp.Debt);
-    static int ShortPeriodPower(State.PlayerPower pp) => (int)(pp.Money + pp.Soldiers);
-    static int[][] PowersOfPlayers(State.PlayerPower[][] playerPowers, int player_count, Func<State.PlayerPower, int> get) => Enumerable.Range(0, player_count).Select(i => playerPowers.Select(pl_powers => get(pl_powers[i])).ToArray()).ToArray();
-    static int[] PowersOfAveragePlayer(State.PlayerPower[][] playerPowers, Func<State.PlayerPower, int> get) => playerPowers.Select(pl_powers => (int)pl_powers.Select(pp => get(pp)).Average()).ToArray();
-    static int Div(int a, int b) => b == 0 ? a : a / b;
+    static long TotalPower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers + pp.Income * 5 - pp.Debt;
+    static long ShortPeriodPower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers;
+    static long[][] PowersOfPlayers(State.PlayerPower[][] playerPowers, int player_count, Func<State.PlayerPower, long> get) => Enumerable.Range(0, player_count).Select(i => playerPowers.Select(pl_powers => get(pl_powers[i])).ToArray()).ToArray();
+    static long[] PowersOfAveragePlayer(State.PlayerPower[][] playerPowers, Func<State.PlayerPower, long> get) => playerPowers.Select(pl_powers => pl_powers.Select(pp => get(pp)).Sum() / pl_powers.Length).ToArray();
+    static long Div(long a, long b) => b == 0 ? a : a / b;
 }
 
 @if (powers.Powers.Length < 2)
@@ -53,23 +53,26 @@ else
     <svg viewBox="-10 -10 1220 620" class="diagram">
         @for (int player_index = 0; player_index < total.Length; ++player_index)
         {
-            <polyline points="@Polyline(total[player_index].Skip(1).Select((_,i) =>
-                        Div(1000*total[player_index][i+1],total[player_index][i])-500), powers.Powers.Length, 1000, 0, 0, 1200, 600)"
-                      fill="none" stroke="@players[player_index].Color" stroke-width="2"></polyline>
+            @for (int i = 0; i < powers.Powers.Length - 1 && total[player_index][i] != 0; ++i)
+            {
+                <line y1="@(600-Div(300*total[player_index][i+1], total[player_index][i]))" y2="300"
+                      x1="@(1200*(2*i+1)/(2*powers.Powers.Length-2))" x2="@(1200*(2*i+1)/(2*powers.Powers.Length-2))"
+                      stroke="@players[player_index].Color" stroke-width="@((1200.0/(powers.Powers.Length-1)).ToString(System.Globalization.CultureInfo.InvariantCulture))"></line>
+            }
         }
     </svg>
     <p>Kdyby měly nastat boje,</p>
     <p>peníze, vojsko mít hleď,</p>
     <p>proto tento graf na to je,</p>
     <p>kdyby válka přišla teď.</p>
-    var shorts = PowersOfPlayers(powers.Powers, players.Count, ShortPeriodPower);
+    var shorts_abs = PowersOfPlayers(powers.Powers, players.Count, ShortPeriodPower);
     var shorts_avg = PowersOfAveragePlayer(powers.Powers, ShortPeriodPower);
-    var shorts_max = shorts.SelectMany(i => i).Max();
+    var shorts_max = 2000;
+    var shorts = shorts_abs.Select(player_powers => player_powers.Zip(shorts_avg, (pp, avg) => shorts_max * pp / avg / players.Count).ToArray()).ToArray();
     <svg viewBox="-10 -10 1220 620" class="diagram">
         @for (int i = 0; i < shorts.Length; ++i)
         {
             <polyline points="@Polyline(shorts[i], powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
         }
-        <polyline points="@Polyline(shorts_avg, powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
     </svg>
 }

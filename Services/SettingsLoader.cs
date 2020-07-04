@@ -6,7 +6,7 @@ namespace Imperit.Services
     }
     public class SettingsLoader : ISettingsLoader
     {
-        Load.Writer<Load.Settings, State.Settings, bool> loader;
+        readonly Load.Writer<Load.Settings, State.Settings, bool> loader;
         State.Settings settings;
         public State.Settings Settings
         {

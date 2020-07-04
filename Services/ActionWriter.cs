@@ -15,15 +15,17 @@ namespace Imperit.Services
     }
     public class ActionWriter : IActionWriter
     {
+        readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
         readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> action_loader;
         readonly Load.Writer<Load.Command, Dynamics.ICommand, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> event_loader;
         Dynamics.ActionQueue queue;
-        public ActionWriter(ISettingsLoader sl, IPlayersLoader pl, IProvincesLoader pr, IServiceIO io)
+        public ActionWriter(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IServiceIO io)
         {
-            this.players = pl;
+            this.players = players;
             this.pr = pr;
+            this.sl = sl;
             action_loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Actions, (sl.Settings, players, pr.Provinces), Load.Action.FromAction);
             event_loader = new Load.Writer<Load.Command, Dynamics.ICommand, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Events, (sl.Settings, players, pr.Provinces), Load.Command.FromCommand);
             queue = new Dynamics.ActionQueue(new List<Dynamics.IAction>(action_loader.Load()));
@@ -33,10 +35,11 @@ namespace Imperit.Services
             bool success = false;
             foreach(var command in commands)
             {
-                success |= queue.Add(players, pr.Provinces, command);
+                success |= queue.Add(sl.Settings, players, pr.Provinces, command);
             }
             if (success)
             {
+                players.Save();
                 pr.Save();
                 action_loader.Save(queue);
                 event_loader.Add(commands);

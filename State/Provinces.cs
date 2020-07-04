@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace Imperit.State
 {
-    public class Provinces : IEnumerable<State.Province>, IReadOnlyList<State.Province>
+    public class Provinces : IEnumerable<Province>, IReadOnlyList<Province>
     {
-        private readonly Province[] provinces;
+        readonly Province[] provinces;
         public readonly Graph Graph;
         public Provinces(Province[] provinces, Graph graph)
         {
             this.provinces = provinces;
             this.Graph = graph;
         }
-        public uint CanMove(Province from, Province to) => Passable(from, to) ? from.CanMoveTo(to) : 0;
-        public bool Passable(Province from, Province to) => Graph.Passable(from.Id, to.Id);
+        public uint CanMove(Province from, Province to) => Graph.Passable(from.Id, to.Id) ? from.CanMoveTo(to) : 0;
+        public uint CanMove(int from, int to) => Graph.Passable(from, to) ? provinces[from].CanMoveTo(provinces[to]) : 0;
         public int NeighborCount(Province prov) => Graph.NeighborCount(prov.Id);
         public IEnumerable<Province> NeighborsOf(Province prov) => Graph.NeighborsOf(prov.Id).Select(vertex => provinces[vertex]);
         public IEnumerable<Province> ControlledBy(Player player) => provinces.Where(prov => prov.IsControlledBy(player));

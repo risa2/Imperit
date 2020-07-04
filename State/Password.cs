@@ -7,7 +7,7 @@ namespace Imperit.State
 {
     public readonly struct Password
     {
-        private static SHA256 sha = SHA256Managed.Create();
+        static SHA256 sha = SHA256Managed.Create();
         public readonly byte[] Hash;
         public Password(byte[] hash) => Hash = hash;
         public static Password FromString(string str) => new Password(sha.ComputeHash(Encoding.UTF8.GetBytes(str)));

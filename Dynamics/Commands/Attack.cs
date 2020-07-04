@@ -1,8 +1,14 @@
+using System.Collections.Generic;
+
 namespace Imperit.Dynamics.Commands
 {
     public class Attack : Move
     {
-        public Attack(State.Provinces prov, State.Player player, State.Province from, State.Province to, State.IArmy army) : base(prov, player, from, to, army) { }
-        public override IAction Consequences => new Actions.Attack(To.Id, Army);
+        public Attack(int player, int from, int to, State.IArmy army) : base(player, from, to, army) { }
+        public override IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces)
+        {
+            provinces[From] = provinces[From].StartMove(provinces[To], Army);
+            return new Actions.Attack(To, Army, players);
+        }
     }
 }

@@ -8,16 +8,16 @@ namespace Imperit.Dynamics
     {
         readonly List<IAction> actions;
         public ActionQueue(List<IAction> actions) => this.actions = actions;
-        private static IEnumerable<IAction> Flatten(Actions.Combination combination) => combination.Actions.SelectMany(action => action is Actions.Combination c ? Flatten(c) : action is Actions.Nothing ? new IAction[0] : new[] { action });
-        private static IEnumerable<IAction> ToInsert(IAction action) => Flatten(new Actions.Combination(action));
-        private void AddAction(IAction action) => actions.AddRange(ToInsert(action));
+        static IEnumerable<IAction> Flatten(Actions.Combination combination) => combination.Actions.SelectMany(action => action is Actions.Combination c ? Flatten(c) : action is Actions.Nothing ? new IAction[0] : new[] { action });
+        static IEnumerable<IAction> ToInsert(IAction action) => Flatten(new Actions.Combination(action));
+        void AddAction(IAction action) => actions.AddRange(ToInsert(action));
         public ActionQueue EndOfTurn(IList<State.Player> players, State.Provinces provinces, int active) => new ActionQueue(actions.OrderBy(x => x.Priority).SelectMany(action => ToInsert(action.Do(players, provinces, active))).ToList());
-        public bool Add(IList<State.Player> players, State.Provinces provinces, ICommand command)
+        public bool Add(State.Settings settings, IArray<State.Player> players, State.Provinces provinces, ICommand command)
         {
-            bool success = command.Allowed && actions.All(action => action.IsOkWith(command));
+            bool success = command.Allowed(settings, players, provinces) && actions.All(action => action.IsOkWith(command));
             if (success)
             {
-                command.Do(players, provinces);
+                var consequences = command.Do(settings, players, provinces);
                 bool valid_command = true;
                 for (int i = 0; i < actions.Count && valid_command; ++i)
                 {
@@ -25,7 +25,7 @@ namespace Imperit.Dynamics
                 }
                 if (valid_command)
                 {
-                    AddAction(command.Consequences);
+                    AddAction(consequences);
                 }
             }
             return success;

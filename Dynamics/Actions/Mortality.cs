@@ -6,7 +6,7 @@ namespace Imperit.Dynamics.Actions
     public class Mortality : IAction
     {
         public readonly int Player;
-        private readonly State.Provinces Provinces;
+        readonly State.Provinces Provinces;
         public Mortality(int player, State.Provinces provinces)
         {
             Player = player;

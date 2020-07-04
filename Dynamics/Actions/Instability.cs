@@ -4,7 +4,7 @@ namespace Imperit.Dynamics.Actions
 {
     public class Instability : IAction
     {
-        private static readonly System.Random rand = new System.Random();
+        static readonly System.Random rand = new System.Random();
         public readonly int Land;
         public readonly int? LoyalTo;
         public Instability(int land, int? loyalTo)

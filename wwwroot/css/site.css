@@ -72,6 +72,11 @@ input, button, select, option {
   padding: 10px;
   box-sizing: content-box;
   text-align: center;
+  border-radius: 0;
+}
+input:disabled {
+    background-color: #bbb;
+    color: #111;
 }
 @media screen and (max-width: 600px) {
   input, button, select, option {

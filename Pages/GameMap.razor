@@ -2,9 +2,9 @@
 @inject Services.IPlayersLoader players;
 
 @code{
-    [Parameter] public State.Player Player { get; set; }
+    [Parameter] public State.Player? Player { get; set; }
     [Parameter] public bool IsActive { get; set; }
-    [Parameter] public Action<string, State.Province?, State.Province?, int?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<string, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     State.Shape? From = null;
     void OnClick(State.Shape clicked)
     {
@@ -12,14 +12,14 @@
         {
             if (From == null)
             {
-                if (clicked.Province.IsControlledBy(Player))
+                if (clicked.Province.IsControlledBy(Player!))
                 {
                     From = clicked;
                     this.StateHasChanged();
                 }
-                else if (clicked.Province is State.Land ld && !ld.Occupied)
+                else if (clicked.Province is State.Land L1 && !L1.Occupied)
                 {
-                    Switch("CmdPurchase", ld, ld, null);
+                    Switch("CmdPurchase", L1, L1, null);
                 }
             }
             else if (From.Province != clicked.Province)
