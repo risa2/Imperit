@@ -1,14 +1,17 @@
 @inject Services.IPlayersLoader players;
 @inject Services.IActivePlayer active;
+@inject Services.ISettingsLoader sl;
+
+@using Mode = GameSwitch.Mode; 
 
 @code{
-    [Parameter] public Action<string, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public int LoggedIn { get; set; }
     [Parameter] public Action NextTurn { get; set; } = (() => { });
     [Parameter] public Action LogOut { get; set; } = (() => { });
-    [Parameter] public string This { get; set; } = "";
-    string ClassFor(params string[] items) => items.Contains(This) ? "this" : "";
-    void GoTo(string s) => Switch(s, null, null, null);
+    [Parameter] public Mode This { get; set; }
+    string ClassFor(params Mode[] items) => items.Contains(This) ? "this" : "";
+    void GoTo(Mode s) => Switch(s, null, null, null);
 }
 
 <style>
@@ -21,28 +24,31 @@
 </style>
 
 <nav>
-    @if (LoggedIn == active.Id) {
+    @if (LoggedIn == active.Id && sl.Settings.Started)
+    {
         <a @onclick="NextTurn">Konec</a>
-    } else {
+    }
+    else
+    {
         <a @onclick="LogOut">Odhlášení</a>
     }
-    <a class="@ClassFor("")" @onclick="@(() => GoTo(""))">Imperit</a>
-    <a class="@ClassFor("Players")" @onclick="@(() => GoTo("Players"))"><Money>@players[LoggedIn].Money</Money></a>
-    <a class="@ClassFor("History", "Powers")" @onclick="@(() => GoTo("Powers"))">Historie</a>
-    <a class="@ClassFor("Preview")" @onclick="@(() => GoTo("Preview"))">Náhled</a>
-    @if(This == "CmdMove")
+    <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
+    <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))"><Money>@players[LoggedIn].Money</Money></a>
+    <a class="@ClassFor(Mode.History, Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
+    <a class="@ClassFor(Mode.Preview)" @onclick="@(() => GoTo(Mode.Preview))">Náhled</a>
+    @if(This == Mode.CmdMove)
     {
         <a class="this">Přesun</a>
     }
-    @if(This == "CmdRecruit")
+    @if(This == Mode.CmdRecruit)
     {
         <a class="this">Verbování</a>
     }
-    @if(This == "CmdLoan")
+    @if(This == Mode.CmdLoan)
     {
         <a class="this">Úvěr</a>
     }
-    @if(This == "CmdTransaction")
+    @if(This == Mode.CmdTransaction)
     {
         <a class="this">Transakce</a>
     }

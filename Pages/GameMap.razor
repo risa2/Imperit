@@ -1,10 +1,12 @@
 @inject Services.IMap map;
 @inject Services.IPlayersLoader players;
 
+@using Mode = GameSwitch.Mode; 
+
 @code{
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public bool IsActive { get; set; }
-    [Parameter] public Action<string, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     State.Shape? From = null;
     void OnClick(State.Shape clicked)
     {
@@ -19,16 +21,16 @@
                 }
                 else if (clicked.Province is State.Land L1 && !L1.Occupied)
                 {
-                    Switch("CmdPurchase", L1, L1, null);
+                    Switch(Mode.CmdPurchase, L1, L1, null);
                 }
             }
             else if (From.Province != clicked.Province)
             {
-                Switch("CmdMove", From.Province, clicked.Province, null);
+                Switch(Mode.CmdMove, From.Province, clicked.Province, null);
             }
             else if (From.Province is State.Land)
             {
-                Switch("CmdRecruit", From.Province, From.Province, null);
+                Switch(Mode.CmdRecruit, From.Province, From.Province, null);
             }
             else
             {

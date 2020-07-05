@@ -3,16 +3,18 @@
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
 
+@using Mode = GameSwitch.Mode;
+
 @code{
     [Parameter] public State.Player? LoggedIn { get; set; }
-    [Parameter] public Action<string, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     void Borrow()
     {
-        Switch("CmdLoan", null, null, null);
+        Switch(Mode.CmdLoan, null, null, null);
     }
     void Donate(State.Player player)
     {
-        Switch("CmdTransaction", null, null, player);
+        Switch(Mode.CmdTransaction, null, null, player);
     }
 
 }

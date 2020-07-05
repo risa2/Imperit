@@ -1,0 +1,79 @@
+@inject Services.ISettingsLoader sl;
+@inject Services.IPlayersLoader players;
+@inject Services.IProvincesLoader pr;
+@inject Services.IActionWriter actions;
+@inject Services.IActivePlayer active;
+@inject Services.IPlayersPowers powers;
+@inject Services.IEndOfTurnManager end;
+
+@code{
+    [Parameter] public int LoggedIn { get; set; }
+    [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+    public enum Mode { Map, CmdLoan, CmdMove, CmdPurchase, CmdRecruit, CmdTransaction, History, Players, Powers, Preview}
+    Mode Current;
+    State.Province? From = null, To = null;
+    State.Player? SelectedPlayer = null;
+    void Switch(Mode mode = Mode.Map, State.Province? from = null, State.Province? to = null, State.Player? player = null)
+    {
+        Current = mode;
+        From = from;
+        To = to;
+        SelectedPlayer = player;
+        this.StateHasChanged();
+    }
+    void NextTurn()
+    {
+        if (LoggedIn == active.Id)
+        {
+            int next = end.Next();
+            if (sl.Settings.SingleClient || !players[next].Alive)
+            {
+                LogIn(next);
+            }
+            Switch(Mode.Map);
+        }
+    }
+}
+<GameMenu NextTurn="NextTurn" LoggedIn="LoggedIn" LogOut="@(() => LogIn(null))" Switch="Switch" This="@Current"/>
+<main>
+    @if (Current == Mode.Map)
+    {
+        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" />
+    }
+    else if (Current == Mode.History)
+    {
+        <History />
+    }
+    else if (Current == Mode.Powers)
+    {
+        <Powers Switch="Switch" />
+    }
+    else if (Current == Mode.Preview)
+    {
+        <Preview />
+    }
+    else if (Current == Mode.CmdLoan)
+    {
+        <CmdLoan Player="@players[LoggedIn]" Return="@(() => Switch())" />
+    }
+    else if (Current == Mode.CmdTransaction)
+    {
+        <CmdTransaction Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())" />
+    }
+    else if (Current == Mode.CmdMove)
+    {
+        <CmdMove Player="@players[LoggedIn]" From="@From" To="@To" Return="@(() => Switch())" />
+    }
+    else if (Current == Mode.CmdRecruit && To is State.Land L1)
+    {
+        <CmdRecruit Player="@players[LoggedIn]" Land="@L1" Return="@(() => Switch())" />
+    }
+    else if (Current == Mode.CmdPurchase && To is State.Land L2)
+    {
+        <CmdPurchase Player="@players[LoggedIn]" Land="@L2" Return="@(() => Switch())" />
+    }
+    else if (Current == Mode.Players)
+    {
+        <Players LoggedIn="@players[LoggedIn]" Switch="Switch" />
+    }
+</main>

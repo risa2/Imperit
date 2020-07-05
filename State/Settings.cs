@@ -19,8 +19,8 @@ namespace Imperit.State
         }
         public Settings Start() => new Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, SingleClient, true);
         static double MinLoanRepayment(uint loan, uint time, double mul) => loan * mul.Pow(time) * (mul - 1) / mul / (mul.Pow(time) - 1);
-        public uint LoanRepayment(uint loan, uint time, double credibility) => (uint)Math.Ceiling(MinLoanRepayment(loan, time, 1.0 + Interest / credibility));
-        public uint LoanDebt(uint loan, uint time, double credibility) => (uint)Math.Ceiling(time * MinLoanRepayment(loan, time, 1.0 + Interest / credibility));
+        public uint LoanRepayment(uint loan, uint time, double credibility) => (uint)Math.Ceiling(MinLoanRepayment(loan, time + 1, 1.0 + Interest / credibility));
+        public uint LoanDebt(uint loan, uint time, double credibility) => (uint)Math.Ceiling(time * MinLoanRepayment(loan, time + 1, 1.0 + Interest / credibility));
         public double Instability(uint soldiers, double credibility) => DefaultInstability / Math.Pow(2, soldiers / 50.0) / credibility;
     }
 }

@@ -1,0 +1,33 @@
+﻿@inherits InputBase<int>
+@typeparam Obj;
+
+
+@code {
+    [Parameter] public IEnumerable<Obj>? Options { get; set; }
+    [Parameter] public Func<Obj, int>? Id { get; set; }
+    [Parameter] public Func<Obj, string>? Text { get; set; }
+    protected override bool TryParseValueFromString(string value, out int result, out string? errorMsg)
+    {
+        if (int.TryParse(value, out result))
+        {
+            errorMsg = null;
+            return true;
+        }
+        else
+        {
+            errorMsg = "'" + value + "' is not a number";
+            return false;
+        }
+    }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        CurrentValue = Id!(Options.First());
+    }
+}
+<select @attributes="@AdditionalAttributes" class="@CssClass" @bind="@CurrentValue">
+    @foreach (var opt in Options!)
+    {
+        <option class="@CssClass" value="@(Id!(opt))">@(Text!(opt))</option>
+    }
+</select>

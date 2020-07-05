@@ -2,7 +2,7 @@
 
 @code{
     int? LoggedIn = null;
-    void SetLoggedIn(int? player)
+    void LogIn(int? player)
     {
         LoggedIn = player;
         this.StateHasChanged();
@@ -10,9 +10,9 @@
 }
 @if (LoggedIn is int loggedIn)
 {
-    <MainSwitch LoggedIn="@loggedIn" LogIn="SetLoggedIn"/>
+    <GameSwitch LoggedIn="@loggedIn" LogIn="LogIn"/>
 }
 else
 {
-    <Login LogIn="SetLoggedIn"/>
+    <StartSwitch LogIn="LogIn"/>
 }

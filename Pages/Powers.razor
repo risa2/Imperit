@@ -1,8 +1,10 @@
 @inject Services.IPlayersPowers powers;
 @inject Services.IPlayersLoader players;
 
+@using Mode = GameSwitch.Mode; 
+
 @code{
-    [Parameter] public Action<string, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     static string Polyline(IEnumerable<long> y_values, int count, long max_y, int x_offset, int y_offset, int width, int height)
     {
         return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
@@ -25,7 +27,7 @@ else
     <p>a přitom šlo jenom o to,</p>
     <p>vladnout aspoň na chvíli.</p>
     <br/>
-    <div @onclick="@(() => Switch("History", null, null, null))">
+    <div @onclick="@(() => Switch(Mode.History, null, null, null))">
         <p>Lze přejít na letopisy,</p>
         <p>právě tady kliknutím,</p>
         <p>nechceš-li číst dlouhé spisy,</p>

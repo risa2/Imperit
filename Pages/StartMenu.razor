@@ -1,0 +1,34 @@
+﻿@inject Services.ISettingsLoader sl;
+@inject Services.IPlayersLoader players;
+
+@using Mode = StartSwitch.Mode;
+
+@code{
+    [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
+    [Parameter] public Mode This { get; set; }
+    string ClassFor(params Mode[] items) => items.Contains(This) ? "this" : "";
+}
+
+<style>
+    nav > a:hover {
+        background-color: #28a;
+    }
+
+    nav > a.this {
+        background-color: #5ef;
+        color: #000;
+    }
+</style>
+
+<nav>
+    @if (players.Count > 0)
+    {
+        <a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
+    }
+    @if (!sl.Settings.Started)
+    {
+        <a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
+        <a class="@ClassFor(Mode.StartGame)" @onclick="@(() => GoTo(Mode.StartGame))">Zahájit</a>
+    }
+    <a class="@ClassFor(Mode.NewGame)" @onclick="@(() => GoTo(Mode.NewGame))">Nová hra</a>
+</nav>

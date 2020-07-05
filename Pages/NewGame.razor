@@ -1,24 +1,11 @@
-@page "/newgame"
-
 @inject Services.INewGame new_game;
-@inject Services.ISettingsLoader sl;
 @inject Services.IPassword pw;
-@inject Services.IActivePlayer active;
-@inject NavigationManager navigationManager;
+@inject Services.ISettingsLoader sl;
 
-<EditForm Model="@model" OnValidSubmit="New">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>Úroková míra:<br/><InputNumber @bind-Value="model.Interest"/><br/></label>
-    <label>Pravděpodobnost odtržení prázdné provincie:<br/><InputNumber @bind-Value="model.DefaultInstability"/><br/></label>
-    <label>Výchozí peníze:<br/><InputNumber @bind-Value="model.DefaultMoney"/><br/></label>
-    <label>Omezení dluhu:<br/><InputNumber @bind-Value="model.DebtLimit"/><br/></label>
-    <label>Automatické přepínání hráčů u jednoho počítače:<InputCheckbox @bind-Value="model.SingleClient"/><br/></label>
-    <label>Staré heslo:<br/><InputText type="password" @bind-Value="model.OldPassword"/><br/></label>
-    <label>Nové heslo:<br/><InputText type="password" @bind-Value="model.NewPassword"/><br/></label>
-    <button type="submit">Vytvořit</button>
-</EditForm>
+@using Mode = StartSwitch.Mode;
 
 @code{
+    [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
     Models.NewGame model = new Models.NewGame();
     protected override void OnInitialized()
     {
@@ -34,7 +21,7 @@
         {
             new_game.New(model.Interest, (uint)model.DefaultMoney, (uint)model.DebtLimit, model.DefaultInstability, model.SingleClient);
             pw.Set(model.NewPassword);
-            navigationManager.NavigateTo("/");
+            GoTo(Mode.Registration);
         }
         else
         {
@@ -42,3 +29,15 @@
         }
     }
 }
+
+<EditForm Model="@model" OnValidSubmit="New">
+    <DataAnnotationsValidator /><ValidationSummary />
+    <label>Úroková míra:<br /><InputNumber @bind-Value="model.Interest" /><br /></label>
+    <label>Pravděpodobnost odtržení prázdné provincie:<br /><InputNumber @bind-Value="model.DefaultInstability" /><br /></label>
+    <label>Výchozí peníze:<br /><InputNumber @bind-Value="model.DefaultMoney" /><br /></label>
+    <label>Omezení dluhu:<br /><InputNumber @bind-Value="model.DebtLimit" /><br /></label>
+    <label>Automatické přepínání hráčů u jednoho počítače:<InputCheckbox @bind-Value="model.SingleClient" /><br /></label>
+    <label>Staré heslo:<br /><InputText type="password" @bind-Value="model.OldPassword" /><br /></label>
+    <label>Nové heslo:<br /><InputText type="password" @bind-Value="model.NewPassword" /><br /></label>
+    <button type="submit">Vytvořit</button>
+</EditForm>
