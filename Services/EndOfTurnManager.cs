@@ -4,7 +4,7 @@ namespace Imperit.Services
 {
     public interface IEndOfTurnManager
     {
-        int Next();
+        void Next();
     }
     public class EndOfTurnManager : IEndOfTurnManager
     {
@@ -33,7 +33,7 @@ namespace Imperit.Services
         }
         void RobotAction()
         {
-            actions.Add(new Dynamics.Brain(players[active.Id]).Think(sl.Settings, pr.Provinces));
+            actions.Add(new Dynamics.Brain(players[active.Id]).Think(sl.Settings, pr.Provinces), save: false);
         }
         void AllRobotsActions()
         {
@@ -50,14 +50,14 @@ namespace Imperit.Services
                 RobotAction();
             }
         }
-        public int Next()
+        public void Next()
         {
             RobotThinkingIfRobotIsPlaying();
             End();
             AllRobotsActions();
             players.Save();
             pr.Save();
-            return active.Id;
+            actions.Save();
         }
     }
 }

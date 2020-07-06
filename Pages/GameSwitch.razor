@@ -9,7 +9,7 @@
 @code{
     [Parameter] public int LoggedIn { get; set; }
     [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
-    public enum Mode { Map, CmdLoan, CmdMove, CmdPurchase, CmdRecruit, CmdTransaction, History, Players, Powers, Preview}
+    public enum Mode { Map, CmdLoan, CmdMove, CmdPurchase, CmdRecruit, CmdTransaction, Players, Powers, Preview}
     Mode Current;
     State.Province? From = null, To = null;
     State.Player? SelectedPlayer = null;
@@ -25,7 +25,8 @@
     {
         if (LoggedIn == active.Id)
         {
-            int next = end.Next();
+            end.Next();
+            int next = active.Id;
             if (sl.Settings.SingleClient || !players[next].Alive)
             {
                 LogIn(next);
@@ -39,10 +40,6 @@
     @if (Current == Mode.Map)
     {
         <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch"/>
-    }
-    else if (Current == Mode.History)
-    {
-        <History/>
     }
     else if (Current == Mode.Powers)
     {

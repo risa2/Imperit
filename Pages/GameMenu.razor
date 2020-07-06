@@ -10,7 +10,7 @@
     [Parameter] public Action NextTurn { get; set; } = (() => { });
     [Parameter] public Action LogOut { get; set; } = (() => { });
     [Parameter] public Mode This { get; set; }
-    string ClassFor(params Mode[] items) => items.Contains(This) ? "this" : "";
+    string ClassFor(Mode mode) => mode == This ? "this" : "";
     void GoTo(Mode s) => Switch(s, null, null, null);
 }
 
@@ -34,7 +34,7 @@
     }
     <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
     <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))"><Money>@players[LoggedIn].Money</Money></a>
-    <a class="@ClassFor(Mode.History, Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
+    <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
     <a class="@ClassFor(Mode.Preview)" @onclick="@(() => GoTo(Mode.Preview))">Náhled</a>
     @if(This == Mode.CmdMove)
     {

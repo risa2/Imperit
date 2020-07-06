@@ -58,7 +58,7 @@ namespace Imperit.Services
                 (pr.Provinces[freelands[i]], _) = pr.Provinces[freelands[i]].GiveUpTo(new State.PlayerArmy(sl.Settings, players[prev_count + i], pr.Provinces[freelands[i]].Soldiers));
             }
             pr.Save();
-            writer.SaveActions(pr.Provinces.Casted<State.Port, State.Province>().Select(port => new Dynamics.Actions.PortRenewal(port.Id)).Concat<Dynamics.IAction>(pr.Provinces.Casted<State.Land, State.Province>().Select(land => new Dynamics.Actions.Instability(land.Id, land.Army is State.PlayerArmy pa ? pa.Player.Id as int? : null))).Concat(players.Select(pl => new Dynamics.Actions.Earn(pl.Id))).Concat<Dynamics.IAction>(players.Select(pl => new Dynamics.Actions.Mortality(pl.Id, pr.Provinces))));
+            writer.Save(new Dynamics.ActionQueue(pr.Provinces.Casted<State.Port, State.Province>().Select(port => new Dynamics.Actions.PortRenewal(port.Id)).Concat<Dynamics.IAction>(pr.Provinces.Casted<State.Land, State.Province>().Select(land => new Dynamics.Actions.Instability(land.Id, land.Army is State.PlayerArmy pa ? pa.Player.Id as int? : null))).Concat(players.Select(pl => new Dynamics.Actions.Earn(pl.Id))).Concat<Dynamics.IAction>(players.Select(pl => new Dynamics.Actions.Mortality(pl.Id, pr.Provinces))).ToList()));
             active.Reset();
             sl.Settings = sl.Settings.Start();
             powers.Add(players);

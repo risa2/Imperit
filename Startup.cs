@@ -25,7 +25,6 @@ namespace Imperit
             services.AddTransient<Services.IActivePlayer, Services.ActivePlayer>();
             services.AddTransient<Services.INewGame, Services.NewGame>();
             services.AddTransient<Services.IActionReader, Services.ActionReader>();
-            services.AddTransient<Services.ICommandReader, Services.CommandReader>();
             services.AddTransient<Services.IPassword, Services.Password>();
             services.AddTransient<Services.IPlayersPowers, Services.PlayersPowers>();
             services.AddTransient<Services.IEndOfTurnManager, Services.EndOfTurnManager>();
