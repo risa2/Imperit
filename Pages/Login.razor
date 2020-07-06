@@ -25,11 +25,11 @@
     <p>Zadané heslo není správné. Zkus to ještě jednou!</p>
 }
 <EditForm Model="@model" OnSubmit="LoginAction">
-    <DataAnnotationsValidator /><ValidationSummary />
+    <DataAnnotationsValidator/><ValidationSummary/>
     <label>
-        Hráč:<br />
+        Hráč:<br/>
         <IntSelect @bind-Value="model.Id" Options="@players.Where(p => p.IsHuman)" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
     </label>
-    <label>Heslo:<br /><InputText type="password" @bind-Value="model.Password" /><br /></label>
+    <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
     <button type="submit">Přihlásit se</button>
 </EditForm>

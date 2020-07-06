@@ -34,15 +34,15 @@
 {
     <p>Z místa @From!.Name na místo @To!.Name se může přesunout nejvýše @Limit vojáků</p>
 }
-<label>Počet vojáků:<br /><input @bind-value="Moving" @bind-value:event="oninput" min="1" max="@Limit" /><br /></label>
+<label>Počet vojáků:<br/><input @bind-value="Moving" @bind-value:event="oninput" min="1" max="@Limit"/><br/></label>
 @if (!From!.IsAllyOf(To!.Army))
 {
     <label>
-        Typ přesunu:<br />
+        Typ přesunu:<br/>
         <select @bind="Type">
             <option value="A">Útok</option>
             <option value="R">Podpora</option>
-        </select><br />
+        </select><br/>
     </label>
 }
 <button @onclick="DoMove">

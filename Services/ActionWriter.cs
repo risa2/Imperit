@@ -10,8 +10,8 @@ namespace Imperit.Services
         bool Add(params Dynamics.ICommand[] commands) => Add(commands as IEnumerable<Dynamics.ICommand>);
         void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
         void EndOfTurn(int active);
-        void NewGame();
-        void StartGame(IEnumerable<Dynamics.IAction> actions);
+        void Clear();
+        void SaveActions(IEnumerable<Dynamics.IAction> actions);
     }
     public class ActionWriter : IActionWriter
     {
@@ -53,11 +53,11 @@ namespace Imperit.Services
         }
         public void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond).ToList()).EndOfTurn(players, provinces, active);
         public void EndOfTurn(int active) => SaveActionQueue(queue.EndOfTurn(players, pr.Provinces, active));
-        public void NewGame()
+        public void Clear()
         {
             SaveActionQueue(new Dynamics.ActionQueue(new List<Dynamics.IAction>()));
             event_loader.Save(new Dynamics.ICommand[0]);
         }
-        public void StartGame(IEnumerable<Dynamics.IAction> actions) => SaveActionQueue(new Dynamics.ActionQueue(new List<Dynamics.IAction>(actions)));
+        public void SaveActions(IEnumerable<Dynamics.IAction> actions) => SaveActionQueue(new Dynamics.ActionQueue(new List<Dynamics.IAction>(actions)));
     }
 }

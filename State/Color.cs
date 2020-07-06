@@ -12,7 +12,6 @@ namespace Imperit.State
         }
         override public string ToString() => "#" + r.ToString("x2") + g.ToString("x2") + b.ToString("x2");
         public static Color Parse(string str) => new Color(FromHex(str[1..3]), FromHex(str[3..5]), FromHex(str[5..7]));
-        static byte Avg(byte x, byte y) => (byte)((x + y) / 2);
         public Color Darken(byte light) => new Color((byte)(r * light / 255), (byte)(g * light / 255), (byte)(b * light / 255));
     }
 }

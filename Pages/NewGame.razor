@@ -14,12 +14,20 @@
         model.DefaultMoney = (int)sl.Settings.DefaultMoney;
         model.DebtLimit = (int)sl.Settings.DebtLimit;
         model.SingleClient = sl.Settings.SingleClient;
+        model.RobotNames = string.Join(", ", sl.Settings.RobotNames);
+        model.MaxRobotCount = sl.Settings.MaxRobotCount;
+    }
+    bool Validate()
+    {
+        bool success = !string.IsNullOrWhiteSpace(model.OldPassword) && !string.IsNullOrWhiteSpace(model.NewPassword);
+        success = success && !string.IsNullOrWhiteSpace(model.RobotNames) && pw.IsCorrect(model.OldPassword);
+        return success;
     }
     void New()
     {
-        if (model.NewPassword != null && model.OldPassword != null && pw.IsCorrect(model.OldPassword))
+        if (Validate())
         {
-            new_game.New(model.Interest, (uint)model.DefaultMoney, (uint)model.DebtLimit, model.DefaultInstability, model.SingleClient);
+            new_game.New(model.Interest, (uint)model.DefaultMoney, (uint)model.DebtLimit, model.DefaultInstability, model.SingleClient, model.RobotNames.Split(',').Select(name=>name.Trim()).ToArray(), model.MaxRobotCount);
             pw.Set(model.NewPassword);
             GoTo(Mode.Registration);
         }
@@ -30,14 +38,16 @@
     }
 }
 
-<EditForm Model="@model" OnValidSubmit="New">
-    <DataAnnotationsValidator /><ValidationSummary />
-    <label>Úroková míra:<br /><InputNumber @bind-Value="model.Interest" /><br /></label>
-    <label>Pravděpodobnost odtržení prázdné provincie:<br /><InputNumber @bind-Value="model.DefaultInstability" /><br /></label>
-    <label>Výchozí peníze:<br /><InputNumber @bind-Value="model.DefaultMoney" /><br /></label>
-    <label>Omezení dluhu:<br /><InputNumber @bind-Value="model.DebtLimit" /><br /></label>
-    <label>Automatické přepínání hráčů u jednoho počítače:<InputCheckbox @bind-Value="model.SingleClient" /><br /></label>
-    <label>Staré heslo:<br /><InputText type="password" @bind-Value="model.OldPassword" /><br /></label>
-    <label>Nové heslo:<br /><InputText type="password" @bind-Value="model.NewPassword" /><br /></label>
-    <button type="submit">Vytvořit</button>
-</EditForm>
+    <EditForm Model="@model" OnValidSubmit="New">
+        <DataAnnotationsValidator/><ValidationSummary/>
+        <label>Úroková míra:<br/><InputNumber @bind-Value="model.Interest"/><br/></label>
+        <label>Pravděpodobnost odtržení prázdné provincie:<br/><InputNumber @bind-Value="model.DefaultInstability"/><br/></label>
+        <label>Výchozí peníze:<br/><InputNumber @bind-Value="model.DefaultMoney"/><br/></label>
+        <label>Omezení dluhu:<br/><InputNumber @bind-Value="model.DebtLimit"/><br/></label>
+        <label>Hra u jednoho zařízení:<InputCheckbox @bind-Value="model.SingleClient"/><br/></label>
+        <label>Jména robotů:<br/><InputText @bind-Value="model.RobotNames"/><br/></label>
+        <label>Maximální počet robotů:<br/><InputNumber @bind-Value="model.MaxRobotCount"/><br/></label>
+        <label>Staré heslo:<br/><InputText type="password" @bind-Value="model.OldPassword"/><br/></label>
+        <label>Nové heslo:<br/><InputText type="password" @bind-Value="model.NewPassword"/><br/></label>
+        <button type="submit">Vytvořit</button>
+    </EditForm>

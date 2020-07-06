@@ -15,22 +15,22 @@
         this.StateHasChanged();
     }
 }
-<StartMenu GoTo="GoTo" This="@Current" />
+<StartMenu GoTo="GoTo" This="@Current"/>
 <main>
     @if (Current == Mode.Login)
     {
-        <Login LogIn="LogIn" />
+        <Login LogIn="LogIn"/>
     }
     else if (Current == Mode.Registration)
     {
-        <Registration LogIn="LogIn" />
+        <Registration LogIn="LogIn"/>
     }
     else if (Current == Mode.StartGame)
     {
-        <StartGame GoTo="GoTo" />
+        <StartGame GoTo="GoTo"/>
     }
     else if (Current == Mode.NewGame)
     {
-        <NewGame GoTo="GoTo" />
+        <NewGame GoTo="GoTo"/>
     }
 </main>

@@ -6,7 +6,7 @@ namespace Imperit.Services
     {
         State.Provinces Provinces { get; set; }
         void Save();
-        void NewGame(ISettingsLoader settings, IPlayersLoader players);
+        void Reset(State.Settings settings, IReadOnlyList<State.Player> players);
     }
     public class ProvincesLoader : IProvincesLoader
     {
@@ -16,10 +16,10 @@ namespace Imperit.Services
         public ProvincesLoader(IServiceIO io, ISettingsLoader settings, IPlayersLoader players)
         {
             this.io = io;
-            loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings.Settings, players as IReadOnlyList<State.Player>);
+            loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings.Settings, players);
             Provinces = loader.Load();
         }
         public void Save() => loader.Save(Provinces);
-        public void NewGame(ISettingsLoader settings, IPlayersLoader players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings.Settings, players);
+        public void Reset(State.Settings settings, IReadOnlyList<State.Player> players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings, players);
     }
 }

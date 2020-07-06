@@ -7,7 +7,7 @@ namespace Imperit.Services
     {
         int Id { get; }
         void Next(IReadOnlyList<State.Player> players);
-        void StartGame();
+        void Reset();
     }
     public class ActivePlayer : IActivePlayer
     {
@@ -21,6 +21,6 @@ namespace Imperit.Services
             int next = Enumerable.Range(0, players.Count).Select(i => (i + id) % players.Count).FirstOr(i => players[i].Alive, -1);
             SetIndex(next == -1 ? Id : next);
         }
-        public void StartGame() => SetIndex(0);
+        public void Reset() => SetIndex(0);
     }
 }

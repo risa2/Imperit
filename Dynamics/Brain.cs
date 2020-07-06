@@ -129,7 +129,7 @@ namespace Imperit.Dynamics
         }
         public IEnumerable<ICommand> Think(State.Settings settings, State.Provinces provinces)
         {
-            var my = provinces.Count.Range().Where(i => provinces[i].IsControlledBy(player)).ToArray();
+            var my = provinces.Where(p => p.IsControlledBy(player)).Select(p => p.Id).ToArray();
             var info = provinces.Select(prov => new PInfo(prov.Soldiers, EnemiesCount(provinces, prov), 0, prov.IsControlledBy(player) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty)).ToArray();
 
             var result = Recruitments(provinces, info, my);

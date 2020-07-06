@@ -4,4 +4,7 @@
     <BlazorLinkOnBuild>false</BlazorLinkOnBuild>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.0" />
+  </ItemGroup>
 </Project>

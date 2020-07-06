@@ -5,7 +5,6 @@
 @inject Services.INewGame newgame;
 
 <label>Jméno:<br/><input type="text" @bind-value="@Username"/></label><br/>
-<label>Robot (když to vybereš, bude za tebe hrát automat):<input type="checkbox" @bind-value="@IsRobot"/></label><br/>
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
@@ -17,7 +16,6 @@
     string Username { get; set; } = "";
     string Password { get; set; } = "";
     string ColorStr { get; set; } = "#0000FF";
-    bool IsRobot { get; set; } = false;
     State.Color Color => State.Color.Parse(ColorStr);
     State.Shape? Selected = null;
     static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
@@ -34,7 +32,7 @@
     {
         if (Username != "" && Password != "" && Selected != null)
         {
-            newgame.Registration(Username, State.Password.FromString(Password), Color, (Selected.Province as State.Land)!, !IsRobot);
+            newgame.Registration(Username, State.Password.FromString(Password), Color, (Selected.Province as State.Land)!);
             LogIn(players.Count - 1);
         }
     }
