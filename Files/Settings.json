@@ -1,1 +1,1 @@
-{"DefaultMoney":100,"DebtLimit":300,"Interest":0.06,"DefaultInstability":0.1,"SingleClient":true,"Started":false,"RobotNames":["Karel Ne\u0161por","Friedrich Nietzsche","B\u016Fh","Woody Allen","Diogenes"],"MaxRobotCount":5}
+{"DefaultMoney":100,"DebtLimit":400,"Interest":0.06,"DefaultInstability":0.1,"SingleClient":true,"Started":false,"RobotNames":["Karel Ne\u0161por","Friedrich Nietzsche","Woody Allen"],"MaxRobotCount":3}

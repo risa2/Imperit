@@ -27,8 +27,8 @@
 {
     <p>Příliš vysoká částka. Celkový dluh nesmí překročit <Money>@sl.Settings.DebtLimit</Money></p>
 }
-<label>Vypůjčený obnos:<br/><input @bind-value="BorrowedAmount" @bind-value:event="oninput" min="1"/><br/></label>
-<label>Doba splácení:<br/><input @bind-value="RepaymentCount" @bind-value:event="oninput" min="1" max="8"/><br/></label>
+<label>Vypůjčený obnos:<br/><input type="number" @bind-value="BorrowedAmount" @bind-value:event="oninput" min="1"/><br/></label>
+<label>Doba splácení:<br/><input type="number" @bind-value="RepaymentCount" @bind-value:event="oninput" min="1" max="10"/><br/></label>
 <label>Splácený obnos:<br/><input value="@Debt" disabled="disabled"/><br/></label>
 <label>Výše splátky:<br/><input value="@Repayment" disabled="disabled"/><br/></label>
 <button @onclick="DoBorrow">Půjčit si</button>

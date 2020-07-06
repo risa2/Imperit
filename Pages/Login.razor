@@ -2,7 +2,6 @@
 @inject Services.ISettingsLoader sl;
 
 @code{
-    [Parameter] public Action<string> GoTo { get; set; } = (s => { });
     [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
     Models.Login model = new Models.Login();
     bool Wrong = false;
@@ -15,7 +14,7 @@
         else
         {
             Wrong = true;
-            model.Password = "Map";
+            model.Password = "";
         }
     }
 }

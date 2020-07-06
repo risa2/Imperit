@@ -47,6 +47,7 @@ namespace Imperit.Services
         public void Start()
         {
             var freelands = pr.Provinces.Where(p => p is State.Land L1 && L1.IsStart && !L1.Occupied).Select(p => p.Id).ToArray();
+            freelands.Shuffle(rand);
             int added_count = Math.Min(freelands.Length, sl.Settings.MaxRobotCount), prev_count = players.Count;
             for (int i = 0; i < added_count; ++i)
             {

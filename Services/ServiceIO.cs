@@ -1,5 +1,3 @@
-using Imperit.Load;
-
 namespace Imperit.Services
 {
     public interface IServiceIO
@@ -28,9 +26,9 @@ namespace Imperit.Services
         public Load.IFile Graph { get; }
         public Load.IFile Mountains { get; }
         public Load.IFile Shapes { get; }
-        public IFile Powers { get; }
+        public Load.IFile Powers { get; }
 
-        public ServiceIO(Load.IFile settings, Load.IFile players, Load.IFile provinces, Load.IFile actions, Load.IFile events, Load.IFile active, Load.IFile password, Load.IFile graph, Load.IFile mountains, Load.IFile shapes, IFile powers)
+        public ServiceIO(Load.IFile settings, Load.IFile players, Load.IFile provinces, Load.IFile actions, Load.IFile events, Load.IFile active, Load.IFile password, Load.IFile graph, Load.IFile mountains, Load.IFile shapes, Load.IFile powers)
         {
             Settings = settings;
             Players = players;

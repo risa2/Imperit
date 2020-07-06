@@ -107,3 +107,10 @@ svg.diagram {
   width: 90%;
   border: 5px dotted #777;
 }
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
