@@ -12,7 +12,8 @@ namespace Imperit.Load
         public bool Alive { get; set; }
         public double Credibility { get; set; }
         public uint Income { get; set; }
-        public State.Player Convert(int i, bool useless) => new State.Player(id: i, name: Name, color: new State.Color(r, g, b), isHuman: IsHuman, password: new State.Password(System.Convert.FromBase64String(Password)), money: Money, credibility: Credibility, alive: Alive, income: Income);
-        public static Player FromPlayer(State.Player p) => new Player() { Name = p.Name, r = p.Color.r, g = p.Color.g, b = p.Color.b, IsHuman = p.IsHuman, Password = System.Convert.ToBase64String(p.Password.Hash), Money = p.Money, Alive = p.Alive, Credibility = p.Credibility, Income = p.Income };
+        public State.Player Convert(int i, bool useless) => IsHuman ? new State.Player(i, Name, new State.Color(r, g, b), new State.Password(System.Convert.FromBase64String(Password)), Money, Credibility, Alive, Income)
+                                                                    : new State.Robot(i, Name, new State.Color(r, g, b), new State.Password(System.Convert.FromBase64String(Password)), Money, Credibility, Alive, Income);
+        public static Player FromPlayer(State.Player p) => new Player() { Name = p.Name, r = p.Color.r, g = p.Color.g, b = p.Color.b, IsHuman = !(p is State.Robot), Password = System.Convert.ToBase64String(p.Password.Hash), Money = p.Money, Alive = p.Alive, Credibility = p.Credibility, Income = p.Income };
     }
 }

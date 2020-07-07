@@ -19,15 +19,15 @@ namespace Imperit.Services
         readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
-        readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> action_loader;
+        readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> loader;
         Dynamics.ActionQueue queue;
         public ActionWriter(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IServiceIO io)
         {
             this.players = players;
             this.pr = pr;
             this.sl = sl;
-            action_loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Actions, (sl.Settings, players, pr.Provinces), Load.Action.FromAction);
-            queue = new Dynamics.ActionQueue(new List<Dynamics.IAction>(action_loader.Load()));
+            loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Actions, (sl.Settings, players, pr.Provinces), Load.Action.FromAction);
+            queue = new Dynamics.ActionQueue(new List<Dynamics.IAction>(loader.Load()));
         }
         public bool Add(IEnumerable<Dynamics.ICommand> commands, bool save)
         {
@@ -44,7 +44,7 @@ namespace Imperit.Services
             }
             return success;
         }
-        public void Save(Dynamics.ActionQueue new_queue) => action_loader.Save(queue = new_queue);
+        public void Save(Dynamics.ActionQueue new_queue) => loader.Save(queue = new_queue);
         public void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond).ToList()).EndOfTurn(players, provinces, active);
         public void EndOfTurn(int active) => queue = queue.EndOfTurn(players, pr.Provinces, active);
         public void Clear() => Save(new Dynamics.ActionQueue(new List<Dynamics.IAction>()));

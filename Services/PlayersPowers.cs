@@ -5,37 +5,30 @@ namespace Imperit.Services
 {
     public interface IPlayersPowers
     {
-        void Add(IEnumerable<State.Player> players);
-        void Reset();
         State.PlayerPower[][] Powers { get; }
+        void Add(IEnumerable<State.Player> players);
+        void Clear();
     }
     public class PlayersPowers : IPlayersPowers
     {
         readonly IProvincesLoader provinces;
-        readonly IActionReader actions;
         readonly Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool> loader;
         public State.PlayerPower[][] Powers { get; set; }
-        public PlayersPowers(IServiceIO io, IProvincesLoader provinces, IActionReader actions)
+        public PlayersPowers(IServiceIO io, IProvincesLoader provinces)
         {
             loader = new Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool>(io.Powers, false, Load.PlayersPowers.From);
             Powers = loader.Load().ToArray();
             this.provinces = provinces;
-            this.actions = actions;
         }
-        public void Reset() => loader.Save(new State.PlayerPower[0][]);
+        public void Clear() => loader.Save(new State.PlayerPower[0][]);
         public void Add(IEnumerable<State.Player> players)
         {
-            var debts = new uint[players.Count()];
             var soldiers = new uint[players.Count()];
-            foreach (var Repayment in actions.Actions.Casted<Dynamics.Actions.Loan, Dynamics.IAction>())
+            foreach (var army in provinces.Provinces.Select(p => p.Army as State.PlayerArmy).NotNull())
             {
-                debts[Repayment.Debtor] += Repayment.Remaining;
+                soldiers[army.Player.Id] += army.Soldiers;
             }
-            foreach (var pa in provinces.Provinces.Select(p => p.Army).Casted<State.PlayerArmy, State.IArmy>())
-            {
-                soldiers[pa.Player.Id] += pa.Soldiers;
-            }
-            loader.Add(players.Select((p, i) => new State.PlayerPower(soldiers[i], p.Money, debts[i], p.Income)).ToArray());
+            loader.Add(players.Select((p, i) => new State.PlayerPower(soldiers[i], p.Money, p.Income)).ToArray());
         }
     }
 }

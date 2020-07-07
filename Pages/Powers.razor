@@ -9,8 +9,8 @@
     {
         return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
     }
-    static long TotalPower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers + pp.Income * 5 - pp.Debt;
-    static long ShortPeriodPower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers;
+    static long TotalPower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers + pp.Income * 5;
+    static long ImmediatePower(State.PlayerPower pp) => (long)pp.Money + pp.Soldiers;
     static long[][] PowersOfPlayers(State.PlayerPower[][] playerPowers, int player_count, Func<State.PlayerPower, long> get) => Enumerable.Range(0, player_count).Select(i => playerPowers.Select(pl_powers => get(pl_powers[i])).ToArray()).ToArray();
     static long[] PowersOfAveragePlayer(State.PlayerPower[][] playerPowers, Func<State.PlayerPower, long> get) => playerPowers.Select(pl_powers => pl_powers.Select(pp => get(pp)).Sum() / pl_powers.Length).ToArray();
     static long Div(long a, long b) => b == 0 ? a : a / b;
@@ -60,8 +60,8 @@ else
     <p>peníze, vojsko mít hleď,</p>
     <p>proto tento graf na to je,</p>
     <p>kdyby válka přišla teď.</p>
-    var shorts_abs = PowersOfPlayers(powers.Powers, players.Count, ShortPeriodPower);
-    var shorts_avg = PowersOfAveragePlayer(powers.Powers, ShortPeriodPower);
+    var shorts_abs = PowersOfPlayers(powers.Powers, players.Count, ImmediatePower);
+    var shorts_avg = PowersOfAveragePlayer(powers.Powers, ImmediatePower);
     var shorts_max = 2000;
     var shorts = shorts_abs.Select(player_powers => player_powers.Zip(shorts_avg, (pp, avg) => shorts_max * pp / avg / players.Count).ToArray()).ToArray();
     <svg viewBox="-10 -10 1220 620" class="diagram">

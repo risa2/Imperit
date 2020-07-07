@@ -27,7 +27,7 @@
     <DataAnnotationsValidator/><ValidationSummary/>
     <label>
         Hráč:<br/>
-        <IntSelect @bind-Value="model.Id" Options="@players.Where(p => p.IsHuman)" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
+        <IntSelect @bind-Value="model.Id" Options="@players.Where(p => !(p is State.Robot))" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
     </label>
     <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
     <button type="submit">Přihlásit se</button>

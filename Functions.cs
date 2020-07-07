@@ -7,6 +7,7 @@ namespace Imperit
     public static class Extension
     {
         public static IEnumerable<R> Casted<R, T>(this IEnumerable<T> e) => e.SelectMany(x => x is R r ? new R[] { r } : new R[0]);
+        public static IEnumerable<T> NotNull<T>(this IEnumerable<T?> e) where T : class => e.Where(it => it != null)!;
         public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
         public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
         public static T MinBy<T, C>(this IEnumerable<T> e, Func<T, C> selector) => e.OrderBy(selector).First();
@@ -99,15 +100,15 @@ namespace Imperit
         }
         public static State.Color NextColor(this Random rand)
         {
-            return HsvToRgb(rand.NextDouble() * 360, (rand.Next(2) + 1) / 2.0, (rand.Next(2) + 1) / 2.0);
+            return HsvToRgb(rand.Next(360), (rand.Next(2) + 1) / 2.0, (rand.Next(2) + 1) / 2.0);
         }
-        public static void Shuffle<T>(this IList<T> list, Random rng)
+        public static void Shuffle<T>(this Random rand, IList<T> list)
         {
             int n = list.Count;
             while (n > 1)
             {
                 n--;
-                int k = rng.Next(n + 1);
+                int k = rand.Next(n + 1);
                 T value = list[k];
                 list[k] = list[n];
                 list[n] = value;

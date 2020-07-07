@@ -6,21 +6,21 @@ namespace Imperit.State
     {
         public readonly double Interest, DefaultInstability;
         public readonly uint DefaultMoney, DebtLimit;
-        public readonly bool SingleClient, Started;
         public readonly string[] RobotNames;
         public readonly int MaxRobotCount;
-        public Settings(double interest, double defaultInstability, uint defaultMoney, uint debtLimit, bool singleClient, bool started, string[] robotNames, int maxRobotCount)
+        public readonly bool SingleClient, Started;
+        public Settings(double interest, double defaultInstability, uint defaultMoney, uint debtLimit, string[] robotNames, int maxRobotCount, bool singleClient, bool started)
         {
             Interest = interest;
             DefaultInstability = defaultInstability;
             DefaultMoney = defaultMoney;
             DebtLimit = debtLimit;
-            SingleClient = singleClient;
-            Started = started;
             RobotNames = robotNames;
             MaxRobotCount = maxRobotCount;
+            SingleClient = singleClient;
+            Started = started;
         }
-        public Settings Start() => new Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, SingleClient, true, RobotNames, MaxRobotCount);
+        public Settings Start() => new Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames, MaxRobotCount, SingleClient, true);
         static double MinLoanRepayment(uint loan, uint time, double mul) => loan * mul.Pow(time) * (mul - 1) / (mul.Pow(time) - 1);
         public uint LoanRepayment(uint loan, uint time, double credibility) => (uint)Ceiling(MinLoanRepayment(loan, time, 1.0 + Interest / credibility));
         public uint LoanDebt(uint loan, uint time, double credibility) => (uint)Ceiling(time * MinLoanRepayment(loan, time, 1.0 + Interest / credibility));

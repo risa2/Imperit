@@ -23,31 +23,26 @@ namespace Imperit.Services
             this.active = active;
             this.powers = powers;
         }
-        bool IsRobotPlaying => !players[active.Id].IsHuman;
-        bool AreHumansAlive => players.Any(player => player.IsHuman && player.Alive);
+        bool AreHumansAlive => players.Any(player => !(player is State.Robot) && player.Alive);
         void End()
         {
             actions.EndOfTurn(active.Id);
             powers.Add(players);
             active.Next(players);
         }
-        void RobotAction()
-        {
-            actions.Add(new Dynamics.Brain(players[active.Id]).Think(sl.Settings, pr.Provinces), save: false);
-        }
         void AllRobotsActions()
         {
-            while (IsRobotPlaying && AreHumansAlive)
+            while (players[active.Id] is State.Robot robot && AreHumansAlive)
             {
-                RobotAction();
+                actions.Add(robot.Think(sl.Settings, pr.Provinces), save: false);
                 End();
             }
         }
         void RobotThinkingIfRobotIsPlaying()
         {
-            if (IsRobotPlaying)
+            if (players[active.Id] is State.Robot robot)
             {
-                RobotAction();
+                actions.Add(robot.Think(sl.Settings, pr.Provinces), save: false);
             }
         }
         public void Next()

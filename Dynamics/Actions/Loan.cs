@@ -33,7 +33,7 @@ namespace Imperit.Dynamics.Actions
             }
             return this;
         }
-        public bool IsOkWith(ICommand another)
+        public bool Allows(ICommand another)
         {
             if (another is Commands.Loan loan && loan.Player == Debtor)
             {
