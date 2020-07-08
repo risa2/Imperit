@@ -12,7 +12,7 @@ namespace Imperit.Dynamics.Actions
             Player = player;
             Provinces = provinces;
         }
-        public IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             if (players[Player].Surviving)
             {

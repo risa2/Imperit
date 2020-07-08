@@ -6,7 +6,7 @@ namespace Imperit.State
     public class Robot : Player
     {
         public Robot(int id, string name, Color color, Password password, uint money, double credibility, bool alive, uint income) : base(id, name, color, password, money, credibility, alive, income) { }
-        public override Player LoseCredibility(double amount) => new Robot(Id, Name, Color, Password, Money, NewCredibility(Credibility, -amount), Alive, Income);
+        public override Player LoseCredibility(double amount) => new Robot(Id, Name, Color, Password, Money, CredibilityChanged(-amount), Alive, Income);
         public override Player GainMoney(uint amount) => new Robot(Id, Name, Color, Password, Money + amount, Credibility, Alive, Income);
         public override Player Pay(uint amount) => new Robot(Id, Name, Color, Password, Money - amount, Credibility, Alive, Income);
         public override Player Die() => new Robot(Id, Name, Color, Password, 0, 1.0, false, 0);
@@ -44,7 +44,7 @@ namespace Imperit.State
             {
                 if (info[i].Bilance < 0 && info[i].Bilance + Money - spent >= 0 && provinces[i] is Land land)
                 {
-                    Recruit(result, ref spent, land, info, (uint)(-info[i].Bilance));
+                    Recruit(result, ref spent, land, info, (uint)-info[i].Bilance);
                 }
             }
         }

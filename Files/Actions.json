@@ -22,6 +22,11 @@
 {"Type":"PortRenewal","Province":84}
 {"Type":"PortRenewal","Province":88}
 {"Type":"PortRenewal","Province":89}
+{"Type":"Earn","Player":0}
+{"Type":"Earn","Player":1}
+{"Type":"Earn","Player":2}
+{"Type":"Earn","Player":3}
+{"Type":"Earn","Player":4}
 {"Type":"Instability","Province":2,"Player":4}
 {"Type":"Instability","Province":3}
 {"Type":"Instability","Province":4}
@@ -104,11 +109,6 @@
 {"Type":"Instability","Province":89}
 {"Type":"Instability","Province":90}
 {"Type":"Instability","Province":92}
-{"Type":"Earn","Player":0}
-{"Type":"Earn","Player":1}
-{"Type":"Earn","Player":2}
-{"Type":"Earn","Player":3}
-{"Type":"Earn","Player":4}
 {"Type":"Mortality","Player":0}
 {"Type":"Mortality","Player":1}
 {"Type":"Mortality","Player":2}

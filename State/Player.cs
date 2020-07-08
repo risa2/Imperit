@@ -4,7 +4,7 @@ namespace Imperit.State
 {
     public class Player
     {
-        public int Id { get; }
+        public readonly int Id;
         public readonly string Name;
         public readonly Color Color;
         public readonly Password Password;
@@ -22,8 +22,8 @@ namespace Imperit.State
             Alive = alive;
             Income = income;
         }
-        protected static double NewCredibility(double prev, double change) => Math.Max(0.0001, prev * Math.Pow(2, change));
-        public virtual Player LoseCredibility(double amount) => new Player(Id, Name, Color, Password, Money, NewCredibility(Credibility, -amount), Alive, Income);
+        protected double CredibilityChanged(double change) => Math.Max(0.0001, Credibility * Math.Pow(2, change));
+        public virtual Player LoseCredibility(double amount) => new Player(Id, Name, Color, Password, Money, CredibilityChanged(-amount), Alive, Income);
         public virtual Player GainMoney(uint amount) => new Player(Id, Name, Color, Password, Money + amount, Credibility, Alive, Income);
         public virtual Player Pay(uint amount) => new Player(Id, Name, Color, Password, Money - amount, Credibility, Alive, Income);
         public Player Earn() => GainMoney(Income);

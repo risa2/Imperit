@@ -16,8 +16,8 @@ namespace Imperit.State
         public override uint CanMoveTo(Province dest) => dest is Sea ? Math.Min(CanBoard, Army.Soldiers) : base.CanMoveTo(dest);
 
 
-        Province baseStartMove(Province dest, IArmy army) => base.StartMove(dest, army);
-        public override Province StartMove(Province dest, IArmy army) => WithCanBoard(CanBoard - (dest is Sea ? army.Soldiers : 0)).baseStartMove(dest, army);
+        Province BaseStartMove(Province dest, IArmy army) => base.StartMove(dest, army);
+        public override Province StartMove(Province dest, IArmy army) => WithCanBoard(CanBoard - (dest is Sea ? army.Soldiers : 0)).BaseStartMove(dest, army);
         public Port Renew() => WithCanBoard(Capacity);
     }
 }

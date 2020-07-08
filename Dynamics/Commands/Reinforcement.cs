@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-
 namespace Imperit.Dynamics.Commands
 {
     public class Reinforcement : Move

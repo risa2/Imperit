@@ -1,6 +1,7 @@
 using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Imperit
 {
@@ -13,7 +14,6 @@ namespace Imperit
         public static T MinBy<T, C>(this IEnumerable<T> e, Func<T, C> selector) => e.OrderBy(selector).First();
         public static IEnumerable<T> MakeCopy<T>(this IEnumerable<T> e) => e.Select(x => x);
         public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
-        public static double Pow(this double b, double e) => Math.Pow(b, e);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
             while (H < 0) { H += 360; }
@@ -33,8 +33,8 @@ namespace Imperit
                 int i = (int)Math.Floor(hf);
                 double f = hf - i;
                 double pv = V * (1 - S);
-                double qv = V * (1 - S * f);
-                double tv = V * (1 - S * (1 - f));
+                double qv = V * (1 - (S * f));
+                double tv = V * (1 - (S * (1 - f)));
                 switch (i)
                 {
                     // Red is the dominant color
@@ -91,12 +91,7 @@ namespace Imperit
                 }
             }
             return new State.Color(clamp((int)(R * 255.0)), clamp((int)(G * 255.0)), clamp((int)(B * 255.0)));
-            static byte clamp(int i)
-            {
-                if (i < 0) return 0;
-                if (i > 255) return 255;
-                return (byte)i;
-            }
+            static byte clamp(int i) => i < 0 ? (byte)0 : i > 255 ? (byte)255 : (byte)i;
         }
         public static State.Color NextColor(this Random rand)
         {
@@ -114,18 +109,20 @@ namespace Imperit
                 list[n] = value;
             }
         }
+        public static Array<T> ToMyArray<T>(this IEnumerable<T> e) => new Array<T>(e.ToArray());
     }
-    public interface IArray<T> : IReadOnlyList<T>, IList<T>
+    public interface IArray<T> : IReadOnlyList<T>
     {
-        new int Count { get; }
-        int ICollection<T>.Count => this.Count;
-        int IReadOnlyCollection<T>.Count => this.Count;
         new T this[int i] { get; set; }
-        T IList<T>.this[int i]
-        {
-            get => this[i];
-            set => this[i] = value;
-        }
         T IReadOnlyList<T>.this[int i] => this[i];
+    }
+    public struct Array<T> : IArray<T>
+    {
+        readonly T[] arr;
+        public Array(T[] a) => arr = a;
+        public T this[int i] { get => arr[i]; set => arr[i] = value; }
+        public int Count => arr.Length;
+        public IEnumerator<T> GetEnumerator() => (arr as IEnumerable<T>).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => arr.GetEnumerator();
     }
 }

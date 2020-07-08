@@ -18,7 +18,7 @@ namespace Imperit.Dynamics.Actions
             Remaining = remaining;
             Repayment = Math.Min(Remaining, repayment);
         }
-        public IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             if (active == Debtor)
             {
@@ -47,11 +47,9 @@ namespace Imperit.Dynamics.Actions
         }
         public (IAction, bool) Interact(ICommand another)
         {
-            if (another is Commands.Loan loan && loan.Player == Debtor)
-            {
-                return (new Loan(settings, players, Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment), false);
-            }
-            return (this, true);
+            return another is Commands.Loan loan && loan.Player == Debtor
+                ? (new Loan(settings, players, Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment), false)
+                : (this, true);
         }
         public int Priority => 200;
     }

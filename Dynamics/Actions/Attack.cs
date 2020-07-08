@@ -6,7 +6,7 @@ namespace Imperit.Dynamics.Actions
     {
         readonly IReadOnlyList<State.Player> players;
         public Attack(int province, State.IArmy army, IReadOnlyList<State.Player> pls) : base(province, army) => players = pls;
-        public override IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public override IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             (var attacked, var action) = provinces[Province].AttackedBy(Army);
             provinces[Province] = attacked;

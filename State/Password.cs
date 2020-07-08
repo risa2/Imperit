@@ -1,13 +1,13 @@
-using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
 using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Imperit.State
 {
     public readonly struct Password
     {
-        static SHA256 sha = SHA256Managed.Create();
+        static readonly SHA256 sha = SHA256.Create();
         public readonly byte[] Hash;
         public Password(byte[] hash) => Hash = hash;
         public static Password FromString(string str) => new Password(sha.ComputeHash(Encoding.UTF8.GetBytes(str)));

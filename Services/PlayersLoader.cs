@@ -7,6 +7,8 @@ namespace Imperit.Services
     public interface IPlayersLoader : IArray<State.Player>
     {
         void Save();
+        void Clear();
+        void Add(State.Player player);
     }
     public class PlayersLoader : IPlayersLoader
     {
@@ -37,12 +39,5 @@ namespace Imperit.Services
         }
         public IEnumerator<State.Player> GetEnumerator() => players.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => players.GetEnumerator();
-
-        public int IndexOf(State.Player item) => players.IndexOf(item);
-        public void Insert(int index, State.Player item) => throw new System.NotSupportedException("Players may be inserted only at end.");
-        public void RemoveAt(int index) => throw new System.NotSupportedException("Players may not be removed.");
-        public bool Contains(State.Player item) => players.Contains(item);
-        public void CopyTo(State.Player[] array, int arrayIndex) => players.CopyTo(array, arrayIndex);
-        public bool Remove(State.Player item) => throw new System.NotSupportedException("Players may not be removed.");
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Imperit.State
 {
-    public class Provinces : IReadOnlyList<Province>
+    public class Provinces : IArray<Province>
     {
         readonly Province[] provinces;
         public readonly Graph Graph;

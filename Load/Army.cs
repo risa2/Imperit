@@ -10,23 +10,21 @@ namespace Imperit.Load
         public State.IArmy Convert(int i, (State.Settings, IReadOnlyList<State.Player>) arg)
         {
             (var settings, var players) = arg;
-            switch (Type)
+            return Type switch
             {
-                case "Peasant":
-                    return new State.PeasantArmy(Soldiers);
-                case "Player":
-                    return new State.PlayerArmy(settings, players[Player], Soldiers);
-                default:
-                    throw new System.Exception("Unknown Army type: " + Type);
-            }
+                "Peasant" => new State.PeasantArmy(Soldiers),
+                "Player" => new State.PlayerArmy(settings, players[Player], Soldiers),
+                _ => throw new System.Exception("Unknown Army type: " + Type),
+            };
         }
         public static Army FromArmy(State.IArmy value)
         {
-            if (value is State.PeasantArmy Peasant)
-                return new Army() { Type = "Peasant", Soldiers = Peasant.Soldiers };
-            if (value is State.PlayerArmy Player)
-                return new Army() { Type = "Player", Soldiers = Player.Soldiers, Player = Player.Player.Id };
-            throw new System.Exception("Invalid type of IArmy " + value);
+            return value switch
+            {
+                State.PeasantArmy Peasant => new Army() { Type = "Peasant", Soldiers = Peasant.Soldiers },
+                State.PlayerArmy Player => new Army() { Type = "Player", Soldiers = Player.Soldiers, Player = Player.Player.Id },
+                _ => throw new System.Exception("Invalid type of IArmy " + value)
+            };
         }
     }
 }

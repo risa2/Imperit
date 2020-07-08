@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Imperit.Dynamics.Actions
 {
     public class IncomeIncrease : IAction
@@ -11,7 +9,7 @@ namespace Imperit.Dynamics.Actions
             Player = player;
             Change = change;
         }
-        public IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             players[Player] = players[Player].IncreaseIncome(Change);
             return new Nothing();

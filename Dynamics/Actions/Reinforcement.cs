@@ -6,7 +6,7 @@ namespace Imperit.Dynamics.Actions
     {
         readonly IReadOnlyList<State.Player> players;
         public Reinforcement(int province, State.IArmy army, IReadOnlyList<State.Player> players) : base(province, army) => this.players = players;
-        public override IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public override IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             provinces[Province] = provinces[Province].ReinforcedBy(Army);
             return new Nothing();

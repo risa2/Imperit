@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Imperit.Dynamics.Actions
+﻿namespace Imperit.Dynamics.Actions
 {
     public class Instability : IAction
     {
@@ -12,7 +10,7 @@ namespace Imperit.Dynamics.Actions
             Land = land;
             LoyalTo = loyalTo;
         }
-        public IAction Do(IList<State.Player> players, State.Provinces provinces, int active)
+        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
         {
             if (provinces[Land].IsControlledBy(players[active]) && active != LoyalTo && rand.NextDouble() < (provinces[Land] as State.Land)!.Instability)
             {

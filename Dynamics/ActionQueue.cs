@@ -8,7 +8,7 @@ namespace Imperit.Dynamics
     {
         readonly List<IAction> actions;
         public ActionQueue(List<IAction> actions) => this.actions = actions;
-        static IEnumerable<IAction> DoActions(IList<State.Player> players, State.Provinces provinces, int active, IEnumerable<IAction> actions) => actions.SelectMany(action => ToInsert(action.Do(players, provinces, active)));
+        static IEnumerable<IAction> DoActions(IArray<State.Player> players, State.Provinces provinces, int active, IEnumerable<IAction> actions) => actions.SelectMany(action => ToInsert(action.Do(players, provinces, active)));
         static IEnumerable<IAction> Flatten(Actions.Combination combination) => combination.Actions.SelectMany(action => action is Actions.Combination c ? Flatten(c) : action is Actions.Nothing ? new IAction[0] : new[] { action });
         static IEnumerable<IAction> ToInsert(IAction action) => Flatten(new Actions.Combination(action));
         void AddAction(IAction action) => actions.AddRange(ToInsert(action));
@@ -32,7 +32,7 @@ namespace Imperit.Dynamics
                 AddAction(actions);
             }
         }
-        public ActionQueue EndOfTurn(IList<State.Player> players, State.Provinces provinces, int active) => new ActionQueue(DoActions(players, provinces, active, actions.OrderBy(x => x.Priority)).ToList());
+        public ActionQueue EndOfTurn(IArray<State.Player> players, State.Provinces provinces, int active) => new ActionQueue(DoActions(players, provinces, active, actions.OrderBy(x => x.Priority)).ToList());
         public bool Add(State.Settings settings, IArray<State.Player> players, State.Provinces provinces, ICommand command)
         {
             bool success = command.Allowed(settings, players, provinces) && IsAllowed(command);

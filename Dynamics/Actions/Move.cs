@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Imperit.Dynamics.Actions
 {
     public abstract class Move : IAction
@@ -11,8 +9,9 @@ namespace Imperit.Dynamics.Actions
             Province = province;
             Army = army;
         }
-        public abstract IAction Do(IList<State.Player> players, State.Provinces provinces, int active);
+        public abstract IAction Do(IArray<State.Player> players, State.Provinces provinces, int active);
         public abstract (IAction, bool) Interact(ICommand another);
         public uint Soldiers => Army.Soldiers;
+        public int Priority => 50;
     }
 }

@@ -18,6 +18,6 @@ namespace Imperit.Services
             Mountains = new Load.Loader<Load.MountainRange, State.MountainRange, bool>(io.Mountains, false).Load();
         }
         public IEnumerable<State.MountainRange> Mountains { get; }
-        public IEnumerable<State.Shape> Shapes => new Load.Loader<Load.Shape, State.Shape, State.Provinces>(input, pl.Provinces).Load();
+        public IEnumerable<State.Shape> Shapes => new Load.Loader<Load.Shape, State.Shape, IReadOnlyList<State.Province>>(input, pl.Provinces).Load();
     }
 }

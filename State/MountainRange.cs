@@ -7,7 +7,7 @@ namespace Imperit.State
     {
         readonly IEnumerable<Point> line;
         public MountainRange(IEnumerable<Point> line) => this.line = line;
-        public IEnumerator<Point> GetEnumerator() => (line as IEnumerable<Point>).GetEnumerator();
+        public IEnumerator<Point> GetEnumerator() => line.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => line.GetEnumerator();
     }
 }

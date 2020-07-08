@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Imperit.Dynamics.Commands
 {
     public class Attack : Move

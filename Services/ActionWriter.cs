@@ -8,7 +8,7 @@ namespace Imperit.Services
     {
         bool Add(IEnumerable<Dynamics.ICommand> commands, bool save);
         bool Add(Dynamics.ICommand command) => Add(new[] { command }, true);
-        void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
+        void ApplyActions(IArray<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
         void EndOfTurn(int active);
         void Clear();
         void Save();
@@ -32,7 +32,7 @@ namespace Imperit.Services
         public bool Add(IEnumerable<Dynamics.ICommand> commands, bool save)
         {
             bool success = false;
-            foreach(var command in commands)
+            foreach (var command in commands)
             {
                 success |= queue.Add(sl.Settings, players, pr.Provinces, command);
             }
@@ -45,7 +45,7 @@ namespace Imperit.Services
             return success;
         }
         public void Save(Dynamics.ActionQueue new_queue) => loader.Save(queue = new_queue);
-        public void ApplyActions(IList<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond).ToList()).EndOfTurn(players, provinces, active);
+        public void ApplyActions(IArray<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond).ToList()).EndOfTurn(players, provinces, active);
         public void EndOfTurn(int active) => queue = queue.EndOfTurn(players, pr.Provinces, active);
         public void Clear() => Save(new Dynamics.ActionQueue(new List<Dynamics.IAction>()));
         public void Save() => Save(queue);

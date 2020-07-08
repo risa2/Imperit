@@ -5,10 +5,10 @@
 @inject Services.IMap map;
 
 @{
-    var players = pl.MakeCopy().ToArray();
+    var players = pl.MakeCopy().ToMyArray();
     var provinces = new State.Provinces(pr.Provinces.MakeCopy().ToArray(), pr.Provinces.Graph);
     actions.ApplyActions(players, provinces, active.Id, (x => (x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal)));
-    var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape.ToArray(), shape.Center, province));
+    var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape, shape.Center, province));
 }
 
 <Map Width="1000" Height="1000" Shapes="@shapes" Mountains="@map.Mountains" FontSize="9"/>

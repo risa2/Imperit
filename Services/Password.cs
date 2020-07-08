@@ -8,7 +8,7 @@ namespace Imperit.Services
     public class Password : IPassword
     {
         readonly Load.IFile input;
-        public Password(IServiceIO io) => this.input = io.Password;
+        public Password(IServiceIO io) => input = io.Password;
         public bool IsCorrect(string pw) => State.Password.FromString(pw) == State.Password.Parse(input.Read());
         public void Set(string new_pw) => input.Write(State.Password.FromString(new_pw).ToString());
     }
