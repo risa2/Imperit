@@ -6,15 +6,13 @@ namespace Imperit.State
     public class Shape : IEnumerable<Point>
     {
         readonly IEnumerable<Point> border;
-        public Point Center { get; }
-        public Province Province { get; }
-        public Shape(IEnumerable<Point> points, Point center, Province province)
+        public readonly Point Center;
+        public Shape(IEnumerable<Point> points, Point center)
         {
             border = points;
             Center = center;
-            Province = province;
         }
         public IEnumerator<Point> GetEnumerator() => border.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => (border as IEnumerable).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => border.GetEnumerator();
     }
 }

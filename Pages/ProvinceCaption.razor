@@ -1,15 +1,14 @@
 @code{
     [Parameter] public int Width { get; set; }
     [Parameter] public int Height { get; set; }
-    [Parameter] public State.Shape? This { get; set; }
     [Parameter] public int FontSize { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
-    State.Province Province => This!.Province;
-    State.Point Center => This!.Center;
+    [Parameter] public State.Province? Province { get; set; }
+    [Parameter] public State.Point Center { get; set; }
 }
 
 <a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">
-    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province.Name</text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province!.Name</text>
     <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land){<text>+@(land.Earnings)&#x1F4B0;</text>}</text>
     @if (Province is State.Port Port)
     {

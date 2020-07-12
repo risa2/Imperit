@@ -13,7 +13,7 @@ namespace Imperit.Services
     {
         readonly IProvincesLoader provinces;
         readonly Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool> loader;
-        public State.PlayerPower[][] Powers { get; set; }
+        public State.PlayerPower[][] Powers { get; private set; }
         public PlayersPowers(IServiceIO io, IProvincesLoader provinces)
         {
             loader = new Load.Writer<Load.PlayersPowers, State.PlayerPower[], bool>(io.Powers, false, Load.PlayersPowers.From);

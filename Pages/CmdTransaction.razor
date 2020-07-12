@@ -1,4 +1,4 @@
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 
 @code{
     [Parameter] public State.Player? Player { get; set; }
@@ -9,7 +9,7 @@
     void DoDonate()
     {
         var donation = new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, DonatedAmount);
-        if (actions.Add(donation))
+        if (Actions.Add(donation))
         {
             Return();
         }

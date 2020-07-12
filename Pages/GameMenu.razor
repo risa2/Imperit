@@ -1,6 +1,7 @@
 @inject Services.IPlayersLoader players;
 @inject Services.IActivePlayer active;
 @inject Services.ISettingsLoader sl;
+@inject Services.IPlayersPowers powers;
 
 @using Mode = GameSwitch.Mode; 
 
@@ -34,21 +35,24 @@
     }
     <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
     <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))"><Money>@players[LoggedIn].Money</Money></a>
-    <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
+    @if (powers.Powers.Length > 2)
+    {
+        <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
+    }
     <a class="@ClassFor(Mode.Preview)" @onclick="@(() => GoTo(Mode.Preview))">Náhled</a>
-    @if(This == Mode.CmdMove)
+    @if (This == Mode.CmdMove)
     {
         <a class="this">Přesun</a>
     }
-    @if(This == Mode.CmdRecruit)
+    @if (This == Mode.CmdRecruit)
     {
         <a class="this">Verbování</a>
     }
-    @if(This == Mode.CmdLoan)
+    @if (This == Mode.CmdLoan)
     {
         <a class="this">Úvěr</a>
     }
-    @if(This == Mode.CmdTransaction)
+    @if (This == Mode.CmdTransaction)
     {
         <a class="this">Transakce</a>
     }

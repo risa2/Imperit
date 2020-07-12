@@ -4,8 +4,8 @@ namespace Imperit.State
     {
         uint Soldiers { get; }
         double Hostility { get; }
-        Dynamics.IAction Lose(Province where);
-        Dynamics.IAction Gain(Province where);
+        Dynamics.IAction? Lose(Province where);
+        Dynamics.IAction? Gain(Province where);
         IArmy Join(IArmy another);
         IArmy Subtract(IArmy another);
         bool IsAllyOf(IArmy another);

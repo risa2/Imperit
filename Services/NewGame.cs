@@ -40,7 +40,7 @@ namespace Imperit.Services
             actions.Clear();
 
             pr.Reset(sl.Settings, players);
-            pr.Provinces = new State.Provinces(pr.Provinces.Select(prov => CreateProvince(prov)).ToArray(), pr.Provinces.Graph);
+            pr.Set(pr.Provinces.Select(prov => CreateProvince(prov)).ToArray());
             pr.Save();
         }
         State.Province[] UnoccupiedStartLands() => pr.Provinces.Where(p => p is State.Land L1 && L1.IsStart && !L1.Occupied).ToArray();
@@ -63,7 +63,7 @@ namespace Imperit.Services
         public void Start()
         {
             AddRobots();
-            actions.Save(new Dynamics.ActionQueue(pr.Provinces.Select(p => p as State.Port).NotNull().Select(port => new Dynamics.Actions.PortRenewal(port.Id)).Concat<Dynamics.IAction>(pr.Provinces.Select(p => p as State.Land).NotNull().Select(land => new Dynamics.Actions.Instability(land.Id, land.Army is State.PlayerArmy pa ? pa.Player.Id as int? : null))).Concat(players.Select(pl => new Dynamics.Actions.Earn(pl.Id))).Concat(players.Select(pl => new Dynamics.Actions.Mortality(pl.Id, pr.Provinces))).ToList()));
+            actions.Save(new Dynamics.ActionQueue(new[] { new Dynamics.Actions.PortRenewal() as Dynamics.IAction, new Dynamics.Actions.Instability(), new Dynamics.Actions.Earn(), new Dynamics.Actions.Mortality() }));
             active.Reset();
             sl.Settings = sl.Settings.Start();
             powers.Add(players);

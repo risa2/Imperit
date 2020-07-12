@@ -1,4 +1,4 @@
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
@@ -8,10 +8,10 @@
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public State.Land? Land { get; set; }
     Dynamics.Commands.Purchase? purchase;
-    protected override void OnInitialized() => purchase = new Dynamics.Commands.Purchase(Player!.Id, Land!.Id);
+    protected override void OnInitialized() => purchase = new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, Land!.Price);
     void DoPurchase()
     {
-        if (actions.Add(purchase!))
+        if (Actions.Add(purchase!))
         {
             Return();
         }
@@ -21,7 +21,7 @@
 {
     <p>Nemáš dost peněz na to, aby sis provincii @Land!.Name mohl koupit. Stojí <Money>@Land!.Price</Money></p>
 }
-else if (purchase == null || !purchase.Allowed(sl.Settings, players, pr.Provinces))
+else if (purchase == null || !purchase.Allowed(players, pr.Provinces))
 {
     Return();
 }

@@ -5,20 +5,25 @@ namespace Imperit.Dynamics.Commands
 {
     public class Purchase : ICommand
     {
-        public readonly int Player, Land;
-        public Purchase(int player, int land)
+        public readonly State.PlayerArmy Army;
+        public readonly int Land;
+        public readonly uint Price;
+        public Purchase(State.PlayerArmy army, int land, uint price)
         {
-            Player = player;
+            Army = army;
             Land = land;
+            Price = price;
         }
-        public bool Allowed(State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces)
-            => players[Player].Money >= (provinces[Land] as State.Land)!.Price && provinces.NeighborsOf(provinces[Land]).Any(prov => prov is State.Land land && land.IsControlledBy(players[Player]));
-        public IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces)
+        public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces)
+            => players[Army.Player.Id].Money >= Price && provinces.NeighborsOf(provinces[Land]).Any(prov => prov is State.Land land && land.IsAllyOf(Army));
+
+        public (IAction[], State.Province) Do(State.Province province)
         {
-            IAction action;
-            players[Player] = players[Player].Pay((provinces[Land] as State.Land)!.Price);
-            (provinces[Land], action) = provinces[Land].GiveUpTo(new State.PlayerArmy(settings, players[Player], 0));
-            return action;
+            return province.Id == Land ? province.GiveUpTo(Army).Swap() : (new IAction[0], province);
+        }
+        public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
+        {
+            return (new IAction[0], player == Army.Player ? player.Pay(Price) : player);
         }
     }
 }

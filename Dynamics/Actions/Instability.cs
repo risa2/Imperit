@@ -3,23 +3,15 @@
     public class Instability : IAction
     {
         static readonly System.Random rand = new System.Random();
-        public readonly int Land;
-        public readonly int? LoyalTo;
-        public Instability(int land, int? loyalTo)
+        public (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active)
         {
-            Land = land;
-            LoyalTo = loyalTo;
-        }
-        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
-        {
-            if (provinces[Land].IsControlledBy(players[active]) && active != LoyalTo && rand.NextDouble() < (provinces[Land] as State.Land)!.Instability)
+            if ((province is State.Land Land && Land.IsControlledBy(active) && !Land.IsStart && rand.NextDouble() < Land.Instability) || (province is State.Sea Sea && Sea.Soldiers == 0))
             {
-                (var revolted, var action) = provinces[Land].Revolt();
-                provinces[Land] = revolted;
-                return new Combination(this, action.Do(players, provinces, active));
+                (var revolted, var action) = province.Revolt();
+                return (this, action, revolted);
             }
-            return this;
+            return (this, new IAction[0], province);
         }
-        public int Priority => 700;
+        public byte Priority => 180;
     }
 }

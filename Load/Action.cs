@@ -14,18 +14,18 @@ namespace Imperit.Load
         public uint? Repayment { get; set; }
         public Dynamics.IAction Convert(int i, (State.Settings, IReadOnlyList<State.Player>, State.Provinces) arg)
         {
-            (var settings, var players, var provinces) = arg;
+            (var settings, var players, _) = arg;
             return Type switch
             {
-                "Attack" => new Dynamics.Actions.Attack(Province.Must(), Army!.Convert(i, (settings, players)), players),
-                "Instability" => new Dynamics.Actions.Instability(Province.Must(), Player),
-                "Reinforcement" => new Dynamics.Actions.Reinforcement(Province.Must(), Army!.Convert(i, (settings, players)), players),
-                "PortRenewal" => new Dynamics.Actions.PortRenewal(Province.Must()),
-                "Earn" => new Dynamics.Actions.Earn(Player.Must()),
-                "Mortality" => new Dynamics.Actions.Mortality(Player.Must(), provinces),
-                "Repayment" => new Dynamics.Actions.Loan(settings, players, Player.Must(), Debt ?? 0, Remaining ?? 0, Repayment ?? 0),
+                "Attack" => new Dynamics.Actions.Attack(Province.Must(), Army!.Convert(i, (settings, players))),
+                "Earn" => new Dynamics.Actions.Earn(),
                 "IncomeIncrease" => new Dynamics.Actions.IncomeIncrease(Player.Must(), Amount ?? 0),
                 "IncomeDecrease" => new Dynamics.Actions.IncomeDecrease(Player.Must(), Amount ?? 0),
+                "Instability" => new Dynamics.Actions.Instability(),
+                "Loan" => new Dynamics.Actions.Loan(Player.Must(), Debt ?? 0, Remaining ?? 0, Repayment ?? 0, settings),
+                "Mortality" => new Dynamics.Actions.Mortality(),
+                "PortRenewal" => new Dynamics.Actions.PortRenewal(),
+                "Reinforcement" => new Dynamics.Actions.Reinforcement(Province.Must(), Army!.Convert(i, (settings, players))),
                 _ => throw new System.Exception("Invalid type of Action: " + Type)
             };
 
@@ -35,14 +35,14 @@ namespace Imperit.Load
             return action switch
             {
                 Dynamics.Actions.Attack Attack => new Action() { Type = "Attack", Province = Attack.Province, Army = Army.FromArmy(Attack.Army) },
-                Dynamics.Actions.Earn Earn => new Action() { Type = "Earn", Player = Earn.Player },
-                Dynamics.Actions.Instability Instability => new Action() { Type = "Instability", Player = Instability.LoyalTo, Province = Instability.Land },
-                Dynamics.Actions.Mortality Mortality => new Action() { Type = "Mortality", Player = Mortality.Player },
-                Dynamics.Actions.PortRenewal PortRenewal => new Action() { Type = "PortRenewal", Province = PortRenewal.Port },
-                Dynamics.Actions.Reinforcement Reinforcement => new Action() { Type = "Reinforcement", Province = Reinforcement.Province, Army = Army.FromArmy(Reinforcement.Army) },
-                Dynamics.Actions.Loan Loan => new Action() { Type = "Repayment", Player = Loan.Debtor, Debt = Loan.Debt, Remaining = Loan.Remaining, Repayment = Loan.Repayment },
+                Dynamics.Actions.Earn _ => new Action() { Type = "Earn" },
                 Dynamics.Actions.IncomeIncrease IncomeIncrease => new Action() { Type = "IncomeIncrease", Player = IncomeIncrease.Player, Amount = IncomeIncrease.Change },
                 Dynamics.Actions.IncomeDecrease IncomeDecrease => new Action() { Type = "IncomeDecrease", Player = IncomeDecrease.Player, Amount = IncomeDecrease.Change },
+                Dynamics.Actions.Instability _ => new Action() { Type = "Instability" },
+                Dynamics.Actions.Loan Loan => new Action() { Type = "Loan", Player = Loan.Debtor, Debt = Loan.Debt, Remaining = Loan.Remaining, Repayment = Loan.Repayment },
+                Dynamics.Actions.Mortality _ => new Action() { Type = "Mortality" },
+                Dynamics.Actions.PortRenewal _ => new Action() { Type = "PortRenewal" },
+                Dynamics.Actions.Reinforcement Reinforcement => new Action() { Type = "Reinforcement", Province = Reinforcement.Province, Army = Army.FromArmy(Reinforcement.Army) },
                 _ => throw new System.Exception("Invalid type of Action: " + action)
             };
         }

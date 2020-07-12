@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Imperit.State
 {
     public abstract class Province
@@ -16,13 +18,13 @@ namespace Imperit.State
         }
         public abstract uint CanMoveTo(Province dest);
         protected abstract Province WithArmy(IArmy army);
-        public (Province, Dynamics.IAction) GiveUpTo(IArmy his_army)
+        public (Province, Dynamics.IAction[]) GiveUpTo(IArmy his_army)
         {
-            return (WithArmy(his_army), new Dynamics.Actions.Combination(Army.Lose(this), his_army.Gain(this)));
+            return (WithArmy(his_army), new[] { Army.Lose(this), his_army.Gain(this) }.NotNull().ToArray());
         }
-        public (Province, Dynamics.IAction) Revolt() => GiveUpTo(DefaultArmy);
+        public (Province, Dynamics.IAction[]) Revolt() => GiveUpTo(DefaultArmy);
         public virtual Province StartMove(Province dest, IArmy army) => WithArmy(Army.Subtract(army));
-        public (Province, Dynamics.IAction) AttackedBy(IArmy another) => GiveUpTo(Army.AttackedBy(another));
+        public (Province, Dynamics.IAction[]) AttackedBy(IArmy another) => GiveUpTo(Army.AttackedBy(another));
         public Province ReinforcedBy(IArmy another) => WithArmy(Army.Join(another));
         public bool IsControlledBy(Player p) => Army.IsControlledBy(p);
         public bool IsAllyOf(IArmy army) => Army.IsAllyOf(army);

@@ -1,4 +1,4 @@
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 @inject Services.ISettingsLoader sl;
 
 @code{
@@ -12,8 +12,8 @@
     }
     void DoRecruit()
     {
-        var recruitment = new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, (uint)Recruited);
-        if (actions.Add(recruitment))
+        var recruitment = new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, (uint)Recruited, sl.Settings);
+        if (Actions.Add(recruitment))
         {
             Return();
         }

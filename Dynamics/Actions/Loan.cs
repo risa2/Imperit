@@ -6,34 +6,35 @@ namespace Imperit.Dynamics.Actions
     public class Loan : IAction
     {
         readonly State.Settings settings;
-        readonly IReadOnlyList<State.Player> players;
         public readonly int Debtor;
         public readonly uint Debt, Remaining, Repayment;
-        public Loan(State.Settings set, IReadOnlyList<State.Player> pls, int debtor, uint debt, uint remaining, uint repayment)
+
+        public Loan(int debtor, uint debt, uint remaining, uint repayment, State.Settings set)
         {
-            settings = set;
-            players = pls;
             Debtor = debtor;
             Debt = debt;
             Remaining = remaining;
             Repayment = Math.Min(Remaining, repayment);
+            settings = set;
         }
-        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
+        public (IAction? NewThis, IAction[] Side, State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
-            if (active == Debtor)
+            if (player == active && player.Id == Debtor)
             {
-                uint can_pay = Math.Min(Repayment, players[Debtor].Money);
-                players[Debtor] = players[Debtor].Pay(can_pay);
-                if (Repayment > can_pay)
+                if (Repayment > player.Money)
                 {
-                    players[Debtor] = players[Debtor].LoseCredibility((Repayment - can_pay) / 20.0);
-                    return new Loan(settings, this.players, Debtor, Debt, Remaining - can_pay, Repayment);
+                    var loan = new Loan(Debtor, Debt, Remaining - player.Money, Repayment, settings);
+                    return (loan, new IAction[0], player.Pay(player.Money).LoseCredibility((Repayment - player.Money) / 20.0));
                 }
-                return Remaining == can_pay ? (IAction)new Nothing() : new Loan(settings, this.players, Debtor, Debt, Remaining - can_pay, Repayment);
+                if (Repayment == Remaining)
+                {
+                    return (null, new IAction[0], player.Pay(Repayment));
+                }
+                return (new Loan(Debtor, Debt, Remaining - Repayment, Repayment, settings), new IAction[0], player.Pay(Repayment));
             }
-            return this;
+            return (this, new IAction[0], player);
         }
-        public bool Allows(ICommand another)
+        public bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
             if (another is Commands.Loan loan && loan.Player == Debtor)
             {
@@ -45,12 +46,12 @@ namespace Imperit.Dynamics.Actions
             }
             return true;
         }
-        public (IAction, bool) Interact(ICommand another)
+        public (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
             return another is Commands.Loan loan && loan.Player == Debtor
-                ? (new Loan(settings, players, Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment), false)
+                ? (new Loan(Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment, settings), false)
                 : (this, true);
         }
-        public int Priority => 200;
+        public byte Priority => 130;
     }
 }

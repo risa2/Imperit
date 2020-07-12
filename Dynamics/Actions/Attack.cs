@@ -4,23 +4,25 @@ namespace Imperit.Dynamics.Actions
 {
     public class Attack : Move
     {
-        readonly IReadOnlyList<State.Player> players;
-        public Attack(int province, State.IArmy army, IReadOnlyList<State.Player> pls) : base(province, army) => players = pls;
-        public override IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
+        public Attack(int province, State.IArmy army) : base(province, army) { }
+        public override (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active)
         {
-            (var attacked, var action) = provinces[Province].AttackedBy(Army);
-            provinces[Province] = attacked;
-            return action.Do(players, provinces, active);
-        }
-        public override (IAction, bool) Interact(ICommand another)
-        {
-            if (another is Commands.Attack attack && Army.IsControlledBy(players[attack.Player]) && attack.To == Province)
+            if (Province == province.Id)
             {
-                return (new Attack(Province, Army.Join(attack.Army), players), false);
+                (var attacked, var actions) = province.AttackedBy(Army);
+                return (null, actions, attacked);
             }
-            if (another is Commands.Purchase purchase && Army.IsControlledBy(players[purchase.Player]) && purchase.Land == Province)
+            return (this, new IAction[0], province);
+        }
+        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        {
+            if (another is Commands.Attack attack && Army.IsControlledBy(players[attack.Player]) && attack.To.Id == Province)
             {
-                return (new Reinforcement(Province, Army, players), true);
+                return (new Attack(Province, Army.Join(attack.Army)), false);
+            }
+            if (another is Commands.Purchase purchase && Army.IsAllyOf(purchase.Army) && purchase.Land == Province)
+            {
+                return (new Reinforcement(Province, Army), true);
             }
             return (this, true);
         }

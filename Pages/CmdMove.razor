@@ -1,4 +1,4 @@
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IProvincesLoader pr;
 @inject Services.IPlayersLoader players;
@@ -22,9 +22,9 @@
     }
     void DoMove()
     {
-        var move = Type == 'A' ? new Dynamics.Commands.Attack(Player!.Id, From!.Id, To!.Id, new State.PlayerArmy(sl.Settings, Player, (uint)Moving)) as Dynamics.Commands.Move
-                               : new Dynamics.Commands.Reinforcement(Player!.Id, From!.Id, To!.Id, new State.PlayerArmy(sl.Settings, Player, (uint)Moving));
-        if (actions.Add(move))
+        var move = Type == 'A' ? new Dynamics.Commands.Attack(Player!.Id, From!.Id, To!, new State.PlayerArmy(sl.Settings, Player, (uint)Moving)) as Dynamics.Commands.Move
+                               : new Dynamics.Commands.Reinforcement(Player!.Id, From!.Id, To!, new State.PlayerArmy(sl.Settings, Player, (uint)Moving));
+        if (Actions.Add(move))
         {
             Return();
         }

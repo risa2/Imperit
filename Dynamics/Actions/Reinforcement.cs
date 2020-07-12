@@ -4,18 +4,16 @@ namespace Imperit.Dynamics.Actions
 {
     public class Reinforcement : Move
     {
-        readonly IReadOnlyList<State.Player> players;
-        public Reinforcement(int province, State.IArmy army, IReadOnlyList<State.Player> players) : base(province, army) => this.players = players;
-        public override IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
+        public Reinforcement(int province, State.IArmy army) : base(province, army) { }
+        public override (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active)
         {
-            provinces[Province] = provinces[Province].ReinforcedBy(Army);
-            return new Nothing();
+            return Province == province.Id ? (null, new IAction[0], province.ReinforcedBy(Army)) : (this, new IAction[0], province);
         }
-        public override (IAction, bool) Interact(ICommand another)
+        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
-            if (another is Commands.Reinforcement reinf && Army.IsControlledBy(players[reinf.Player]) && reinf.To == Province)
+            if (another is Commands.Reinforcement reinf && Army.IsControlledBy(players[reinf.Player]) && reinf.To.Id == Province)
             {
-                return (new Reinforcement(Province, Army.Join(reinf.Army), players), false);
+                return (new Reinforcement(Province, Army.Join(reinf.Army)), false);
             }
             return (this, true);
         }

@@ -1,4 +1,4 @@
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IPlayersLoader players;
 
@@ -12,8 +12,8 @@
     bool Error = false;
     void DoBorrow()
     {
-        var loan = new Dynamics.Commands.Loan(Player!.Id, (uint)BorrowedAmount, Debt, Repayment);
-        if (actions.Add(loan))
+        var loan = new Dynamics.Commands.Loan(Player!.Id, (uint)BorrowedAmount, Debt, Repayment, sl.Settings);
+        if (Actions.Add(loan))
         {
             Return();
         }

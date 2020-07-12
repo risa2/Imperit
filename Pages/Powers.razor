@@ -1,7 +1,7 @@
 @inject Services.IPlayersPowers powers;
 @inject Services.IPlayersLoader players;
 
-@using Mode = GameSwitch.Mode; 
+@using Mode = GameSwitch.Mode;
 
 @code{
     [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
@@ -16,31 +16,29 @@
     static long Div(long a, long b) => b == 0 ? a : a / b;
 }
 
-@if (powers.Powers.Length < 2)
-{
-    <p>Hra sotva začala, co tady deláš?</p>
-}
-else
-{
-    <p>Roků @powers.Powers.Length trvalo to,</p>
-    <p>lidé se dost vraždili,</p>
-    <p>a přitom šlo jenom o to,</p>
-    <p>vladnout aspoň na chvíli.</p>
-    <br/>
-    <p>Chci, tak praví lví duch,</p>
-    <p>zde sníženou o dluh,</p>
-    <p>vidíš cenu, již mají tvé statky,</p>
-    <p>než dlouhý mír lepší je krátký.</p>
+<p>Roků @powers.Powers.Length trvalo to,</p>
+<p>lidé se dost vraždili,</p>
+<p>a přitom šlo jenom o to,</p>
+<p>vladnout aspoň na chvíli.</p>
+<br />
+<p>Chci, tak praví lví duch,</p>
+<p>zde sníženou o dluh,</p>
+<p>vidíš cenu, již mají tvé statky,</p>
+<p>než dlouhý mír lepší je krátký.</p>
+@{
     var total = PowersOfPlayers(powers.Powers, players.Count, TotalPower);
     var total_avg = PowersOfAveragePlayer(powers.Powers, TotalPower);
     var total_max = total.SelectMany(i => i).Max();
-    <svg viewBox="-10 -10 1220 620" class="diagram">
-        @for (int i = 0; i < total.Length; ++i)
-        {
-            <polyline points="@Polyline(total[i], powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
-        }
-        <polyline points="@Polyline(total_avg, powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
-    </svg>
+}
+<svg viewBox="-10 -10 1220 620" class="diagram">
+    @for (int i = 0; i < total.Length; ++i)
+    {
+        <polyline points="@Polyline(total[i], powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
+    }
+    <polyline points="@Polyline(total_avg, powers.Powers.Length, total_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
+</svg>
+@if (powers.Powers.Length > 5)
+{
     <p>Pohleď, jak nám vzrůstá jmění,</p>
     <p>víc je víc, to se nemění,</p>
     <p>mlať si, ale věz do koho,</p>
@@ -56,18 +54,20 @@ else
             }
         }
     </svg>
-    <p>Kdyby měly nastat boje,</p>
-    <p>peníze, vojsko mít hleď,</p>
-    <p>proto tento graf na to je,</p>
-    <p>kdyby válka přišla teď.</p>
+}
+<p>Kdyby měly nastat boje,</p>
+<p>peníze, vojsko mít hleď,</p>
+<p>proto tento graf na to je,</p>
+<p>kdyby válka přišla teď.</p>
+@{
     var shorts_abs = PowersOfPlayers(powers.Powers, players.Count, ImmediatePower);
     var shorts_avg = PowersOfAveragePlayer(powers.Powers, ImmediatePower);
     var shorts_max = 2000;
     var shorts = shorts_abs.Select(player_powers => player_powers.Zip(shorts_avg, (pp, avg) => shorts_max * pp / avg / players.Count).ToArray()).ToArray();
-    <svg viewBox="-10 -10 1220 620" class="diagram">
-        @for (int i = 0; i < shorts.Length; ++i)
-        {
-            <polyline points="@Polyline(shorts[i], powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
-        }
-    </svg>
 }
+<svg viewBox="-10 -10 1220 620" class="diagram">
+    @for (int i = 0; i < shorts.Length; ++i)
+    {
+        <polyline points="@Polyline(shorts[i], powers.Powers.Length, shorts_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
+    }
+</svg>

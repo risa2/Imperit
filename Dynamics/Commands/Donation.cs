@@ -12,12 +12,10 @@ namespace Imperit.Dynamics.Commands
             Recipient = recipient;
             Amount = amount;
         }
-        public bool Allowed(State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces) => players[Player].Money >= Amount && Amount > 0;
-        public IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces)
+        public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces) => players[Player].Money >= Amount && Amount > 0;
+        public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
         {
-            players[Player] = players[Player].Pay(Amount);
-            players[Recipient] = players[Recipient].GainMoney(Amount);
-            return new Actions.Nothing();
+            return (new IAction[0], player.Id == Player ? player.Pay(Amount) : player.Id == Recipient ? player.GainMoney(Amount) : player);
         }
     }
 }

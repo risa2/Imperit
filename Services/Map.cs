@@ -9,15 +9,12 @@ namespace Imperit.Services
     }
     public class Map : IMap
     {
-        readonly Load.IFile input;
-        readonly IProvincesLoader pl;
-        public Map(IServiceIO io, IProvincesLoader pl)
+        public Map(IServiceIO io)
         {
-            input = io.Shapes;
-            this.pl = pl;
             Mountains = new Load.Loader<Load.MountainRange, State.MountainRange, bool>(io.Mountains, false).Load();
+            Shapes = new Load.Loader<Load.Shape, State.Shape, bool>(io.Shapes, false).Load();
         }
         public IEnumerable<State.MountainRange> Mountains { get; }
-        public IEnumerable<State.Shape> Shapes => new Load.Loader<Load.Shape, State.Shape, IReadOnlyList<State.Province>>(input, pl.Provinces).Load();
+        public IEnumerable<State.Shape> Shapes { get; }
     }
 }

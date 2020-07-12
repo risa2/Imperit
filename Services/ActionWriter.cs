@@ -8,7 +8,7 @@ namespace Imperit.Services
     {
         bool Add(IEnumerable<Dynamics.ICommand> commands, bool save);
         bool Add(Dynamics.ICommand command) => Add(new[] { command }, true);
-        void ApplyActions(IArray<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond);
+        Dynamics.ActionQueue Where(Func<Dynamics.IAction, bool> cond);
         void EndOfTurn(int active);
         void Clear();
         void Save();
@@ -16,7 +16,6 @@ namespace Imperit.Services
     }
     public class ActionWriter : IActionWriter
     {
-        readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
         readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)> loader;
@@ -25,29 +24,41 @@ namespace Imperit.Services
         {
             this.players = players;
             this.pr = pr;
-            this.sl = sl;
             loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>(io.Actions, (sl.Settings, players, pr.Provinces), Load.Action.FromAction);
-            queue = new Dynamics.ActionQueue(new List<Dynamics.IAction>(loader.Load()));
+            queue = new Dynamics.ActionQueue(loader.Load());
         }
         public bool Add(IEnumerable<Dynamics.ICommand> commands, bool save)
         {
-            bool success = false;
+            bool changed = false;
             foreach (var command in commands)
             {
-                success |= queue.Add(sl.Settings, players, pr.Provinces, command);
+                (var new_queue, var new_players, var new_provinces, bool ch) = queue.Add(command, players, pr.Provinces);
+                queue = new_queue;
+                if (ch)
+                {
+                    pr.Set(new_provinces);
+                    players.Set(new_players);
+                    changed = true;
+                }
             }
-            if (save && success)
+            if (save && changed)
             {
                 players.Save();
                 pr.Save();
                 Save();
             }
-            return success;
+            return changed;
         }
         public void Save(Dynamics.ActionQueue new_queue) => loader.Save(queue = new_queue);
-        public void ApplyActions(IArray<State.Player> players, State.Provinces provinces, int active, Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond).ToList()).EndOfTurn(players, provinces, active);
-        public void EndOfTurn(int active) => queue = queue.EndOfTurn(players, pr.Provinces, active);
-        public void Clear() => Save(new Dynamics.ActionQueue(new List<Dynamics.IAction>()));
+        public Dynamics.ActionQueue Where(Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(queue.Where(cond));
+        public void EndOfTurn(int active)
+        {
+            (var new_queue, var new_players, var new_provinces) = queue.EndOfTurn(players, pr.Provinces, active);
+            queue = new_queue;
+            pr.Set(new_provinces.ToArray());
+            players.Set(new_players);
+        }
+        public void Clear() => Save(new Dynamics.ActionQueue());
         public void Save() => Save(queue);
     }
 }

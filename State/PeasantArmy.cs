@@ -5,8 +5,8 @@ namespace Imperit.State
         public uint Soldiers { get; }
         public PeasantArmy(uint soldiers) => Soldiers = soldiers;
         public double Hostility => 0.0;
-        public Dynamics.IAction Gain(Province where) => new Dynamics.Actions.Nothing();
-        public Dynamics.IAction Lose(Province where) => new Dynamics.Actions.Nothing();
+        public Dynamics.IAction? Gain(Province where) => null;
+        public Dynamics.IAction? Lose(Province where) => null;
         public IArmy Join(IArmy another) => new PeasantArmy(Soldiers + another.Soldiers);
         public IArmy Subtract(IArmy another) => new PeasantArmy(Soldiers - another.Soldiers);
         public bool IsAllyOf(IArmy another) => false;

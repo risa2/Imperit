@@ -1,14 +1,12 @@
 @inject Services.IPlayersLoader pl;
 @inject Services.IProvincesLoader pr;
-@inject Services.IActionWriter actions;
+@inject Services.IActionWriter Actions;
 @inject Services.IActivePlayer active;
 @inject Services.IMap map;
 
 @{
-    var players = pl.MakeCopy().ToMyArray();
-    var provinces = new State.Provinces(pr.Provinces.MakeCopy().ToArray(), pr.Provinces.Graph);
-    actions.ApplyActions(players, provinces, active.Id, (x => (x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal)));
-    var shapes = map.Shapes.Zip(provinces, (shape, province) => new State.Shape(shape, shape.Center, province));
+    var queue = Actions.Where(x => x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal);
+    (_, var players, var provinces) = queue.EndOfTurn(pl, pr.Provinces, active.Id);
 }
 
-<Map Width="1000" Height="1000" Shapes="@shapes" Mountains="@map.Mountains" FontSize="9"/>
+<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@provinces" Mountains="@map.Mountains" FontSize="9"/>

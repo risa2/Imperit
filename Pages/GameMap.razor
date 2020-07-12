@@ -1,5 +1,6 @@
 @inject Services.IMap map;
 @inject Services.IPlayersLoader players;
+@inject Services.IProvincesLoader pr;
 
 @using Mode = GameSwitch.Mode; 
 
@@ -7,30 +8,30 @@
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public bool IsActive { get; set; }
     [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
-    State.Shape? From = null;
-    void OnClick(State.Shape clicked)
+    State.Province? From = null;
+    void OnClick(State.Province clicked)
     {
         if (IsActive)
         {
             if (From == null)
             {
-                if (clicked.Province.IsControlledBy(Player!))
+                if (clicked.IsControlledBy(Player!))
                 {
                     From = clicked;
                     this.StateHasChanged();
                 }
-                else if (clicked.Province is State.Land L1 && !L1.Occupied)
+                else if (clicked is State.Land L1 && !L1.Occupied)
                 {
                     Switch(Mode.CmdPurchase, L1, L1, null);
                 }
             }
-            else if (From.Province != clicked.Province)
+            else if (From != clicked)
             {
-                Switch(Mode.CmdMove, From.Province, clicked.Province, null);
+                Switch(Mode.CmdMove, From, clicked, null);
             }
-            else if (From.Province is State.Land)
+            else if (From is State.Land)
             {
-                Switch(Mode.CmdRecruit, From.Province, From.Province, null);
+                Switch(Mode.CmdRecruit, From, From, null);
             }
             else
             {
@@ -39,6 +40,6 @@
             }
         }
     }
-    State.Color ColorFn(State.Province province) => Shape.ColorOf(province).Darken(light: province == From?.Province ? (byte)120 : (byte)255);
+    State.Color ColorFn(State.Province province) => Shape.ColorOf(province).Darken(light: province == From ? (byte)120 : (byte)255);
 }
-<Map Width="1000" Height="1000" Shapes="@map.Shapes" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@pr.Provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>

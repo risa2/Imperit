@@ -4,18 +4,23 @@ namespace Imperit.Dynamics.Commands
 {
     public abstract class Move : ICommand
     {
-        public readonly int Player, From, To;
+        public readonly int Player, From;
+        public readonly State.Province To;
         public readonly State.IArmy Army;
-        public Move(int player, int from, int to, State.IArmy army)
+        public Move(int player, int from, State.Province to, State.IArmy army)
         {
             Player = player;
             From = from;
             To = to;
             Army = army;
         }
-        public bool Allowed(State.Settings settings, IReadOnlyList<State.Player> players, State.Provinces provinces)
-            => provinces[From].IsControlledBy(players[Player]) && provinces.CanMove(provinces[From], provinces[To]) >= Army.Soldiers && Army.Soldiers > 0;
-        public abstract IAction Do(State.Settings settings, IArray<State.Player> players, State.Provinces provinces);
+        public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces)
+            => provinces[From].IsControlledBy(players[Player]) && provinces.CanMove(provinces[From], To) >= Army.Soldiers && Army.Soldiers > 0;
+        protected abstract Actions.Move GetMove();
+        public (IAction[], State.Province) Do(State.Province province)
+        {
+            return province.Id == From ? (new[] { GetMove() }, province.StartMove(To, Army)) : (new IAction[0], province);
+        }
         public uint Soldiers => Army.Soldiers;
     }
 }

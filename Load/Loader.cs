@@ -18,7 +18,16 @@ namespace Imperit.Load
             this.io = io;
             this.arg = arg;
         }
-        public IEnumerable<K> Load() => io.Read().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select((line, i) => JsonSerializer.Deserialize<T>(line).Convert(i, arg));
+        K Selector(string line, int i)
+        {
+            var des = JsonSerializer.Deserialize<T>(line);
+            return des.Convert(i, arg);
+        }
+        public IEnumerable<K> Load()
+        {
+            var lines = io.Read().Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            return lines.Select(Selector);
+        }
         public K LoadOne() => JsonSerializer.Deserialize<T>(io.Read()).Convert(0, arg);
     }
     public class Writer<T, K, A> : Loader<T, K, A> where T : IConvertibleToWith<K, A>

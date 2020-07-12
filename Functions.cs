@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Imperit
@@ -14,6 +14,7 @@ namespace Imperit
         public static T MinBy<T, C>(this IEnumerable<T> e, Func<T, C> selector) => e.OrderBy(selector).First();
         public static IEnumerable<T> MakeCopy<T>(this IEnumerable<T> e) => e.Select(x => x);
         public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
             while (H < 0) { H += 360; }
@@ -109,20 +110,48 @@ namespace Imperit
                 list[n] = value;
             }
         }
-        public static Array<T> ToMyArray<T>(this IEnumerable<T> e) => new Array<T>(e.ToArray());
+        public static T[] SortBy<T>(this IReadOnlyList<T> list, Func<T, byte> value)
+        {
+            T[] result = new T[list.Count];
+            uint[] counts = new uint[256];
+            uint[] starts = new uint[256];
+            for (int i = 0; i < list.Count; ++i)
+            {
+                ++counts[value(list[i])];
+            }
+            for (int i = 1; i < 256; ++i)
+            {
+                starts[i] = starts[i - 1] + counts[i - 1];
+            }
+            for (int i = 0; i < list.Count; ++i)
+            {
+                byte idx = value(list[i]);
+                result[starts[idx]] = list[i];
+                ++starts[idx];
+            }
+            return result;
+        }
+        public static (U, T) Swap<T, U>(this (T, U) pair) => (pair.Item2, pair.Item1);
+        public static (A, B) Unzip<T, U, A, B>(this IEnumerable<(T, U)> en, Func<IEnumerable<T>, A> s1, Func<IEnumerable<U>, B> s2)
+        {
+            return (s1(en.Select(it => it.Item1)), s2(en.Select(it => it.Item2)));
+        }
+        public static (IEnumerable<T>, IEnumerable<U>) Unzip<T, U>(this IEnumerable<(T, U)> en) => Unzip(en, x => x, x => x);
+        public static (V[], A) MapFold<T, U, V, A>(this IReadOnlyList<T> lst, A init, Func<T, U> selector, Func<U, V> selector2, Func<A, U, A> acc)
+        {
+            var result = new V[lst.Count];
+            for (int i = 0; i < lst.Count; ++i)
+            {
+                var x = selector(lst[i]);
+                result[i] = selector2(x);
+                init = acc(init, x);
+            }
+            return (result, init);
+        }
     }
     public interface IArray<T> : IReadOnlyList<T>
     {
         new T this[int i] { get; set; }
         T IReadOnlyList<T>.this[int i] => this[i];
-    }
-    public struct Array<T> : IArray<T>
-    {
-        readonly T[] arr;
-        public Array(T[] a) => arr = a;
-        public T this[int i] { get => arr[i]; set => arr[i] = value; }
-        public int Count => arr.Length;
-        public IEnumerator<T> GetEnumerator() => (arr as IEnumerable<T>).GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => arr.GetEnumerator();
     }
 }

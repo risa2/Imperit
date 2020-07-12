@@ -1,16 +1,13 @@
+using System.Collections.Generic;
+
 namespace Imperit.Dynamics.Actions
 {
     public class Earn : IAction
     {
-        public readonly int Player;
-        public Earn(int player) => Player = player;
-        public IAction Do(IArray<State.Player> players, State.Provinces provinces, int active)
+        public (IAction? NewThis, IAction[] Side, State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
-            if (active == Player)
-            {
-                players[Player] = players[Player].Earn();
-            }
-            return this;
+            return (this, new IAction[0], player == active ? player.Earn() : player);
         }
+        public byte Priority => 10;
     }
 }
