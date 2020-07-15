@@ -20,6 +20,6 @@
         }
         @foreach (var (s, p) in Shapes.Zip(Provinces))
         {
-            <ProvinceCaption Width="@Width" Height="@Height" Province="@p" Center="@s.Center" FontSize="@FontSize" OnClick="@OnClickArg(p)" />
+            <ProvinceCaption Width="@Width" Height="@Height" Province="@p" Center="@s.Center" FontSize="@FontSize" ColorFn="@ColorFn" OnClick="@OnClickArg(p)" />
         }
     </svg>

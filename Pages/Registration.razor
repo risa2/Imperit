@@ -19,7 +19,7 @@
     State.Color Color => State.Color.Parse(ColorStr);
     State.Land? Selected = null;
     static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
-    State.Color ColorFn(State.Province prov) => prov == Selected ? Color : IsValidLand(prov) ? new State.Color(0, 0, 0) : Shape.ColorOf(prov);
+    State.Color ColorFn(State.Province prov) => prov == Selected ? Color : IsValidLand(prov) ? new State.Color(255,255,255) : Shape.ColorOf(prov);
     void OnClick(State.Province p)
     {
         if (IsValidLand(p))
