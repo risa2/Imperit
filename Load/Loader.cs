@@ -5,39 +5,29 @@ using System.Text.Json;
 
 namespace Imperit.Load
 {
-    public interface IConvertibleToWith<K, A>
+    public interface IConvertibleToWith<T, TA>
     {
-        K Convert(int i, A arg);
+        T Convert(int i, TA arg);
     }
-    public class Loader<T, K, A> where T : IConvertibleToWith<K, A>
+    public class Loader<T, TK, TA> where T : IConvertibleToWith<TK, TA>
     {
         protected IFile io;
-        protected A arg;
-        public Loader(IFile io, A arg)
+        protected TA arg;
+        public Loader(IFile io, TA arg)
         {
             this.io = io;
             this.arg = arg;
         }
-        K Selector(string line, int i)
+        TK Selector(string line, int i)
         {
             var des = JsonSerializer.Deserialize<T>(line);
             return des.Convert(i, arg);
         }
-        public IEnumerable<K> Load()
+        public IEnumerable<TK> Load()
         {
             var lines = io.Read().Split('\n', StringSplitOptions.RemoveEmptyEntries);
             return lines.Select(Selector);
         }
-        public K LoadOne() => JsonSerializer.Deserialize<T>(io.Read()).Convert(0, arg);
-    }
-    public class Writer<T, K, A> : Loader<T, K, A> where T : IConvertibleToWith<K, A>
-    {
-        protected Func<K, T> cvt;
-        public Writer(IFile input, A arg, Func<K, T> cvt) : base(input, arg) => this.cvt = cvt;
-        string ToWrite(IEnumerable<K> e) => string.Join('\n', e.Select(item => JsonSerializer.Serialize(cvt(item), new JsonSerializerOptions() { IgnoreNullValues = true })));
-        public void Save(IEnumerable<K> saved) => io.Write(ToWrite(saved));
-        public void Save(K saved) => Save(new[] { saved });
-        public void Add(IEnumerable<K> saved) => io.Append("\n" + ToWrite(saved));
-        public void Add(K saved) => Add(new[] { saved });
+        public TK LoadOne() => JsonSerializer.Deserialize<T>(io.Read()).Convert(0, arg);
     }
 }

@@ -1,82 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using ActionList = System.Collections.Immutable.ImmutableList<Imperit.Dynamics.IAction>;
+using ActionSeq = System.Collections.Immutable.ImmutableSortedSet<Imperit.Dynamics.IAction>;
 
 namespace Imperit.Dynamics
 {
-    public class ActionQueue : IEnumerable<IAction>
+    public class ActionQueue : IEnumerableImpl<IAction>
     {
-        readonly ActionList actions;
-        public ActionQueue() => actions = ActionList.Empty;
-        public ActionQueue(ActionList actions) => this.actions = actions;
-        public ActionQueue(IEnumerable<IAction> actions) => this.actions = ImmutableList.CreateRange(actions);
-        static (ActionList Actions, ActionList Sides, State.Province Province) ApplyAll(IReadOnlyList<IAction> actions, State.Province province, State.Player active)
+        static readonly IComparer<IAction> cmp = new AllowDuplicatesComparer<IAction, byte>(a => a.Priority);
+        static readonly ActionSeq NoActions = ImmutableSortedSet.Create(cmp);
+        readonly ActionSeq actions;
+        public ActionQueue() => actions = NoActions;
+        public ActionQueue(ActionSeq actions) => this.actions = actions;
+        public ActionQueue(IEnumerable<IAction> actions) => this.actions = ImmutableSortedSet.CreateRange(cmp, actions);
+        public IEnumerator<IAction> GetEnumerator() => actions!.GetEnumerator();
+        static (ActionSeq Actions, State.Province Province) ApplyAll(IReadOnlyList<IAction> actions, State.Province province, State.Player active)
         {
-            return actions.Aggregate((ActionList.Empty, ActionList.Empty, province), (acc, action) =>
+            return actions.Aggregate((actions: NoActions, province), (acc, action) =>
             {
-                (var new_action, var side, var new_province) = action.Do(acc.province, active);
-                return (new_action is null ? acc.Item1 : acc.Item1.Add(new_action), acc.Item2.AddRange(side), new_province);
+                var (added_actions, new_province) = action.Do(acc.province, active);
+                return (acc.actions.AddRange(added_actions), new_province);
             });
         }
-        static (ActionList Actions, ActionList Sides, State.Player Player) ApplyAll(IReadOnlyList<IAction> actions, State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        static (ActionSeq Actions, State.Player Player) ApplyAll(IReadOnlyList<IAction> actions, State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
-            return actions.Aggregate((ActionList.Empty, ActionList.Empty, player), (acc, action) =>
+            return actions.Aggregate((actions: NoActions, player), (acc, action) =>
             {
-                (var new_action, var side, var new_player) = action.Do(acc.player, active, provinces);
-                return (new_action is null ? acc.Item1 : acc.Item1.Add(new_action), acc.Item2.AddRange(side), new_player);
+                var (added_actions, new_player) = action.Do(acc.player, active, provinces);
+                return (acc.actions.AddRange(added_actions), new_player);
             });
         }
-        static (IReadOnlyList<IAction>, ActionList, State.Province[]) ApplyAllToAll(IReadOnlyList<State.Province> provinces, State.Player active, IReadOnlyList<IAction> actions)
+        static (IReadOnlyList<IAction>, State.Province[]) ApplyAllToAll(IReadOnlyList<State.Province> provinces, State.Player active, IReadOnlyList<IAction> actions)
         {
             var new_provinces = new State.Province[provinces.Count];
-            ActionList sides = ActionList.Empty, sides_single;
-            foreach ((int i, var province) in provinces.Enumerate())
+            foreach (var (i, province) in provinces.Enumerate())
             {
-                (actions, sides_single, new_provinces[i]) = ApplyAll(actions, province, active);
-                sides = sides.AddRange(sides_single);
+                (actions, new_provinces[i]) = ApplyAll(actions, province, active);
             }
-            return (actions, sides, new_provinces);
+            return (actions, new_provinces);
         }
-        static (IReadOnlyList<IAction>, ActionList, State.Player[]) ApplyAllToAll(IReadOnlyList<State.Player> players, State.Player active, IReadOnlyList<State.Province> provinces, IReadOnlyList<IAction> actions)
+        static (IReadOnlyList<IAction>, State.Player[]) ApplyAllToAll(IReadOnlyList<State.Player> players, State.Player active, IReadOnlyList<State.Province> provinces, IReadOnlyList<IAction> actions)
         {
             var new_players = new State.Player[players.Count];
-            ActionList sides = ActionList.Empty, sides_single;
-            foreach ((int i, var player) in players.Enumerate())
+            foreach (var (i, player) in players.Enumerate())
             {
-                (actions, sides_single, new_players[i]) = ApplyAll(actions, player, active, provinces);
-                sides = sides.AddRange(sides_single);
+                (actions, new_players[i]) = ApplyAll(actions, player, active, provinces);
             }
-            return (actions, sides, new_players);
+            return (actions, new_players);
         }
         static (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) DoActions(IReadOnlyList<State.Player> players, IReadOnlyList<State.Province> provinces, int active, IReadOnlyList<IAction> actions)
         {
-            ActionList new_actions = ActionList.Empty, sides, sides_single;
-            while (actions.Any())
-            {
-                actions = actions.SortBy(action => action.Priority);
-                (actions, sides, provinces) = ApplyAllToAll(provinces, players[active], actions);
-                (actions, sides_single, players) = ApplyAllToAll(players, players[active], provinces, actions);
-                sides = sides.AddRange(sides_single);
-
-                new_actions = new_actions.AddRange(actions);
-                actions = sides;
-            }
-            return (new ActionQueue(new_actions), players, provinces);
+            (actions, provinces) = ApplyAllToAll(provinces, players[active], actions);
+            (actions, players) = ApplyAllToAll(players, players[active], provinces, actions);
+            return (new ActionQueue(actions.Where(action => action.Repeat)), players, provinces);
         }
         public (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) EndOfTurn(IReadOnlyList<State.Player> players, IReadOnlyList<State.Province> provinces, int active)
         {
             return DoActions(players, provinces, active, actions);
         }
-        (ActionList, bool) Interactions(ICommand command, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        (ActionSeq, bool) Interactions(ICommand command, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
             bool allowed = true;
-            var new_actions = ActionList.Empty;
+            var new_actions = NoActions;
             int i;
             for (i = 0; i < actions.Count && allowed; ++i)
             {
-                (var new_action, bool ok) = actions[i].Interact(command, players, provinces);
+                var (new_action, ok) = actions[i].Interact(command, players, provinces);
                 new_actions = new_actions.Add(new_action);
                 allowed = allowed && ok;
             }
@@ -90,15 +79,12 @@ namespace Imperit.Dynamics
         {
             if (IsAllowed(command, players, provinces))
             {
-                (var actions1, var new_players) = players.Select(player => command.Do(player, provinces)).Unzip();
-                (var actions2, var new_provinces) = provinces.Select(province => command.Do(province)).Unzip();
-                (var new_actions, bool interacted) = Interactions(command, players, provinces);
+                var (actions1, new_players) = players.Select(player => command.Do(player, provinces)).Unzip();
+                var (actions2, new_provinces) = provinces.Select(province => command.Do(province)).Unzip();
+                var (new_actions, interacted) = Interactions(command, players, provinces);
                 return (new ActionQueue(interacted ? new_actions.AddRange(actions1.Flatten()).AddRange(actions2.Flatten()) : new_actions), new_players.ToArray(), new_provinces.ToArray(), true);
             }
             return (this, players.ToArray(), provinces.ToArray(), false);
         }
-
-        public IEnumerator<IAction> GetEnumerator() => actions!.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => actions!.GetEnumerator();
     }
 }

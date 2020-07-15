@@ -4,9 +4,10 @@ namespace Imperit.Dynamics
 {
     public interface IAction
     {
-        (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active) => (this, new IAction[0], province);
-        (IAction? NewThis, IAction[] Side, State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces) => (this, new IAction[0], player);
+        (IAction[], State.Province) Do(State.Province province, State.Player active) => (new[] { this }, province);
+        (IAction[], State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces) => (new[] { this }, player);
         (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces) => (this, true);
+        bool Repeat => true;
         bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces) => true;
         byte Priority { get; }
     }

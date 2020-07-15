@@ -5,15 +5,13 @@ using System.Linq;
 
 namespace Imperit
 {
-    public static class Extension
+    public static class ExtMethods
     {
-        public static IEnumerable<R> Casted<R, T>(this IEnumerable<T> e) => e.SelectMany(x => x is R r ? new R[] { r } : new R[0]);
         public static IEnumerable<T> NotNull<T>(this IEnumerable<T?> e) where T : class => e.Where(it => it != null)!;
         public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
         public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
-        public static T MinBy<T, C>(this IEnumerable<T> e, Func<T, C> selector) => e.OrderBy(selector).First();
-        public static IEnumerable<T> MakeCopy<T>(this IEnumerable<T> e) => e.Select(x => x);
-        public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+        public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
+        public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException("Argument must not be null");
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
@@ -98,6 +96,12 @@ namespace Imperit
         {
             return HsvToRgb(rand.Next(360), (rand.Next(2) + 1) / 2.0, (rand.Next(2) + 1) / 2.0);
         }
+        public static ImmutableSortedSet<T> AddRange<T>(this ImmutableSortedSet<T> set, IEnumerable<T> items)
+        {
+            ImmutableSortedSet<T>.Builder builder = set.ToBuilder();
+            builder.UnionWith(items);
+            return builder.ToImmutable();
+        }
         public static void Shuffle<T>(this Random rand, IList<T> list)
         {
             int n = list.Count;
@@ -131,27 +135,11 @@ namespace Imperit
             }
             return result;
         }
-        public static (U, T) Swap<T, U>(this (T, U) pair) => (pair.Item2, pair.Item1);
-        public static (A, B) Unzip<T, U, A, B>(this IEnumerable<(T, U)> en, Func<IEnumerable<T>, A> s1, Func<IEnumerable<U>, B> s2)
+        public static (TU, T) Swap<T, TU>(this (T, TU) pair) => (pair.Item2, pair.Item1);
+        public static (TA, TB) Unzip<T, TU, TA, TB>(this IEnumerable<(T, TU)> en, Func<IEnumerable<T>, TA> s1, Func<IEnumerable<TU>, TB> s2)
         {
             return (s1(en.Select(it => it.Item1)), s2(en.Select(it => it.Item2)));
         }
-        public static (IEnumerable<T>, IEnumerable<U>) Unzip<T, U>(this IEnumerable<(T, U)> en) => Unzip(en, x => x, x => x);
-        public static (V[], A) MapFold<T, U, V, A>(this IReadOnlyList<T> lst, A init, Func<T, U> selector, Func<U, V> selector2, Func<A, U, A> acc)
-        {
-            var result = new V[lst.Count];
-            for (int i = 0; i < lst.Count; ++i)
-            {
-                var x = selector(lst[i]);
-                result[i] = selector2(x);
-                init = acc(init, x);
-            }
-            return (result, init);
-        }
-    }
-    public interface IArray<T> : IReadOnlyList<T>
-    {
-        new T this[int i] { get; set; }
-        T IReadOnlyList<T>.this[int i] => this[i];
+        public static (IEnumerable<T>, IEnumerable<TU>) Unzip<T, TU>(this IEnumerable<(T, TU)> en) => Unzip(en, x => x, x => x);
     }
 }

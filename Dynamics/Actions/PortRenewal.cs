@@ -2,9 +2,9 @@ namespace Imperit.Dynamics.Actions
 {
     public class PortRenewal : IAction
     {
-        public (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active)
+        public (IAction[], State.Province) Do(State.Province province, State.Player active)
         {
-            return (this, new IAction[0], province is State.Port Port ? Port.Renew() : province);
+            return (new[] { this }, province is State.Port Port ? Port.Renew() : province);
         }
         public byte Priority => 0;
     }

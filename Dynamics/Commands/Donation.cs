@@ -15,7 +15,7 @@ namespace Imperit.Dynamics.Commands
         public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces) => players[Player].Money >= Amount && Amount > 0;
         public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
         {
-            return (new IAction[0], player.Id == Player ? player.Pay(Amount) : player.Id == Recipient ? player.GainMoney(Amount) : player);
+            return (System.Array.Empty<IAction>(), player.Id == Player ? player.Pay(Amount) : player.Id == Recipient ? player.GainMoney(Amount) : player);
         }
     }
 }

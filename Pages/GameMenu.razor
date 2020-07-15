@@ -1,7 +1,7 @@
 @inject Services.IPlayersLoader players;
 @inject Services.IActivePlayer active;
 @inject Services.ISettingsLoader sl;
-@inject Services.IPlayersPowers powers;
+@inject Services.IPowersLoader powers;
 
 @using Mode = GameSwitch.Mode; 
 
@@ -35,7 +35,7 @@
     }
     <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
     <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))"><Money>@players[LoggedIn].Money</Money></a>
-    @if (powers.Powers.Length > 2)
+    @if (powers.Count > 2)
     {
         <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
     }

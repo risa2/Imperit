@@ -4,25 +4,25 @@ namespace Imperit.Dynamics.Commands
 {
     public class Recruitment : ICommand
     {
-        readonly State.Settings settings;
-        public readonly int Player, Land;
-        public readonly uint Soldiers;
-        public Recruitment(int player, int land, uint soldiers, State.Settings settings)
+        public readonly int Player;
+        public readonly int Land;
+        public readonly State.IArmy Army;
+        public Recruitment(int player, int land, State.IArmy army)
         {
             Player = player;
             Land = land;
-            Soldiers = soldiers;
-            this.settings = settings;
+            Army = army;
         }
+
         public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
         {
             return player.Id == Player
-                ? (new[] { new Actions.Reinforcement(Land, new State.PlayerArmy(settings, player, Soldiers)) }, player.Pay(Soldiers))
-                : (new IAction[0], player);
+                ? (new[] { new Actions.Reinforcement(Land, Army) }, player.Pay(Army.Soldiers))
+                : (System.Array.Empty<IAction>(), player);
         }
         public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
-            return provinces[Land].IsControlledBy(players[Player]) && players[Player].Money >= Soldiers && Soldiers > 0;
+            return provinces[Land].IsControlledBy(players[Player]) && players[Player].Money >= Army.Soldiers && Army.Soldiers > 0;
         }
     }
 }

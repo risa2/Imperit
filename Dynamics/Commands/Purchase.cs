@@ -19,11 +19,11 @@ namespace Imperit.Dynamics.Commands
 
         public (IAction[], State.Province) Do(State.Province province)
         {
-            return province.Id == Land ? province.GiveUpTo(Army).Swap() : (new IAction[0], province);
+            return province.Id == Land ? province.GiveUpTo(Army).Swap() : (System.Array.Empty<IAction>(), province);
         }
         public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
         {
-            return (new IAction[0], player == Army.Player ? player.Pay(Price) : player);
+            return (System.Array.Empty<IAction>(), player == Army.Player ? player.Pay(Price) : player);
         }
     }
 }

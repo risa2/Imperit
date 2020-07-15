@@ -16,16 +16,15 @@ namespace Imperit
             _ = services.AddServerSideBlazor();
 
             _ = services.AddSingleton<Services.IServiceIO>(s => new Services.ServiceIO(new Load.File("./Files/Settings.json"), new Load.File("./Files/Players.json"), new Load.File("./Files/Provinces.json"), new Load.File("./Files/Actions.json"), new Load.File("./Files/Events.json"), new Load.File("./Files/Active.json"), new Load.File("./Files/Password.txt"), new Load.File("./Files/Graph.json"), new Load.File("./Files/Mountains.json"), new Load.File("./Files/Shapes.json"), new Load.File("Files/Powers.json")))
-                    .AddSingleton<Services.IActionWriter, Services.ActionWriter>()
+                    .AddSingleton<Services.IActionLoader, Services.ActionLoader>()
                     .AddSingleton<Services.ISettingsLoader, Services.SettingsLoader>()
                     .AddSingleton<Services.IPlayersLoader, Services.PlayersLoader>()
                     .AddSingleton<Services.IProvincesLoader, Services.ProvincesLoader>()
+                    .AddSingleton<Services.IPowersLoader, Services.PowersLoader>()
                     .AddSingleton<Services.IMap, Services.Map>()
                     .AddTransient<Services.IActivePlayer, Services.ActivePlayer>()
                     .AddTransient<Services.INewGame, Services.NewGame>()
-                    .AddTransient<Services.IActionReader, Services.ActionReader>()
                     .AddTransient<Services.IPassword, Services.Password>()
-                    .AddTransient<Services.IPlayersPowers, Services.PlayersPowers>()
                     .AddTransient<Services.IEndOfTurn, Services.EndOfTurn>();
         }
 

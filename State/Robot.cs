@@ -35,7 +35,7 @@ namespace Imperit.State
         void Recruit(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
         {
             info[land.Id].Coming += count;
-            result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, count, settings));
+            result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, new PlayerArmy(settings, this, count)));
             spent += count;
         }
         void DefensiveRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Provinces provinces, PInfo[] info, int[] my)
@@ -77,7 +77,7 @@ namespace Imperit.State
         static bool CanKeepConqueredProvince(PInfo from, PInfo to) => from.Soldiers >= to.Soldiers + to.Enemies;
         static bool CanKeepAttackStartProvinceAfterAttack(Provinces provinces, int from, int to, PInfo[] info) => info[from].Bilance > (RevengeDoesNotMatter(provinces, from, to) ? 0 : info[to].Enemies) + (info[to].Relation == Relation.Empty ? 0 : info[to].Soldiers);
         static bool CanAttackSuccesfully(Provinces provinces, int from, int to, PInfo[] info) => CanConquerProvince(info[from], info[to]) && (CanKeepConqueredProvince(info[from], info[to]) || RevengeDoesNotMatter(provinces, from, to)) && CanKeepAttackStartProvinceAfterAttack(provinces, from, to, info);
-        bool ShouldAttack(Provinces provinces, int from, int to, PInfo[] info) => info[to].Relation != Relation.Ally && CanAttackSuccesfully(provinces, from, to, info);
+        static bool ShouldAttack(Provinces provinces, int from, int to, PInfo[] info) => info[to].Relation != Relation.Ally && CanAttackSuccesfully(provinces, from, to, info);
         void Attack(List<Dynamics.ICommand> result, Settings settings, Provinces provinces, PInfo[] info, int from, int to, uint count)
         {
             result.Add(new Dynamics.Commands.Attack(Id, from, provinces[to], new PlayerArmy(settings, this, count)));

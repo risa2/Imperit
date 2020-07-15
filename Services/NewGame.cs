@@ -15,10 +15,10 @@ namespace Imperit.Services
         readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
-        readonly IActionWriter actions;
+        readonly IActionLoader actions;
         readonly IActivePlayer active;
-        readonly IPlayersPowers powers;
-        public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionWriter actions, IActivePlayer active, IPlayersPowers powers)
+        readonly IPowersLoader powers;
+        public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
         {
             this.sl = sl;
             this.players = players;
@@ -29,7 +29,7 @@ namespace Imperit.Services
         }
         static State.Province CreateProvince(State.Province p)
         {
-            (var province, _) = p.GiveUpTo(p.DefaultArmy);
+            var (province, _) = p.GiveUpTo(p.DefaultArmy);
             return province is State.Port Port ? Port.Renew() : province;
         }
         public void New(double interest, uint defaultMoney, uint debtLimit, double defaultInstability, bool singleClient, string[] robotNames, int maxRobotCount)

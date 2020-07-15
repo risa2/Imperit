@@ -19,7 +19,7 @@ namespace Imperit.Dynamics.Commands
             => Debt <= settings.DebtLimit && Amount > 0 && Repayment > 0;
         public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
         {
-            return player.Id == Player ? (new[] { new Actions.Loan(Player, Debt, Debt, Repayment, settings) }, player.GainMoney(Amount)) : (new IAction[0], player);
+            return player.Id == Player ? (new[] { new Actions.Loan(Player, Debt, Debt, Repayment, settings) }, player.GainMoney(Amount)) : (System.Array.Empty<IAction>(), player);
         }
     }
 }

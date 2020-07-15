@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Imperit.Services
 {
-    public interface IPlayersLoader : IArray<State.Player>
+    public interface IPlayersLoader : IReadOnlyList<State.Player>
     {
         void Save();
         void Clear();
@@ -22,11 +22,7 @@ namespace Imperit.Services
         }
         public int Count => players.Count;
         public bool IsReadOnly => ((ICollection<State.Player>)players).IsReadOnly;
-        public State.Player this[int i]
-        {
-            get => players[i];
-            set => players[i] = value;
-        }
+        public State.Player this[int i] => players[i];
         public void Save() => loader.Save(players);
         public void Add(State.Player player)
         {
@@ -36,7 +32,7 @@ namespace Imperit.Services
         public void Clear()
         {
             players.Clear();
-            loader.Save(new State.Player[0]);
+            loader.Clear();
         }
         public IEnumerator<State.Player> GetEnumerator() => players.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => players.GetEnumerator();

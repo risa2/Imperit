@@ -2,7 +2,7 @@ namespace Imperit.Services
 {
     public interface IPassword
     {
-        void Set(string new_pw);
+        void Set(string pw);
         bool IsCorrect(string pw);
     }
     public class Password : IPassword
@@ -10,6 +10,6 @@ namespace Imperit.Services
         readonly Load.IFile input;
         public Password(IServiceIO io) => input = io.Password;
         public bool IsCorrect(string pw) => State.Password.FromString(pw) == State.Password.Parse(input.Read());
-        public void Set(string new_pw) => input.Write(State.Password.FromString(new_pw).ToString());
+        public void Set(string pw) => input.Write(State.Password.FromString(pw).ToString());
     }
 }

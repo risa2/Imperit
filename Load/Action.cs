@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Imperit.Load
 {
-    public class Action : IConvertibleToWith<Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>, State.Provinces)>
+    public class Action : IConvertibleToWith<Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)>
     {
         public string? Type { get; set; }
         public int? Province { get; set; }
@@ -12,12 +12,12 @@ namespace Imperit.Load
         public uint? Debt { get; set; }
         public uint? Remaining { get; set; }
         public uint? Repayment { get; set; }
-        public Dynamics.IAction Convert(int i, (State.Settings, IReadOnlyList<State.Player>, State.Provinces) arg)
+        public Dynamics.IAction Convert(int i, (State.Settings, IReadOnlyList<State.Player>) arg)
         {
-            (var settings, var players, _) = arg;
+            var (settings, _) = arg;
             return Type switch
             {
-                "Attack" => new Dynamics.Actions.Attack(Province.Must(), Army!.Convert(i, (settings, players))),
+                "Attack" => new Dynamics.Actions.Attack(Province.Must(), Army!.Convert(i, arg)),
                 "Earn" => new Dynamics.Actions.Earn(),
                 "IncomeIncrease" => new Dynamics.Actions.IncomeIncrease(Player.Must(), Amount ?? 0),
                 "IncomeDecrease" => new Dynamics.Actions.IncomeDecrease(Player.Must(), Amount ?? 0),
@@ -25,7 +25,7 @@ namespace Imperit.Load
                 "Loan" => new Dynamics.Actions.Loan(Player.Must(), Debt ?? 0, Remaining ?? 0, Repayment ?? 0, settings),
                 "Mortality" => new Dynamics.Actions.Mortality(),
                 "PortRenewal" => new Dynamics.Actions.PortRenewal(),
-                "Reinforcement" => new Dynamics.Actions.Reinforcement(Province.Must(), Army!.Convert(i, (settings, players))),
+                "Reinforcement" => new Dynamics.Actions.Reinforcement(Province.Must(), Army!.Convert(i, arg)),
                 _ => throw new System.Exception("Invalid type of Action: " + Type)
             };
 

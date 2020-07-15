@@ -9,7 +9,7 @@ namespace Imperit.Load
         public int Player { get; set; }
         public State.IArmy Convert(int i, (State.Settings, IReadOnlyList<State.Player>) arg)
         {
-            (var settings, var players) = arg;
+            var (settings, players) = arg;
             return Type switch
             {
                 "Peasant" => new State.PeasantArmy(Soldiers),

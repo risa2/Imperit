@@ -11,10 +11,10 @@ namespace Imperit.Services
         readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
-        readonly IActionWriter Actions;
+        readonly IActionLoader Actions;
         readonly IActivePlayer active;
-        readonly IPlayersPowers powers;
-        public EndOfTurn(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionWriter Actions, IActivePlayer active, IPlayersPowers powers)
+        readonly IPowersLoader powers;
+        public EndOfTurn(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionLoader Actions, IActivePlayer active, IPowersLoader powers)
         {
             this.sl = sl;
             this.players = players;
@@ -30,11 +30,12 @@ namespace Imperit.Services
             powers.Add(players);
             active.Next(players);
         }
+        void RobotThink(State.Robot robot) => _ = Actions.Add(robot.Think(sl.Settings, pr.Provinces));
         void AllRobotsActions()
         {
             while (players[active.Id] is State.Robot robot && AreHumansAlive)
             {
-                _ = Actions.Add(robot.Think(sl.Settings, pr.Provinces), save: false);
+                RobotThink(robot);
                 End();
             }
         }
@@ -42,7 +43,7 @@ namespace Imperit.Services
         {
             if (players[active.Id] is State.Robot robot)
             {
-                _ = Actions.Add(robot.Think(sl.Settings, pr.Provinces), save: false);
+                RobotThink(robot);
             }
         }
         public void Next()

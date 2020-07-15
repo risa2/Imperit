@@ -5,14 +5,14 @@ namespace Imperit.Dynamics.Actions
     public class Attack : Move
     {
         public Attack(int province, State.IArmy army) : base(province, army) { }
-        public override (IAction? NewThis, IAction[] Side, State.Province) Do(State.Province province, State.Player active)
+        public override (IAction[], State.Province) Do(State.Province province, State.Player active)
         {
             if (Province == province.Id)
             {
-                (var attacked, var actions) = province.AttackedBy(Army);
-                return (null, actions, attacked);
+                var (attacked, actions) = province.AttackedBy(Army);
+                return (actions, attacked);
             }
-            return (this, new IAction[0], province);
+            return (new[] { this }, province);
         }
         public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {

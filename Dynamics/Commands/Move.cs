@@ -19,7 +19,7 @@ namespace Imperit.Dynamics.Commands
         protected abstract Actions.Move GetMove();
         public (IAction[], State.Province) Do(State.Province province)
         {
-            return province.Id == From ? (new[] { GetMove() }, province.StartMove(To, Army)) : (new IAction[0], province);
+            return province.Id == From ? (new[] { GetMove() }, province.StartMove(To, Army)) : (System.Array.Empty<IAction>(), province);
         }
         public uint Soldiers => Army.Soldiers;
     }

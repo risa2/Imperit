@@ -1,4 +1,4 @@
-@inject Services.IActionReader Actions;
+@inject Services.IActionLoader actions;
 @inject Services.IActivePlayer active;
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
@@ -31,7 +31,7 @@
                 <td><Player Who="@player" /></td>
                 <td><Money>@player.Money</Money></td>
                 <td>(+<Money>@player.Income</Money>)</td>
-                <td>@((int)(player.Credibility*100))&#x2764;</td>
+                <td>@((int)(player.Credibility * 100))&#x2764;</td>
                 @if (player == LoggedIn)
                 {
                     <td class="link-like" @onclick="Borrow">Půjčka</td>
@@ -52,9 +52,9 @@
 <br />
 @foreach (var land in pr.Provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied))
 {
-    <p>Riziko odtržení země <Province This="land" />: @((land.Instability * 100 + 0.15).ToString("0.0")) %</p>
+    <p>Riziko odtržení země <Province This="land" />: @((land.Instability * 100 + 0.2).ToString("0.0")) %</p>
 }
-@foreach (var action in Actions.Actions)
+@foreach (var action in actions.Actions)
 {
     @if (action is Dynamics.Actions.Attack attack)
     {
