@@ -26,7 +26,7 @@ namespace Imperit.State
         public virtual Province StartMove(Province dest, IArmy army) => WithArmy(Army.Subtract(army));
         public (Province, Dynamics.IAction[]) AttackedBy(IArmy another) => GiveUpTo(Army.AttackedBy(another));
         public Province ReinforcedBy(IArmy another) => WithArmy(Army.Join(another));
-        public bool IsControlledBy(Player p) => Army.IsControlledBy(p);
+        public bool IsControlledBy(int p) => Army.IsControlledBy(p);
         public bool IsAllyOf(IArmy army) => Army.IsAllyOf(army);
         public uint Soldiers => Army.Soldiers;
         public bool Occupied => !(Army is PeasantArmy);

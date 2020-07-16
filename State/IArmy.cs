@@ -9,7 +9,7 @@ namespace Imperit.State
         IArmy Join(IArmy another);
         IArmy Subtract(IArmy another);
         bool IsAllyOf(IArmy another);
-        bool IsControlledBy(Player player);
+        bool IsControlledBy(int player);
         IArmy AttackedBy(IArmy another) => another.Soldiers > Soldiers ? another.Subtract(this) : Subtract(another);
     }
 }

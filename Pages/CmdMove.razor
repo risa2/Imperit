@@ -14,7 +14,8 @@
     protected override void OnInitialized()
     {
         Type = From!.IsAllyOf(To!.Army) ? 'R' : 'A';
-        Moving = Limit = (int)pr.Provinces.CanMove(From, To);
+        Limit = (int)pr.Provinces.CanMove(From, To);
+        Moving = Math.Min(Limit, (int)To!.Soldiers + 1);
         if (Limit == 0)
         {
             Return();
@@ -34,7 +35,10 @@
 {
     <p>Z místa @From!.Name na místo @To!.Name se může přesunout nejvýše @Limit vojáků</p>
 }
-<label>Počet vojáků:<br/><input @bind-value="Moving" @bind-value:event="oninput" min="1" max="@Limit"/><br/></label>
+<label>
+    Kolik vojáků chceš přesunout z provincie @From!.Name (@From!.Soldiers) směrem <Province This="@To"/> (@To!.Soldiers)?<br/>
+    <input @onsubmit="DoMove" @bind-value="Moving" @bind-value:event="oninput" min="1" autofocus/><br/>
+</label>
 @if (!From!.IsAllyOf(To!.Army))
 {
     <label>

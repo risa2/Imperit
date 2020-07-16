@@ -38,7 +38,7 @@ namespace Imperit.Services
                 if (ch)
                 {
                     pr.Set(new_provinces);
-                    players.Set(new_players);
+                    players.Assign(new_players);
                     changed = true;
                 }
             }
@@ -51,7 +51,7 @@ namespace Imperit.Services
             var (queue, new_players, new_provinces) = Actions.EndOfTurn(players, pr.Provinces, active);
             Actions = queue;
             pr.Set(new_provinces.ToArray());
-            players.Set(new_players);
+            players.Assign(new_players);
         }
         public void Clear() => Save(new Dynamics.ActionQueue());
         public void Save() => Save(Actions);

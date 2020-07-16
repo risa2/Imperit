@@ -13,6 +13,14 @@ namespace Imperit
         public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
         public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException("Argument must not be null");
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
+        public static T[] Concat<T>(this T[] array, params T[] args)
+        {
+            var result = new T[array.Length + args.Length];
+            array.CopyTo(result, 0);
+            args.CopyTo(result, array.Length);
+            return result;
+        }
+        public static string ToHexString(this byte num) => num.ToString("x2", System.Globalization.CultureInfo.InvariantCulture);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
             while (H < 0) { H += 360; }

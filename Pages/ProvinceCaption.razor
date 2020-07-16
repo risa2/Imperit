@@ -6,18 +6,13 @@
     [Parameter] public State.Province? Province { get; set; }
     [Parameter] public State.Point Center { get; set; }
     [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = Shape.ColorOf;
-    string TextColor()
-    {
-        var bg = ColorFn(Province!);
-        return (int)bg.r + bg.g + bg.b > 500 ? "#000000" : "#ffffff";
-    }
 }
 
 <a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">
-    <text fill="@(TextColor())" x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province!.Name</text>
-    <text fill="@(TextColor())" x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land){<text>+@(land.Earnings)&#x1F4B0;</text>}</text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province!.Name</text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land){<Money>+@land.Earnings</Money>}</text>
     @if (Province is State.Port Port)
     {
-        <text><text fill="@(TextColor())" x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)&#x2693;</text></text>
+        <text><text x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)&#x2693;</text></text>
     }
 </a>

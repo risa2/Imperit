@@ -9,7 +9,7 @@ namespace Imperit.Services
         void Save();
         void Clear();
         void Add(State.Player player);
-        void Set(IReadOnlyList<State.Player> new_players);
+        void Assign(IReadOnlyList<State.Player> new_players);
     }
     public class PlayersLoader : IPlayersLoader
     {
@@ -37,7 +37,7 @@ namespace Imperit.Services
         public IEnumerator<State.Player> GetEnumerator() => players.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => players.GetEnumerator();
 
-        public void Set(IReadOnlyList<State.Player> new_players)
+        public void Assign(IReadOnlyList<State.Player> new_players)
         {
             for (int i = 0; i < players.Count && i < new_players.Count; ++i)
             {

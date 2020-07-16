@@ -7,19 +7,22 @@
     [Parameter] public Action Return { get; set; } = (() => { });
     int BorrowedAmount { get; set; } = 1;
     int RepaymentCount { get; set; } = 5;
-    uint Debt => sl.Settings.LoanDebt((uint)BorrowedAmount, (uint)RepaymentCount, Player!.Credibility);
-    uint Repayment => sl.Settings.LoanRepayment((uint)BorrowedAmount, (uint)RepaymentCount, Player!.Credibility);
+    uint Debt => sl.Settings.LoanDebt((uint)BorrowedAmount, (uint)RepaymentCount);
+    uint Repayment => sl.Settings.LoanRepayment((uint)BorrowedAmount, (uint)RepaymentCount);
     bool Error = false;
     void DoBorrow()
     {
         var loan = new Dynamics.Commands.Loan(Player!.Id, (uint)BorrowedAmount, Debt, Repayment, sl.Settings);
-        if (Actions.Add(loan))
+        if (RepaymentCount <= 10 && RepaymentCount > 0)
         {
-            Return();
-        }
-        else
-        {
-            Error = true;
+            if (Actions.Add(loan))
+            {
+                Return();
+            }
+            else
+            {
+                Error = true;
+            }
         }
     }
 }
@@ -27,8 +30,12 @@
 {
     <p>Příliš vysoká částka. Celkový dluh nesmí překročit <Money>@sl.Settings.DebtLimit</Money></p>
 }
-<label>Vypůjčený obnos:<br/><input type="number" @bind-value="BorrowedAmount" @bind-value:event="oninput" min="1"/><br/></label>
-<label>Doba splácení:<br/><input type="number" @bind-value="RepaymentCount" @bind-value:event="oninput" min="1" max="10"/><br/></label>
+@if (RepaymentCount > 10 || RepaymentCount < 1)
+{
+    <p>Doba splácení musí být v rozsahu 1 až 10 kol</p>
+}
+<label>Vypůjčený obnos:<br/><input type="number" @bind-value="BorrowedAmount" @bind-value:event="oninput" min="1" autofocus/><br/></label>
+<label>Doba splácení:<br/><input type="number" @bind-value="RepaymentCount" @bind-value:event="oninput" min="1"/><br/></label>
 <label>Splácený obnos:<br/><input value="@Debt" disabled="disabled"/><br/></label>
 <label>Výše splátky:<br/><input value="@Repayment" disabled="disabled"/><br/></label>
 <button @onclick="DoBorrow">Půjčit si</button>

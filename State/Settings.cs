@@ -22,9 +22,9 @@ namespace Imperit.State
         }
         public Settings Start() => new Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames, MaxRobotCount, SingleClient, true);
         static double MinLoanRepayment(uint loan, uint time, double mul) => loan * Math.Pow(mul, time) * (mul - 1) / (Math.Pow(mul, time) - 1);
-        public uint LoanRepayment(uint loan, uint time, double credibility) => (uint)Math.Ceiling(MinLoanRepayment(loan, time, 1.0 + (Interest / credibility)));
-        public uint LoanDebt(uint loan, uint time, double credibility) => (uint)Math.Ceiling(time * MinLoanRepayment(loan, time, 1.0 + (Interest / credibility)));
-        public double Instability(uint soldiers, double credibility) => DefaultInstability / Math.Pow(2, soldiers / 50.0) / credibility;
+        public uint LoanRepayment(uint loan, uint time) => (uint)Math.Ceiling(MinLoanRepayment(loan, time, 1.0 + Interest));
+        public uint LoanDebt(uint loan, uint time) => (uint)Math.Ceiling(time * MinLoanRepayment(loan, time, 1.0 + Interest));
+        public double Instability(uint soldiers) => DefaultInstability / Math.Pow(2, soldiers / 50.0);
         public string RobotName(int i) => i < RobotNames.Length ? RobotNames[i] : "AI " + i;
     }
 }

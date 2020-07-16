@@ -17,14 +17,13 @@ namespace Imperit.Dynamics.Actions
             Repayment = Math.Min(Remaining, repayment);
             settings = set;
         }
-        public (IAction[], State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        public (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
             if (player == active && player.Id == Debtor)
             {
                 if (Repayment > player.Money)
                 {
-                    var loan = new Loan(Debtor, Debt, Remaining - player.Money, Repayment, settings);
-                    return (new[] { loan }, player.Pay(player.Money).LoseCredibility((Repayment - player.Money) / 20.0));
+                    return (new[] { new Seizure(player.Id, Remaining - player.Money) }, player.Pay(player.Money));
                 }
                 if (Repayment == Remaining)
                 {
@@ -32,7 +31,7 @@ namespace Imperit.Dynamics.Actions
                 }
                 return (new[] { new Loan(Debtor, Debt, Remaining - Repayment, Repayment, settings) }, player.Pay(Repayment));
             }
-            return (Array.Empty<IAction>(), player);
+            return (new[] { this }, player);
         }
         public bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {

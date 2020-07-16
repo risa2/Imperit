@@ -25,7 +25,7 @@
     {
         if (LoggedIn == active.Id)
         {
-            end.Next();
+            end.NextTurn();
             int next = active.Id;
             if (sl.Settings.SingleClient || !players[next].Alive)
             {

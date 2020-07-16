@@ -4,8 +4,8 @@ namespace Imperit.Dynamics
 {
     public interface ICommand
     {
-        (IAction[], State.Province) Do(State.Province province) => (System.Array.Empty<IAction>(), province);
-        (IAction[], State.Player) Do(State.Player player, State.Provinces provinces) => (System.Array.Empty<IAction>(), player);
+        (IAction[], State.Province) Perform(State.Province province) => (System.Array.Empty<IAction>(), province);
+        (IAction[], State.Player) Perform(State.Player player, State.Provinces provinces) => (System.Array.Empty<IAction>(), player);
         bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces);
     }
 }

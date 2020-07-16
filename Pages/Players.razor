@@ -31,7 +31,6 @@
                 <td><Player Who="@player" /></td>
                 <td><Money>@player.Money</Money></td>
                 <td>(+<Money>@player.Income</Money>)</td>
-                <td>@((int)(player.Credibility * 100))&#x2764;</td>
                 @if (player == LoggedIn)
                 {
                     <td class="link-like" @onclick="Borrow">Půjčka</td>
@@ -44,7 +43,7 @@
             else
             {
                 <td><Player Who="@player" /></td>
-                <td colspan="4">je na tom jako Bůh</td>
+                <td colspan="3">je na tom jako Bůh</td>
             }
         </tr>
     }

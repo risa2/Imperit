@@ -4,34 +4,34 @@ namespace Imperit.Services
 {
     public interface IEndOfTurn
     {
-        void Next();
+        void NextTurn();
     }
     public class EndOfTurn : IEndOfTurn
     {
         readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
-        readonly IActionLoader Actions;
+        readonly IActionLoader actions;
         readonly IActivePlayer active;
         readonly IPowersLoader powers;
-        public EndOfTurn(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionLoader Actions, IActivePlayer active, IPowersLoader powers)
+        public EndOfTurn(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
         {
             this.sl = sl;
             this.players = players;
             this.pr = pr;
-            this.Actions = Actions;
+            this.actions = actions;
             this.active = active;
             this.powers = powers;
         }
         bool AreHumansAlive => players.Any(player => !(player is State.Robot) && player.Alive);
         void End()
         {
-            Actions.EndOfTurn(active.Id);
+            actions.EndOfTurn(active.Id);
             powers.Add(players);
             active.Next(players);
         }
-        void RobotThink(State.Robot robot) => _ = Actions.Add(robot.Think(sl.Settings, pr.Provinces));
-        void AllRobotsActions()
+        void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(sl.Settings, pr.Provinces));
+        void AllRobotsactions()
         {
             while (players[active.Id] is State.Robot robot && AreHumansAlive)
             {
@@ -46,14 +46,14 @@ namespace Imperit.Services
                 RobotThink(robot);
             }
         }
-        public void Next()
+        public void NextTurn()
         {
             RobotThinkingIfRobotIsPlaying();
             End();
-            AllRobotsActions();
+            AllRobotsactions();
             players.Save();
             pr.Save();
-            Actions.Save();
+            actions.Save();
         }
     }
 }

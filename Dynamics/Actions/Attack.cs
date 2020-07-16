@@ -5,7 +5,7 @@ namespace Imperit.Dynamics.Actions
     public class Attack : Move
     {
         public Attack(int province, State.IArmy army) : base(province, army) { }
-        public override (IAction[], State.Province) Do(State.Province province, State.Player active)
+        public override (IAction[], State.Province) Perform(State.Province province, State.Player active)
         {
             if (Province == province.Id)
             {
@@ -16,7 +16,7 @@ namespace Imperit.Dynamics.Actions
         }
         public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
-            if (another is Commands.Attack attack && Army.IsControlledBy(players[attack.Player]) && attack.To.Id == Province)
+            if (another is Commands.Attack attack && Army.IsControlledBy(attack.Player) && attack.To.Id == Province)
             {
                 return (new Attack(Province, Army.Join(attack.Army)), false);
             }

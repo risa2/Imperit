@@ -11,7 +11,7 @@ namespace Imperit.Dynamics.Actions
             Player = player;
             Change = change;
         }
-        public (IAction[], State.Player) Do(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        public (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
             return player.Id == Player ? (System.Array.Empty<IAction>(), player.DecreaseIncome(Change)) : (new[] { this }, player);
         }

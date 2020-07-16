@@ -11,12 +11,12 @@ namespace Imperit.State
             Player = player;
             Soldiers = soldiers;
         }
-        public double Hostility => settings.Instability(Soldiers, Player.Credibility);
+        public double Hostility => settings.Instability(Soldiers);
         public Dynamics.IAction Gain(Province what) => new Dynamics.Actions.IncomeIncrease(Player.Id, what.Earnings);
         public Dynamics.IAction Lose(Province what) => new Dynamics.Actions.IncomeDecrease(Player.Id, what.Earnings);
         public IArmy Join(IArmy another) => new PlayerArmy(settings, Player, Soldiers + another.Soldiers);
         public IArmy Subtract(IArmy another) => new PlayerArmy(settings, Player, Soldiers - another.Soldiers);
-        public bool IsControlledBy(Player player) => Player == player;
-        public bool IsAllyOf(IArmy another) => another.IsControlledBy(Player);
+        public bool IsControlledBy(int player) => Player.Id == player;
+        public bool IsAllyOf(IArmy another) => another.IsControlledBy(Player.Id);
     }
 }

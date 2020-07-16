@@ -11,7 +11,7 @@ namespace Imperit.Dynamics.Actions
             Province = province;
             Army = army;
         }
-        public abstract (IAction[], State.Province) Do(State.Province province, State.Player active);
+        public abstract (IAction[], State.Province) Perform(State.Province province, State.Player active);
         public abstract (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces);
         public uint Soldiers => Army.Soldiers;
         public byte Priority => 50;

@@ -27,5 +27,8 @@
 {
     <p>Máš jen <Money>@Player!.Money</Money></p>
 }
-<label>Počet vojáků:<br/><input @bind-value="Recruited" @bind-value:event="oninput" min="1" max="@Player!.Money"/><br/></label>
+<label>
+    @Land!.Name má @Land!.Soldiers vojáků. Kolik chcete naverbovat?<br />
+    <input @onsubmit="DoRecruit" @bind-value="Recruited" @bind-value:event="oninput" min="1" autofocus /><br />
+</label>
 <button @onclick="DoRecruit">Verbovat</button>

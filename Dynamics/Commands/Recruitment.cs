@@ -14,7 +14,7 @@ namespace Imperit.Dynamics.Commands
             Army = army;
         }
 
-        public (IAction[], State.Player) Do(State.Player player, State.Provinces provinces)
+        public (IAction[], State.Player) Perform(State.Player player, State.Provinces provinces)
         {
             return player.Id == Player
                 ? (new[] { new Actions.Reinforcement(Land, Army) }, player.Pay(Army.Soldiers))
@@ -22,7 +22,7 @@ namespace Imperit.Dynamics.Commands
         }
         public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
-            return provinces[Land].IsControlledBy(players[Player]) && players[Player].Money >= Army.Soldiers && Army.Soldiers > 0;
+            return provinces[Land].IsControlledBy(Player) && players[Player].Money >= Army.Soldiers && Army.Soldiers > 0;
         }
     }
 }

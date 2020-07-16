@@ -10,6 +10,6 @@ namespace Imperit.State
         public IArmy Join(IArmy another) => new PeasantArmy(Soldiers + another.Soldiers);
         public IArmy Subtract(IArmy another) => new PeasantArmy(Soldiers - another.Soldiers);
         public bool IsAllyOf(IArmy another) => false;
-        public bool IsControlledBy(Player player) => false;
+        public bool IsControlledBy(int player) => false;
     }
 }

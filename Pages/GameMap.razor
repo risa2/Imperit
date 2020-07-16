@@ -15,7 +15,7 @@
         {
             if (From == null)
             {
-                if (clicked.IsControlledBy(Player!))
+                if (clicked.IsControlledBy(Player!.Id))
                 {
                     From = clicked;
                     this.StateHasChanged();

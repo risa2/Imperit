@@ -18,7 +18,7 @@ namespace Imperit.Dynamics
         {
             return actions.Aggregate((actions: NoActions, province), (acc, action) =>
             {
-                var (added_actions, new_province) = action.Do(acc.province, active);
+                var (added_actions, new_province) = action.Perform(acc.province, active);
                 return (acc.actions.AddRange(added_actions), new_province);
             });
         }
@@ -26,7 +26,7 @@ namespace Imperit.Dynamics
         {
             return actions.Aggregate((actions: NoActions, player), (acc, action) =>
             {
-                var (added_actions, new_player) = action.Do(acc.player, active, provinces);
+                var (added_actions, new_player) = action.Perform(acc.player, active, provinces);
                 return (acc.actions.AddRange(added_actions), new_player);
             });
         }
@@ -52,7 +52,7 @@ namespace Imperit.Dynamics
         {
             (actions, provinces) = ApplyAllToAll(provinces, players[active], actions);
             (actions, players) = ApplyAllToAll(players, players[active], provinces, actions);
-            return (new ActionQueue(actions.Where(action => action.Repeat)), players, provinces);
+            return (new ActionQueue(actions), players, provinces);
         }
         public (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) EndOfTurn(IReadOnlyList<State.Player> players, IReadOnlyList<State.Province> provinces, int active)
         {
@@ -79,8 +79,8 @@ namespace Imperit.Dynamics
         {
             if (IsAllowed(command, players, provinces))
             {
-                var (actions1, new_players) = players.Select(player => command.Do(player, provinces)).Unzip();
-                var (actions2, new_provinces) = provinces.Select(province => command.Do(province)).Unzip();
+                var (actions1, new_players) = players.Select(player => command.Perform(player, provinces)).Unzip();
+                var (actions2, new_provinces) = provinces.Select(province => command.Perform(province)).Unzip();
                 var (new_actions, interacted) = Interactions(command, players, provinces);
                 return (new ActionQueue(interacted ? new_actions.AddRange(actions1.Flatten()).AddRange(actions2.Flatten()) : new_actions), new_players.ToArray(), new_provinces.ToArray(), true);
             }

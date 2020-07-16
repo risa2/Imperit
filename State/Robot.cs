@@ -5,13 +5,12 @@ namespace Imperit.State
 {
     public class Robot : Player
     {
-        public Robot(int id, string name, Color color, Password password, uint money, double credibility, bool alive, uint income) : base(id, name, color, password, money, credibility, alive, income) { }
-        public override Player LoseCredibility(double amount) => new Robot(Id, Name, Color, Password, Money, CredibilityChanged(-amount), Alive, Income);
-        public override Player GainMoney(uint amount) => new Robot(Id, Name, Color, Password, Money + amount, Credibility, Alive, Income);
-        public override Player Pay(uint amount) => new Robot(Id, Name, Color, Password, Money - amount, Credibility, Alive, Income);
-        public override Player Die() => new Robot(Id, Name, Color, Password, 0, 1.0, false, 0);
-        public override Player IncreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Credibility, Alive, Income + change);
-        public override Player DecreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Credibility, Alive, Income - change);
+        public Robot(int id, string name, Color color, Password password, uint money, bool alive, uint income) : base(id, name, color, password, money, alive, income) { }
+        public override Player GainMoney(uint amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive, Income);
+        public override Player Pay(uint amount) => new Robot(Id, Name, Color, Password, Money - amount, Alive, Income);
+        public override Player Die() => new Robot(Id, Name, Color, Password, 0, false, 0);
+        public override Player IncreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Alive, Income + change);
+        public override Player DecreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Alive, Income - change);
         enum Relation { Enemy, Ally, Empty }
         class PInfo
         {
@@ -29,47 +28,48 @@ namespace Imperit.State
         }
         static uint Min(uint a, uint b) => a > b ? b : a;
         static uint Max(uint a, uint b) => a > b ? a : b;
-        IEnumerable<Province> NeighborEnemies(Provinces provinces, Province prov) => provinces.NeighborsOf(prov).Where(neighbor => !neighbor.IsControlledBy(this) && neighbor.Occupied);
+        IEnumerable<Province> NeighborEnemies(Provinces provinces, Province prov) => provinces.NeighborsOf(prov).Where(neighbor => !neighbor.IsControlledBy(Id) && neighbor.Occupied);
         uint EnemiesCount(Provinces provinces, Province prov) => (uint)NeighborEnemies(provinces, prov).Sum(neighbor => neighbor.Soldiers);
-        Relation GetRelationTo(Province prov) => prov.IsControlledBy(this) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
+        Relation GetRelationTo(Province prov) => prov.IsControlledBy(Id) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
         void Recruit(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
         {
             info[land.Id].Coming += count;
             result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, new PlayerArmy(settings, this, count)));
             spent += count;
         }
-        void DefensiveRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Provinces provinces, PInfo[] info, int[] my)
+        void DefensiveRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
         {
-            foreach (int i in my)
+            foreach (Land l in my)
             {
-                if (info[i].Bilance < 0 && info[i].Bilance + Money - spent >= 0 && provinces[i] is Land land)
+                if (info[l.Id].Bilance < 0 && info[l.Id].Bilance + Money - spent >= 0)
                 {
-                    Recruit(settings, result, ref spent, land, info, (uint)-info[i].Bilance);
+                    Recruit(settings, result, ref spent, l, info, (uint)-info[l.Id].Bilance);
                 }
             }
         }
-        void StabilisatingRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Provinces provinces, PInfo[] info, int[] my)
+        void StabilisatingRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
         {
-            foreach (int i in my)
+            foreach (Land l in my)
             {
                 if (Money == spent)
                 {
                     break;
                 }
-                if (info[i].SoldiersNext < 80 && provinces[i] is Land land)
+                if (info[l.Id].SoldiersNext < 80)
                 {
-                    Recruit(settings, result, ref spent, land, info, Min(Money - spent, 80 - info[i].SoldiersNext));
+                    Recruit(settings, result, ref spent, l, info, Min(Money - spent, 80 - info[l.Id].SoldiersNext));
                 }
             }
         }
         void Recruitments(Settings settings, List<Dynamics.ICommand> result, Provinces provinces, PInfo[] info, int[] my)
         {
             uint spent = 0;
-            DefensiveRecruitments(settings, result, ref spent, provinces, info, my);
-            StabilisatingRecruitments(settings, result, ref spent, provinces, info, my);
-            if (Money - spent > 0)
+            var lands = my.Select(i => provinces[i] as Land).NotNull().ToArray();
+            DefensiveRecruitments(settings, result, ref spent, info, lands);
+            StabilisatingRecruitments(settings, result, ref spent, info, lands);
+            if (Money - spent > 0 && lands.Any())
             {
-                Recruit(settings, result, ref spent, my.Select(i => provinces[i] as Land).NotNull().MinBy(prov => prov.Soldiers), info, Money - spent);
+                Recruit(settings, result, ref spent, lands.MinBy(prov => prov.Soldiers), info, Money - spent);
             }
         }
         static bool RevengeDoesNotMatter(Provinces provinces, int from, int to) => provinces.NeighborsOf(from).Concat(provinces.NeighborsOf(to)).All(n => !n.Occupied || n.IsAllyOf(provinces[to].Army) || n.IsAllyOf(provinces[from].Army));
@@ -84,7 +84,7 @@ namespace Imperit.State
             info[from].Soldiers -= count;
             if (provinces[from].Occupied && count >= provinces[to].Soldiers)
             {
-                foreach (var neighbor in provinces.NeighborsOf(provinces[to]).Where(n => n.IsControlledBy(this)))
+                foreach (var neighbor in provinces.NeighborsOf(provinces[to]).Where(n => n.IsControlledBy(Id)))
                 {
                     info[neighbor.Id].Enemies -= provinces[to].Soldiers;
                 }
@@ -103,9 +103,9 @@ namespace Imperit.State
         static uint MultiAttackSoldiers(Provinces provinces, PInfo[] info, int from, int to) => Min((uint)info[from].Bilance + provinces[to].Soldiers, info[from].Soldiers);
         void MultiAttacks(List<Dynamics.ICommand> result, Settings settings, Provinces provinces, PInfo[] info, int[] my)
         {
-            foreach (int to in my.SelectMany(i => provinces.NeighborsOf(provinces[i]).Where(p => p.Occupied && !p.IsControlledBy(this)).Select(p => p.Id)).Distinct())
+            foreach (int to in my.SelectMany(i => provinces.NeighborsOf(provinces[i]).Where(p => p.Occupied && !p.IsControlledBy(Id)).Select(p => p.Id)).Distinct())
             {
-                var starts = provinces.NeighborsOf(to).Where(n => n.IsControlledBy(this) && info[n.Id].Bilance + provinces[to].Soldiers > 0);
+                var starts = provinces.NeighborsOf(to).Where(n => n.IsControlledBy(Id) && info[n.Id].Bilance + provinces[to].Soldiers > 0);
                 uint bilance = (uint)starts.Sum(n => MultiAttackSoldiers(provinces, info, n.Id, to));
                 if (bilance > info[to].Soldiers + (starts.All(n => RevengeDoesNotMatter(provinces, n.Id, to)) ? 0 : info[to].Enemies))
                 {
@@ -126,7 +126,7 @@ namespace Imperit.State
         {
             foreach (int from in my)
             {
-                foreach (var dest in provinces.NeighborsOf(provinces[from]).Where(n => n.IsControlledBy(this)).OrderBy(n => info[n.Id].Bilance))
+                foreach (var dest in provinces.NeighborsOf(provinces[from]).Where(n => n.IsControlledBy(Id)).OrderBy(n => info[n.Id].Bilance))
                 {
                     if (info[from].Enemies <= 0 && info[dest.Id].Enemies > 0)
                     {
@@ -145,7 +145,7 @@ namespace Imperit.State
         }
         public List<Dynamics.ICommand> Think(Settings settings, Provinces provinces)
         {
-            var my = provinces.Where(p => p.IsControlledBy(this)).Select(p => p.Id).ToArray();
+            var my = provinces.Where(p => p.IsControlledBy(Id)).Select(p => p.Id).ToArray();
             var info = provinces.Select(prov => new PInfo(prov.Soldiers, EnemiesCount(provinces, prov), 0, GetRelationTo(prov))).ToArray();
 
             var result = new List<Dynamics.ICommand>();

@@ -51,7 +51,7 @@ namespace Imperit.Services
             int count = Math.Min(start_lands.Length, sl.Settings.MaxRobotCount), previous = players.Count;
             for (int i = 0; i < count; ++i)
             {
-                players.Add(new State.Robot(players.Count, sl.Settings.RobotName(i), rand.NextColor(), State.Password.FromString(""), sl.Settings.DefaultMoney, 1.0, true, start_lands[i].Earnings));
+                players.Add(new State.Robot(players.Count, sl.Settings.RobotName(i), rand.NextColor(), State.Password.FromString(""), sl.Settings.DefaultMoney, true, start_lands[i].Earnings));
             }
             pr.Reset(sl.Settings, players);
             for (int i = 0; i < count; ++i)
@@ -70,7 +70,7 @@ namespace Imperit.Services
         }
         public void Registration(string name, State.Password password, State.Color color, State.Land land)
         {
-            var player = new State.Player(players.Count, name, color, password, sl.Settings.DefaultMoney, credibility: 1.0, alive: true, income: land.Earnings);
+            var player = new State.Player(players.Count, name, color, password, sl.Settings.DefaultMoney, alive: true, income: land.Earnings);
             players.Add(player);
             pr.Reset(sl.Settings, players);
             (pr.Provinces[land.Id], _) = land.GiveUpTo(new State.PlayerArmy(sl.Settings, player, land.Soldiers));
