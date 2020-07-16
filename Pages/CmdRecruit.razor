@@ -5,14 +5,14 @@
     [Parameter] public Action Return { get; set; } = (() => { });
     [Parameter] public State.Land? Land { get; set; }
     [Parameter] public State.Player? Player { get; set; }
-    int Recruited { get; set; }
+    Models.CmdRecruit model = new Models.CmdRecruit();
     protected override void OnInitialized()
     {
-        Recruited = (int)Player!.Money;
+        model.Soldiers = (int)Player!.Money;
     }
     void DoRecruit()
     {
-        var recruitment = new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(sl.Settings, Player!, (uint)Recruited));
+        var recruitment = new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(sl.Settings, Player!, (uint)model.Soldiers));
         if (Actions.Add(recruitment))
         {
             Return();
@@ -23,12 +23,15 @@
 {
     Return();
 }
-@if (Recruited > Player!.Money)
+@if (model.Soldiers > Player!.Money)
 {
-    <p>Máš jen <Money>@Player!.Money</Money></p>
+    <p>Máš jen @(Player!.Money)@Sym.Money</p>
 }
-<label>
-    @Land!.Name má @Land!.Soldiers vojáků. Kolik chcete naverbovat?<br />
-    <input @onsubmit="DoRecruit" @bind-value="Recruited" @bind-value:event="oninput" min="1" autofocus /><br />
-</label>
-<button @onclick="DoRecruit">Verbovat</button>
+<EditForm Model="@model" OnValidSubmit="DoRecruit">
+    <DataAnnotationsValidator/><ValidationSummary/>
+    <label>
+        @Land!.Name má @Land!.Soldiers vojáků. Kolik chcete naverbovat?<br />
+        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus /><br />
+    </label>
+    <button type="submit">Verbovat</button>
+</EditForm>

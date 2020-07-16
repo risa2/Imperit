@@ -48,7 +48,7 @@ namespace Imperit.Dynamics.Actions
         public (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
             return another is Commands.Loan loan && loan.Player == Debtor
-                ? (new Loan(Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment, settings), false)
+                ? (new Loan(Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment + loan.Repayment, settings), false)
                 : (this, true);
         }
         public byte Priority => 130;

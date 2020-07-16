@@ -23,6 +23,6 @@
 {
     <p>Příliš vysoká částka. Můžeš věnovat nejvýše tolik, kolik máš, minus tvůj dluh.</p>
 }
-<label>Darovaná částka:<br/><input @onsubmit="DoDonate" @bind-value="DonatedAmount" min="1" autofocus/><br/></label>
+<label>Darovaná částka:<br/><input @bind-value="DonatedAmount" min="1" autofocus/><br/></label>
 <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
 <button @onclick="DoDonate">Věnovat</button>

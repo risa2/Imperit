@@ -10,9 +10,9 @@
 
 <a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">
     <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province!.Name</text>
-    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land){<Money>+@land.Earnings</Money>}</text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land) {<text>+@(land.Earnings)@Sym.Money</text>}</text>
     @if (Province is State.Port Port)
     {
-        <text><text x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)&#x2693;</text></text>
+        <text><text x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)@Sym.Anchor</text></text>
     }
 </a>

@@ -34,7 +34,7 @@
         <a @onclick="LogOut">Odhlášení</a>
     }
     <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
-    <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))"><Money>@players[LoggedIn].Money</Money></a>
+    <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))">@(players[LoggedIn].Money)@Sym.Money</a>
     @if (powers.Count > 2)
     {
         <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>

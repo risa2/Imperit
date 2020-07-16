@@ -28,9 +28,9 @@
         <tr>
             @if (player.Alive)
             {
-                <td><Player Who="@player" /></td>
-                <td><Money>@player.Money</Money></td>
-                <td>(+<Money>@player.Income</Money>)</td>
+                <td><Player Who="@player"/></td>
+                <td>@(player.Money)@Sym.Money</td>
+                <td>(+@(player.Income)@Sym.Money)</td>
                 @if (player == LoggedIn)
                 {
                     <td class="link-like" @onclick="Borrow">Půjčka</td>
@@ -65,6 +65,6 @@
     }
     else if (action is Dynamics.Actions.Loan loan)
     {
-        <p><Player Who="players[loan.Debtor]" /> &ndash; dluh: <Money>@loan.Remaining</Money>, splátka: <Money>@loan.Repayment</Money>/kolo</p>
+        <p><Player Who="players[loan.Debtor]" /> &ndash; dluh: @(loan.Remaining)@Sym.Money, splátka: @(loan.Repayment)@Sym.Money/kolo</p>
     }
 }
