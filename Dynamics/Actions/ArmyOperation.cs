@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Imperit.Dynamics.Actions
 {
-    public abstract class Move : IAction
+    public abstract class ArmyOperation : IAction
     {
         public readonly int Province;
         public readonly State.IArmy Army;
-        public Move(int province, State.IArmy army)
+        public ArmyOperation(int province, State.IArmy army)
         {
             Province = province;
             Army = army;

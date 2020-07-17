@@ -22,8 +22,7 @@ namespace Imperit.State
         public virtual Player Pay(uint amount) => new Player(Id, Name, Color, Password, Money - amount, Alive, Income);
         public Player Earn() => GainMoney(Income);
         public virtual Player Die() => new Player(Id, Name, Color, Password, 0, false, 0);
-        public virtual Player IncreaseIncome(uint change) => new Player(Id, Name, Color, Password, Money, Alive, Income + change);
-        public virtual Player DecreaseIncome(uint change) => new Player(Id, Name, Color, Password, Money, Alive, Income - change);
+        public virtual Player ChangeIncome(int change) => new Player(Id, Name, Color, Password, Money, Alive, (uint)(Income + change));
         public bool Surviving => Income > 0;
         public override bool Equals(object? obj) => obj != null && obj is Player p && p.Id == Id;
         public override int GetHashCode() => Id.GetHashCode();

@@ -12,8 +12,8 @@ namespace Imperit.State
             Soldiers = soldiers;
         }
         public double Hostility => settings.Instability(Soldiers);
-        public Dynamics.IAction Gain(Province what) => new Dynamics.Actions.IncomeIncrease(Player.Id, what.Earnings);
-        public Dynamics.IAction Lose(Province what) => new Dynamics.Actions.IncomeDecrease(Player.Id, what.Earnings);
+        public Dynamics.IAction Gain(Province what) => new Dynamics.Actions.IncomeChange(Player.Id, (int)what.Earnings);
+        public Dynamics.IAction Lose(Province what) => new Dynamics.Actions.IncomeChange(Player.Id, -(int)what.Earnings);
         public IArmy Join(IArmy another) => new PlayerArmy(settings, Player, Soldiers + another.Soldiers);
         public IArmy Subtract(IArmy another) => new PlayerArmy(settings, Player, Soldiers - another.Soldiers);
         public bool IsControlledBy(int player) => Player.Id == player;

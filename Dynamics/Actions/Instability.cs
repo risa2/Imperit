@@ -7,8 +7,7 @@
         {
             if ((province is State.Land Land && Land.IsControlledBy(active.Id) && !Land.IsStart && rand.NextDouble() < Land.Instability) || (province is State.Sea Sea && Sea.Soldiers == 0))
             {
-                var (revolted, action) = province.Revolt();
-                return (action.Concat(this), revolted);
+                return (new IAction[] { this, new Revolution(province.Id) }, province);
             }
             return (new[] { this }, province);
         }

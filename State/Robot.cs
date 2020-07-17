@@ -9,8 +9,7 @@ namespace Imperit.State
         public override Player GainMoney(uint amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive, Income);
         public override Player Pay(uint amount) => new Robot(Id, Name, Color, Password, Money - amount, Alive, Income);
         public override Player Die() => new Robot(Id, Name, Color, Password, 0, false, 0);
-        public override Player IncreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Alive, Income + change);
-        public override Player DecreaseIncome(uint change) => new Robot(Id, Name, Color, Password, Money, Alive, Income - change);
+        public override Player ChangeIncome(int change) => new Robot(Id, Name, Color, Password, Money, Alive, (uint)(Income + change));
         enum Relation { Enemy, Ally, Empty }
         class PInfo
         {

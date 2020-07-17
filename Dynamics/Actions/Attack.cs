@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Imperit.Dynamics.Actions
 {
-    public class Attack : Move
+    public class Attack : ArmyOperation
     {
         public Attack(int province, State.IArmy army) : base(province, army) { }
         public override (IAction[], State.Province) Perform(State.Province province, State.Player active)
@@ -22,7 +22,7 @@ namespace Imperit.Dynamics.Actions
             }
             if (another is Commands.Purchase purchase && Army.IsAllyOf(purchase.Army) && purchase.Land == Province)
             {
-                return (new Reinforcement(Province, Army), true);
+                return (new AddSoldiers(Province, Army), true);
             }
             return (this, true);
         }

@@ -17,7 +17,7 @@ namespace Imperit.Dynamics.Commands
         public (IAction[], State.Player) Perform(State.Player player, State.Provinces provinces)
         {
             return player.Id == Player
-                ? (new[] { new Actions.Reinforcement(Land, Army) }, player.Pay(Army.Soldiers))
+                ? (new[] { new Actions.AddSoldiers(Land, Army) }, player.Pay(Army.Soldiers))
                 : (System.Array.Empty<IAction>(), player);
         }
         public bool Allowed(IReadOnlyList<State.Player> players, State.Provinces provinces)
