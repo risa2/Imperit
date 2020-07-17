@@ -1,15 +1,15 @@
-@inject Services.IActionLoader Actions;
+@inject Services.IActionLoader actions;
 
 @code{
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public State.Player? Associate { get; set; }
     [Parameter] public Action Return { get; set; } = (() => { });
-    uint DonatedAmount { get; set; } = 1;
+    Models.CmdTransaction model = new Models.CmdTransaction();
     bool Error = false;
     void DoDonate()
     {
-        var donation = new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, DonatedAmount);
-        if (Actions.Add(donation))
+        var donation = new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, (uint)model.Amount);
+        if (actions.Add(donation))
         {
             Return();
         }
@@ -23,6 +23,12 @@
 {
     <p>Příliš vysoká částka. Můžeš věnovat nejvýše tolik, kolik máš, minus tvůj dluh.</p>
 }
-<label>Darovaná částka:<br/><input @bind-value="DonatedAmount" min="1" autofocus/><br/></label>
-<label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
-<button @onclick="DoDonate">Věnovat</button>
+<EditForm Model="@model" OnValidSubmit="DoDonate">
+    <DataAnnotationsValidator /><ValidationSummary />
+    <label>
+        Darovaná částka:<br />
+        <InputNumber @bind-Value="model.Amount" min="1" autofocus /><br />
+    </label>
+    <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled" /><br /></label>
+    <button type="submit">Věnovat</button>
+</EditForm>

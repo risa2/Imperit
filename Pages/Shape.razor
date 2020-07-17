@@ -5,13 +5,13 @@
     [Parameter] public State.Province? Province { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
     [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = ColorOf;
-    static State.Color EmptyColor(State.Province prov) => prov is State.Sea ? new State.Color(20, 176, 255) : new State.Color(32, 32, 32);
+    static State.Color EmptyColor(State.Province prov) => prov is State.Sea ? new State.Color(20, 176, 255) : new State.Color(17, 17, 17);
     public static State.Color ColorOf(State.Province prov) => (prov.Army is State.PlayerArmy pl ? pl.Player.Color : EmptyColor(prov));
     State.Color Fill => ColorFn(Province!);
     string Points => string.Join(" ", This!.Select(point => Width * point.x + "," + Height * point.y));
 }
-<polyline points="@Points" fill="@Fill" @onclick="OnClick" stroke="#00000030" stroke-width="0.5"></polyline>
-@if(Province is State.Sea)
+<polyline points="@Points" fill="@Fill" @onclick="OnClick"></polyline>
+@if (Province is State.Sea)
 {
     <polyline points="@Points" fill="#1099FF80" @onclick="OnClick"></polyline>
 }

@@ -2,7 +2,7 @@
     [Parameter] public int Width { get; set; }
     [Parameter] public int Height { get; set; }
     [Parameter] public State.MountainRange This { get; set; } = new State.MountainRange(new State.Point[0]);
-    [Parameter] public string Color { get; set; } = "#000000";
+    [Parameter] public string Color { get; set; } = "#000";
     string Points => string.Join(" ", This.Select(point => Width * point.x + "," + Height * point.y));
 }
 <polyline points="@Points" stroke="@Color" stroke-width="3" fill="none"></polyline>

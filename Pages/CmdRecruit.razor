@@ -30,7 +30,7 @@
 <EditForm Model="@model" OnValidSubmit="DoRecruit">
     <DataAnnotationsValidator/><ValidationSummary/>
     <label>
-        @Land!.Name má @Land!.Soldiers vojáků. Kolik chcete naverbovat?<br />
+        @Land!.Name má @(Land!.Soldiers)@Sym.Soldiers. Kolik chcete naverbovat?<br />
         <InputNumber @bind-Value="model.Soldiers" min="1" autofocus /><br />
     </label>
     <button type="submit">Verbovat</button>

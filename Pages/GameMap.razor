@@ -1,13 +1,16 @@
 @inject Services.IMap map;
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
+@inject Services.IActionLoader actions;
+@inject Services.IActivePlayer active;
 
-@using Mode = GameSwitch.Mode; 
+@using Mode = GameSwitch.Mode;
 
 @code{
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public bool IsActive { get; set; }
     [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public bool Preview { get; set; }
     State.Province? From = null;
     void OnClick(State.Province clicked)
     {
@@ -42,4 +45,12 @@
     }
     State.Color ColorFn(State.Province province) => Shape.ColorOf(province).Darken(light: province == From ? (byte)120 : (byte)255);
 }
-<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@pr.Provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>
+@{ 
+    IReadOnlyList<State.Province> provinces = pr.Provinces;
+    if (Preview)
+    {
+        var queue = actions.Where(x => x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal);
+        provinces = queue.EndOfTurn(players, pr.Provinces, active.Id).Item3;
+    }
+}
+<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9" />

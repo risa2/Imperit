@@ -35,11 +35,11 @@
     }
     <a class="@ClassFor(Mode.Map)" @onclick="@(() => GoTo(Mode.Map))">Imperit</a>
     <a class="@ClassFor(Mode.Players)" @onclick="@(() => GoTo(Mode.Players))">@(players[LoggedIn].Money)@Sym.Money</a>
+    <a class="@ClassFor(Mode.Preview)" @onclick="@(() => GoTo(Mode.Preview))">Náhled</a>
     @if (powers.Count > 2)
     {
         <a class="@ClassFor(Mode.Powers)" @onclick="@(() => GoTo(Mode.Powers))">Historie</a>
     }
-    <a class="@ClassFor(Mode.Preview)" @onclick="@(() => GoTo(Mode.Preview))">Náhled</a>
     @if (This == Mode.CmdMove)
     {
         <a class="this">Přesun</a>
