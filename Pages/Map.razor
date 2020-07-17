@@ -5,9 +5,9 @@
     [Parameter] public IEnumerable<State.Province> Provinces { get; set; } = new State.Province[0];
     [Parameter] public IEnumerable<State.MountainRange> Mountains { get; set; } = new State.MountainRange[0];
     [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = Shape.ColorOf;
-    [Parameter] public Action<State.Province> OnClick { get; set; } = (a => { });
+    [Parameter] public Action<int> OnClick { get; set; } = (a => { });
     [Parameter] public int FontSize { get; set; }
-    Action OnClickArg(State.Province s) => () => OnClick(s);
+    Action OnClickArg(State.Province s) => () => OnClick(s.Id);
 } 
     <svg viewBox="0 0 @Width @Height">
         @foreach (var (s, p) in Shapes.Zip(Provinces))

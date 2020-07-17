@@ -4,6 +4,8 @@
 @inject Services.IMap map;
 @inject Services.INewGame newgame;
 
+@using Mode = StartSwitch.Mode; 
+
 <label>Jméno:<br/><input type="text" @bind-value="@Username"/></label><br/>
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
@@ -12,7 +14,7 @@
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{
-    [Parameter] public Action<int?> LogIn { get; set; } = (s => { });
+    [Parameter] public Action<Mode> GoTo { get; set; } = (m => { });
     string Username { get; set; } = "";
     string Password { get; set; } = "";
     string ColorStr { get; set; } = "#0000FF";
@@ -20,11 +22,11 @@
     State.Land? Selected = null;
     static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
     State.Color ColorFn(State.Province prov) => prov == Selected ? Color : IsValidLand(prov) ? new State.Color(60,60,60) : Shape.ColorOf(prov);
-    void OnClick(State.Province p)
+    void OnClick(int i)
     {
-        if (IsValidLand(p))
+        if (IsValidLand(pr.Provinces[i]))
         {
-            Selected = p as State.Land;
+            Selected = pr.Provinces[i] as State.Land;
             this.StateHasChanged();
         }
     }
@@ -33,7 +35,7 @@
         if (Username != "" && Password != "" && Selected != null)
         {
             newgame.Registration(Username, State.Password.FromString(Password), Color, Selected);
-            LogIn(players.Count - 1);
+            GoTo(Mode.Login);
         }
     }
 }

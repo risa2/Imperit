@@ -12,25 +12,25 @@
     [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public bool Preview { get; set; }
     State.Province? From = null;
-    void OnClick(State.Province clicked)
+    void OnClick(int clicked)
     {
         if (IsActive)
         {
             if (From == null)
             {
-                if (clicked.IsControlledBy(Player!.Id))
+                if (pr.Provinces[clicked].IsControlledBy(Player!.Id))
                 {
-                    From = clicked;
+                    From = pr.Provinces[clicked];
                     this.StateHasChanged();
                 }
-                else if (clicked is State.Land L1 && !L1.Occupied)
+                else if (pr.Provinces[clicked] is State.Land L1 && !L1.Occupied)
                 {
                     Switch(Mode.CmdPurchase, L1, L1, null);
                 }
             }
-            else if (From != clicked)
+            else if (From?.Id != clicked)
             {
-                Switch(Mode.CmdMove, From, clicked, null);
+                Switch(Mode.CmdMove, From, pr.Provinces[clicked], null);
             }
             else if (From is State.Land)
             {
