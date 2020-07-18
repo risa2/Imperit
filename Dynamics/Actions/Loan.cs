@@ -7,49 +7,33 @@ namespace Imperit.Dynamics.Actions
     {
         readonly State.Settings settings;
         public readonly int Debtor;
-        public readonly uint Debt, Remaining, Repayment;
-
-        public Loan(int debtor, uint debt, uint remaining, uint repayment, State.Settings set)
+        public readonly uint Debt;
+        public Loan(int debtor, uint debt, State.Settings set)
         {
             Debtor = debtor;
             Debt = debt;
-            Remaining = remaining;
-            Repayment = Math.Min(Remaining, repayment);
             settings = set;
         }
         public (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
         {
             if (player == active && player.Id == Debtor)
             {
-                if (Repayment > player.Money)
+                if (Debt > settings.DebtLimit)
                 {
-                    return (new[] { new Seizure(player.Id, Remaining - player.Money) }, player.Pay(player.Money));
+                    return (new[] { new Seizure(player.Id, Debt - player.Money) }, player.Pay(player.Money));
                 }
-                if (Repayment == Remaining)
-                {
-                    return (Array.Empty<IAction>(), player.Pay(Repayment));
-                }
-                return (new[] { new Loan(Debtor, Debt, Remaining - Repayment, Repayment, settings) }, player.Pay(Repayment));
+                return (new[] { new Loan(Debtor, (uint)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
             }
             return (new[] { this }, player);
         }
-        public bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        public (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {
-            if (another is Commands.Loan loan && loan.Player == Debtor)
+            return another switch
             {
-                return loan.Debt + Remaining <= settings.DebtLimit;
-            }
-            if (another is Commands.Donation donation && donation.Player == Debtor)
-            {
-                return donation.Amount + Remaining <= players[donation.Player].Money;
-            }
-            return true;
-        }
-        public (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
-        {
-            return another is Commands.Loan loan && loan.Player == Debtor
-                ? (new Loan(Debtor, Debt + loan.Debt, Remaining + loan.Debt, Repayment + loan.Repayment, settings), false)
-                : (this, true);
+                Commands.Loan Loan when Loan.Player == Debtor => (new Loan(Debtor, Debt + Loan.Amount, settings), false),
+                Commands.Repayment Rep when Rep.Debtor == Debtor => (Rep.Amount >= Debt ? null : new Loan(Debtor, Debt - Rep.Amount, settings), false),
+                _ => (this, true)
+            };
         }
         public byte Priority => 130;
     }

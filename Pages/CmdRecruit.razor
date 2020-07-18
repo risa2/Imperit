@@ -1,4 +1,4 @@
-@inject Services.IActionLoader Actions;
+@inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
 
 @code{
@@ -10,28 +10,35 @@
     {
         model.Soldiers = (int)Player!.Money;
     }
+    uint Missing => (uint)Math.Max(0, model.Soldiers - Player!.Money);
     void DoRecruit()
     {
-        var recruitment = new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(sl.Settings, Player!, (uint)model.Soldiers));
-        if (Actions.Add(recruitment))
+        if (model.Borrow && Missing > 0)
+        {
+            actions.Add(new Dynamics.Commands.Loan(Player!.Id, Missing, sl.Settings));
+        }
+        if (actions.Add(new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(sl.Settings, Player!, (uint)model.Soldiers))))
         {
             Return();
         }
     }
 }
-@if (Player!.Money == 0)
-{
-    Return();
-}
-@if (model.Soldiers > Player!.Money)
-{
-    <p>Máš jen @(Player!.Money)@Sym.Money</p>
-}
 <EditForm Model="@model" OnValidSubmit="DoRecruit">
     <DataAnnotationsValidator/><ValidationSummary/>
     <label>
-        @Land!.Name má @(Land!.Soldiers)@Sym.Soldiers. Kolik chcete naverbovat?<br />
-        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus /><br />
+        @Land!.Name má @(Land!.Soldiers)@Sym.Soldiers. Kolik chcete naverbovat?<br/>
+        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus/><br/>
     </label>
+    @if (Missing > 0)
+    {
+        <label>
+            Chybí ti @(Missing)@Sym.Money<br/>
+            Verbovat na dluh: <InputCheckbox @bind-Value="model.Borrow"/><br/>
+        </label>
+    }
+    else
+    {
+        model.Borrow = false;
+    }
     <button type="submit">Verbovat</button>
 </EditForm>

@@ -8,19 +8,11 @@
 @code{
     [Parameter] public State.Player? LoggedIn { get; set; }
     [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
-    void Borrow()
-    {
-        Switch(Mode.CmdLoan, null, null, null);
-    }
-    void Donate(State.Player player)
-    {
-        Switch(Mode.CmdTransaction, null, null, player);
-    }
-
+    void Donate(State.Player player) => Switch(Mode.CmdTransaction, null, null, player);
+    bool Repayment { get; set; } = false;
 }
-<p>Přihlášen: <Player Who="@LoggedIn" /></p>
-<p>Hraje: <Player Who="@players[active.Id]" /></p>
-<br />
+<p>Přihlášen: <Player Who="@LoggedIn"/></p>
+<br/>
 
 <table>
     @foreach (var player in players)
@@ -31,40 +23,51 @@
                 <td><Player Who="@player"/></td>
                 <td>@(player.Money)@Sym.Money</td>
                 <td>(+@(player.Income)@Sym.Money)</td>
-                @if (player == LoggedIn)
+                @if (player != LoggedIn)
                 {
-                    <td class="link-like" @onclick="Borrow">Půjčka</td>
+                    <td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>
                 }
                 else
                 {
-                    <td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>
+                    <td>Hraje</td>
                 }
             }
             else
             {
-                <td><Player Who="@player" /></td>
+                <td><Player Who="@player"/></td>
                 <td colspan="3">je na tom jako Bůh</td>
             }
         </tr>
     }
 </table>
-<br />
+<br/>
+@foreach (var Loan in actions.Actions.Select(a => a as Dynamics.Actions.Loan).NotNull())
+{
+    <p>
+        <Player Who="players[Loan.Debtor]" /> dluží @(Loan.Debt)@Sym.Money
+        @if (LoggedIn!.Id == Loan.Debtor)
+        {
+            if (Repayment)
+            {
+                <span class="link-like" @onclick="@(() => Repayment = false)">Zrušit</span>
+                <CmdRepay Return="@(() => Switch(Mode.Map, null, null, null))" LoggedIn="@LoggedIn" />
+            }
+            else
+            {
+                <span class="link-like" @onclick="@(() => Repayment = true)">Splatit</span>
+            }
+        }
+    </p>
+}
+@foreach (var Attack in actions.Actions.Select(a => a as Dynamics.Actions.Attack).NotNull())
+{
+    <p><Player Who="@((Attack.Army as State.PlayerArmy)!.Player)"/> pochoduje s @Attack.Soldiers vojáky směr <Province This="pr.Provinces[Attack.Province]"/> s úmyslem zaútočit</p>
+}
+@foreach (var Add in actions.Actions.Select(a => a as Dynamics.Actions.AddSoldiers).NotNull())
+{
+    <p>Do provincie <Province This="pr.Provinces[Add.Province]"/> dorazí na pomoc @Add.Soldiers vojáků</p>
+}
 @foreach (var land in pr.Provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied))
 {
-    <p>Riziko odtržení země <Province This="land" />: @((land.Instability * 100 + 0.2).ToString("0.0")) %</p>
-}
-@foreach (var action in actions.Actions)
-{
-    @if (action is Dynamics.Actions.Attack attack)
-    {
-        <p><Player Who="@((attack.Army as State.PlayerArmy)!.Player)" /> pochoduje s @attack.Soldiers vojáky směr <Province This="pr.Provinces[attack.Province]" /> s úmyslem zaútočit</p>
-    }
-    else if (action is Dynamics.Actions.Reinforcement reinforcement)
-    {
-        <p>Do provincie <Province This="pr.Provinces[reinforcement.Province]" /> dorazí na pomoc @reinforcement.Soldiers vojáků</p>
-    }
-    else if (action is Dynamics.Actions.Loan loan)
-    {
-        <p><Player Who="players[loan.Debtor]" /> &ndash; dluh: @(loan.Remaining)@Sym.Money, splátka: @(loan.Repayment)@Sym.Money/kolo</p>
-    }
+    <p>Riziko odtržení země <Province This="land"/>: @((land.Instability + 0.002).ProbabilityToString(prec: 1))</p>
 }

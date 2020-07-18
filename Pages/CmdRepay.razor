@@ -1,0 +1,22 @@
+﻿@inject Services.IActionLoader actions;
+
+@code {
+    [Parameter] public State.Player? LoggedIn { get; set; }
+    [Parameter] public Action Return { get; set; }
+    Models.CmdRepay model = new Models.CmdRepay();
+    void DoRepay()
+    {
+        if (actions.Add(new Dynamics.Commands.Repayment(LoggedIn!.Id, (uint)model.Amount)))
+        {
+            Return();
+        }
+    }
+}
+
+<EditForm Model="@model" OnValidSubmit="DoRepay">
+    <label>
+        Částka ke splacení<br />
+        <InputNumber @bind-Value="model.Amount" min="1" autofocus /><br />
+    </label>
+    <button type="submit">Splatit</button>
+</EditForm>

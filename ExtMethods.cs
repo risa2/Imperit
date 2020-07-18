@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 
 namespace Imperit
@@ -13,6 +14,12 @@ namespace Imperit
         public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
         public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException("Argument must not be null");
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
+        public static string ProbabilityToString(this double prob, uint prec = 0)
+        {
+            int percents = (int)(prob * 100);
+            int frac = percents >= 100 ? 0 : (int)(prob * 100 * Math.Pow(10, prec)) - (int)(percents * Math.Pow(10, prec));
+            return Math.Max(0, Math.Min(100, percents)).ToString(CultureInfo.InvariantCulture) + "." + frac.ToString(CultureInfo.InvariantCulture).PadRight((int)prec, '0') + " %";
+        }
         public static T[] Concat<T>(this T[] array, params T[] args)
         {
             var result = new T[array.Length + args.Length];

@@ -28,7 +28,10 @@
     @if (!sl.Settings.Started)
     {
         <a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
-        <a class="@ClassFor(Mode.StartGame)" @onclick="@(() => GoTo(Mode.StartGame))">Zahájit</a>
+        @if (players.Count > 0)
+        {
+            <a class="@ClassFor(Mode.StartGame)" @onclick="@(() => GoTo(Mode.StartGame))">Zahájit</a>
+        }
     }
     <a class="@ClassFor(Mode.NewGame)" @onclick="@(() => GoTo(Mode.NewGame))">Nová hra</a>
 </nav>

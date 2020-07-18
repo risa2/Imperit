@@ -66,7 +66,7 @@ namespace Imperit.Dynamics
             for (i = 0; i < actions.Count && allowed; ++i)
             {
                 var (new_action, ok) = actions[i].Interact(command, players, provinces);
-                new_actions = new_actions.Add(new_action);
+                new_actions = new_action != null ? new_actions.Add(new_action) : new_actions;
                 allowed = allowed && ok;
             }
             return (new_actions.AddRange(actions.Skip(i)), allowed);

@@ -1,4 +1,4 @@
-@inject Services.IActionLoader Actions;
+@inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
@@ -10,15 +10,23 @@
     Dynamics.Commands.Purchase purchase => new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, Land!.Price);
     void DoPurchase()
     {
-        if (Actions.Add(purchase!))
+        if (actions.Add(purchase!))
         {
             Return();
         }
     }
+    void DoBorrowPurchase()
+    {
+        if (actions.Add(new Dynamics.Commands.Loan(Player!.Id, purchase.Price - Player!.Money, sl.Settings)))
+        {
+            DoPurchase();
+        }
+    }
 }
-@if (Land!.Price > Player!.Money)
+@if (purchase.Price > Player!.Money)
 {
-    <p>Nemáš dost peněz na to, aby sis provincii @Land!.Name mohl koupit. Stojí @(Land!.Price)@Sym.Money</p>
+    <p>@Land!.Name stojí @(Land!.Price)@Sym.Money. Chceš si půjčit @(purchase.Price - Player!.Money) a koupit ji? </p>
+    <button @onclick="DoBorrowPurchase">Koupit na dluh</button>
 }
 else if (!purchase.Allowed(players, pr.Provinces))
 {

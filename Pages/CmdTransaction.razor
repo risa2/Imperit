@@ -21,14 +21,18 @@
 }
 @if (Error)
 {
-    <p>Příliš vysoká částka. Můžeš věnovat nejvýše tolik, kolik máš, minus tvůj dluh.</p>
+    <p>Nejdřív splať své dluhy</p>
+}
+else if (model.Amount > Player!.Money)
+{
+    <p>Máš jen @(Player!.Money)@Sym.Money</p>
 }
 <EditForm Model="@model" OnValidSubmit="DoDonate">
-    <DataAnnotationsValidator /><ValidationSummary />
+    <DataAnnotationsValidator/><ValidationSummary/>
     <label>
-        Darovaná částka:<br />
-        <InputNumber @bind-Value="model.Amount" min="1" autofocus /><br />
+        Darovaná částka:<br/>
+        <InputNumber @bind-Value="model.Amount" min="1" autofocus/><br/>
     </label>
-    <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled" /><br /></label>
+    <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
     <button type="submit">Věnovat</button>
 </EditForm>

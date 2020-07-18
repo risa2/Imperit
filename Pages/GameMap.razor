@@ -49,8 +49,8 @@
     IReadOnlyList<State.Province> provinces = pr.Provinces;
     if (Preview)
     {
-        var queue = actions.Where(x => x is Dynamics.Actions.Move || x is Dynamics.Actions.PortRenewal);
+        var queue = actions.Where(x => x is Dynamics.Actions.ArmyOperation || x is Dynamics.Actions.PortRenewal);
         provinces = queue.EndOfTurn(players, pr.Provinces, active.Id).Item3;
     }
 }
-<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9" />
+<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>

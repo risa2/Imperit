@@ -1,4 +1,4 @@
-@inject Services.IActionLoader Actions;
+@inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IProvincesLoader pr;
 @inject Services.IPlayersLoader players;
@@ -25,7 +25,7 @@
         var move = model.Type == Models.MoveType.Attack
                   ? new Dynamics.Commands.Attack(Player!.Id, From!.Id, To!, new State.PlayerArmy(sl.Settings, Player, (uint)model.Soldiers)) as Dynamics.Commands.Move
                   : new Dynamics.Commands.Reinforcement(Player!.Id, From!.Id, To!, new State.PlayerArmy(sl.Settings, Player, (uint)model.Soldiers));
-        if (Actions.Add(move))
+        if (actions.Add(move))
         {
             Return();
         }
@@ -39,19 +39,19 @@
     var submit_text = model.IsAttack ? "Zaútočit" : "Podpořit";
 }
 <EditForm Model="@model" OnValidSubmit="DoMove">
-    <DataAnnotationsValidator /><ValidationSummary />
+    <DataAnnotationsValidator/><ValidationSummary/>
     <label>
-        Kolik vojáků chceš přesunout z provincie @From!.Name (@(From!.Soldiers)@Sym.Soldiers) směrem <Province This="@To" /> (@(To!.Soldiers)@Sym.Soldiers)?<br />
-        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus /><br />
+        Kolik vojáků chceš přesunout z provincie @From!.Name (@(From!.Soldiers)@Sym.Soldiers) směrem <Province This="@To"/> (@(To!.Soldiers)@Sym.Soldiers)?<br/>
+        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus/><br/>
     </label>
     @if (!From!.IsAllyOf(To!.Army))
     {
         <label>
-            Typ přesunu:<br />
+            Typ přesunu:<br/>
             <InputSelect @bind-Value="model.Type">
                 <option value="@Models.MoveType.Attack">Útok</option>
                 <option value="@Models.MoveType.Reinforcement">Podpora</option>
-            </InputSelect><br />
+            </InputSelect><br/>
         </label>
     }
     <button type="submit">@submit_text</button>

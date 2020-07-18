@@ -5,9 +5,10 @@
         static readonly System.Random rand = new System.Random();
         public (IAction[], State.Province) Perform(State.Province province, State.Player active)
         {
-            if ((province is State.Land Land && Land.IsControlledBy(active.Id) && !Land.IsStart && rand.NextDouble() < Land.Instability) || (province is State.Sea Sea && Sea.Soldiers == 0))
+            if (province.Occupied && province is State.Land Land && Land.IsControlledBy(active.Id) && !Land.IsStart && rand.NextDouble() < Land.Instability)
             {
-                return (new IAction[] { this, new Revolution(province.Id) }, province);
+                var (land, actions) = Land.Revolt();
+                return (actions.Concat(this), land);
             }
             return (new[] { this }, province);
         }
