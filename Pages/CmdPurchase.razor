@@ -25,7 +25,7 @@
 }
 @if (purchase.Price > Player!.Money)
 {
-    <p>@Land!.Name stojí @(Land!.Price)@Sym.Money. Chceš si půjčit @(purchase.Price - Player!.Money) a koupit ji? </p>
+    <p>@Land!.Name stojí @(Land!.Price)@Sym.Money. Chceš si půjčit @(purchase.Price - Player!.Money) a koupit? </p>
     <button @onclick="DoBorrowPurchase">Koupit na dluh</button>
 }
 else if (!purchase.Allowed(players, pr.Provinces))

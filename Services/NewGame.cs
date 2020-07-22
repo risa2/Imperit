@@ -49,9 +49,10 @@ namespace Imperit.Services
             var start_lands = UnoccupiedStartLands();
             rand.Shuffle(start_lands);
             int count = Math.Min(start_lands.Length, sl.Settings.MaxRobotCount), previous = players.Count;
+            var colors = rand.NextColors(count);
             for (int i = 0; i < count; ++i)
             {
-                players.Add(new State.Robot(players.Count, sl.Settings.RobotName(i), rand.NextColor(), State.Password.FromString(""), sl.Settings.DefaultMoney, true, start_lands[i].Earnings));
+                players.Add(new State.Robot(players.Count, sl.Settings.RobotName(i), colors[i], State.Password.FromString(""), sl.Settings.DefaultMoney, true, start_lands[i].Earnings));
             }
             pr.Reset(sl.Settings, players);
             for (int i = 0; i < count; ++i)

@@ -8,22 +8,13 @@
     bool Error = false;
     void DoDonate()
     {
-        var donation = new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, (uint)model.Amount);
-        if (actions.Add(donation))
+        if (actions.Add(new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, (uint)model.Amount)))
         {
             Return();
         }
-        else
-        {
-            Error = true;
-        }
     }
 }
-@if (Error)
-{
-    <p>Nejdřív splať své dluhy</p>
-}
-else if (model.Amount > Player!.Money)
+@if (model.Amount > Player!.Money)
 {
     <p>Máš jen @(Player!.Money)@Sym.Money</p>
 }

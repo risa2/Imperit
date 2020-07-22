@@ -27,7 +27,7 @@ namespace Imperit
             args.CopyTo(result, array.Length);
             return result;
         }
-        public static string ToHexString(this byte num) => num.ToString("x2", System.Globalization.CultureInfo.InvariantCulture);
+        public static string ToHexString(this byte num) => num.ToString("x2", CultureInfo.InvariantCulture);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
             while (H < 0) { H += 360; }
@@ -110,6 +110,19 @@ namespace Imperit
         public static State.Color NextColor(this Random rand)
         {
             return HsvToRgb(rand.Next(360), (rand.Next(2) + 1) / 2.0, (rand.Next(2) + 1) / 2.0);
+        }
+        public static double NextDouble(this Random rand, double min, double max) => (rand.NextDouble() * (max - min)) + min;
+        public static State.Color[] NextColors(this Random rand, int count)
+        {
+            const double step = 137.50776;
+            double hue = rand.NextDouble() * 360.0;
+            var colors = new State.Color[count];
+            for (int i = 0; i < count; ++i)
+            {
+                colors[i] = HsvToRgb(hue, rand.NextDouble(0.8, 1.0), rand.NextDouble(0.8, 1.0));
+                hue = hue > 360.0 - step ? hue + step - 360.0 : hue + step;
+            }
+            return colors;
         }
         public static ImmutableSortedSet<T> AddRange<T>(this ImmutableSortedSet<T> set, IEnumerable<T> items)
         {

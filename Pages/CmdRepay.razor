@@ -3,10 +3,11 @@
 @code {
     [Parameter] public State.Player? LoggedIn { get; set; }
     [Parameter] public Action Return { get; set; }
+    [Parameter] public uint Debt { get; set; }
     Models.CmdRepay model = new Models.CmdRepay();
     void DoRepay()
     {
-        if (actions.Add(new Dynamics.Commands.Repayment(LoggedIn!.Id, (uint)model.Amount)))
+        if (actions.Add(new Dynamics.Commands.Repayment(LoggedIn!.Id, Math.Min((uint)model.Amount, Debt))))
         {
             Return();
         }

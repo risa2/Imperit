@@ -50,7 +50,7 @@
             if (Repayment)
             {
                 <span class="link-like" @onclick="@(() => Repayment = false)">Zrušit</span>
-                <CmdRepay Return="@(() => Switch(Mode.Map, null, null, null))" LoggedIn="@LoggedIn" />
+                <CmdRepay Return="@(() => Repayment = false)" LoggedIn="@LoggedIn" />
             }
             else
             {
@@ -67,7 +67,7 @@
 {
     <p>Do provincie <Province This="pr.Provinces[Add.Province]"/> dorazí na pomoc @Add.Soldiers vojáků</p>
 }
-@foreach (var land in pr.Provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied))
+@foreach (var land in pr.Provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied).OrderBy(l => -l.Instability))
 {
     <p>Riziko odtržení země <Province This="land"/>: @((land.Instability + 0.002).ProbabilityToString(prec: 1))</p>
 }

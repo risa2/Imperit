@@ -23,7 +23,6 @@ namespace Imperit.State
         public Player Earn() => GainMoney(Income);
         public virtual Player Die() => new Player(Id, Name, Color, Password, 0, false, 0);
         public virtual Player ChangeIncome(int change) => new Player(Id, Name, Color, Password, Money, Alive, (uint)(Income + change));
-        public bool Surviving => Income > 0;
         public override bool Equals(object? obj) => obj != null && obj is Player p && p.Id == Id;
         public override int GetHashCode() => Id.GetHashCode();
         public static bool operator ==(Player? a, Player? b) => (a is null && b is null) || (a is Player x && x.Equals(b));
