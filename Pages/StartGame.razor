@@ -1,4 +1,4 @@
-@inject Services.INewGame new_game;
+﻿@inject Services.INewGame new_game;
 @inject Services.IPassword pw;
 
 @using Mode = StartSwitch.Mode;
@@ -18,5 +18,5 @@
 <EditForm Model="@model" OnSubmit="Start">
     <DataAnnotationsValidator /><ValidationSummary />
     <label>Heslo:<br /><InputText type="password" @bind-Value="model.Password" /><br /></label>
-    <button type="submit">Zah�jit</button>
+    <button type="submit">Zahájit</button>
 </EditForm>
