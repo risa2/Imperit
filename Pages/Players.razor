@@ -9,7 +9,6 @@
     [Parameter] public State.Player? LoggedIn { get; set; }
     [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     void Donate(State.Player player) => Switch(Mode.CmdTransaction, null, null, player);
-    bool Repayment { get; set; } = false;
 }
 <p>Přihlášen: <Player Who="@LoggedIn"/></p>
 <br/>
@@ -44,18 +43,10 @@
 @foreach (var Loan in actions.Actions.Select(a => a as Dynamics.Actions.Loan).NotNull())
 {
     <p>
-        <Player Who="players[Loan.Debtor]" /> dluží @(Loan.Debt)@Sym.Money
+        <Player Who="players[Loan.Debtor]"/> dluží @(Loan.Debt)@Sym.Money
         @if (LoggedIn!.Id == Loan.Debtor)
         {
-            if (Repayment)
-            {
-                <span class="link-like" @onclick="@(() => Repayment = false)">Zrušit</span>
-                <CmdRepay Return="@(() => Repayment = false)" LoggedIn="@LoggedIn" />
-            }
-            else
-            {
-                <span class="link-like" @onclick="@(() => Repayment = true)">Splatit</span>
-            }
+            <span class="link-like" @onclick="@(() => Switch(Mode.CmdRepay, null, null, null))">Splatit</span>
         }
     </p>
 }

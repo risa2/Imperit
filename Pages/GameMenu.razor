@@ -44,11 +44,19 @@
     {
         <a class="this">Přesun</a>
     }
-    @if (This == Mode.CmdRecruit)
+    else if (This == Mode.CmdPurchase)
+    {
+        <a class="this">Nákup</a>
+    }
+    else if (This == Mode.CmdRecruit)
     {
         <a class="this">Verbování</a>
     }
-    @if (This == Mode.CmdTransaction)
+    else if (This == Mode.CmdRepay)
+    {
+        <a class="this">Splátka</a>
+    }
+    else if (This == Mode.CmdTransaction)
     {
         <a class="this">Transakce</a>
     }

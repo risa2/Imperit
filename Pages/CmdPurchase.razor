@@ -8,12 +8,11 @@
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public State.Land? Land { get; set; }
     Dynamics.Commands.Purchase purchase => new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, Land!.Price);
+    Dynamics.Commands.Purchase purchase_without_money => new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, 0);
     void DoPurchase()
     {
-        if (actions.Add(purchase!))
-        {
-            Return();
-        }
+        actions.Add(purchase!);
+        Return();
     }
     void DoBorrowPurchase()
     {
@@ -23,7 +22,11 @@
         }
     }
 }
-@if (purchase.Price > Player!.Money)
+@if (!purchase_without_money.Allowed(players, pr.Provinces))
+{
+    Return();
+}
+else if (purchase.Price > Player!.Money)
 {
     <p>@Land!.Name stojí @(Land!.Price)@Sym.Money. Chceš si půjčit @(purchase.Price - Player!.Money) a koupit? </p>
     <button @onclick="DoBorrowPurchase">Koupit na dluh</button>

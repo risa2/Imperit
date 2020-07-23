@@ -3,7 +3,11 @@
 @code {
     [Parameter] public State.Player? LoggedIn { get; set; }
     [Parameter] public Action Return { get; set; }
-    [Parameter] public uint Debt { get; set; }
+    uint Debt;
+    protected override void OnInitialized()
+    {
+        Debt = actions.Actions.Select(a => a as Dynamics.Actions.Loan).NotNull().FirstOrDefault()?.Debt ?? 0;
+    }
     Models.CmdRepay model = new Models.CmdRepay();
     void DoRepay()
     {
@@ -13,10 +17,17 @@
         }
     }
 }
-
+@if (model.Amount > Debt)
+{
+    <p>Dlužíš jen @(Debt)@Sym.Money, proč splácíš @(model.Amount)@Sym.Money</p>
+}
+else if (model.Amount > LoggedIn!.Money)
+{
+    <p>Máš jen @(LoggedIn!.Money)@Sym.Money, nemůžeš splatit @(model.Amount)@Sym.Money</p>
+}
 <EditForm Model="@model" OnValidSubmit="DoRepay">
     <label>
-        Částka ke splacení<br />
+        Dlužíš @(Debt)@Sym.Money, splátka:<br />
         <InputNumber @bind-Value="model.Amount" min="1" autofocus /><br />
     </label>
     <button type="submit">Splatit</button>

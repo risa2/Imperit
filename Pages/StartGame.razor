@@ -5,16 +5,18 @@
 
 @code{
     [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
-    string Password { get; set; } = "";
+    Models.StartGame model = new Models.StartGame();
     void Start()
     {
-        if (pw.IsCorrect(Password))
+        if (pw.IsCorrect(model.Password))
         {
             new_game.Start();
             GoTo(Mode.Login);
         }
     }
 }
-
-<label>Heslo:<br/><input type="password" @bind-value="@Password"/><br/></label>
-<button @onclick="Start">Zahájit</button>
+<EditForm Model="@model" OnSubmit="Start">
+    <DataAnnotationsValidator/><ValidationSummary/>
+    <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
+    <button type="submit"></button>
+</EditForm>
