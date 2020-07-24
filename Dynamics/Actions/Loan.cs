@@ -20,11 +20,20 @@ namespace Imperit.Dynamics.Actions
             {
                 if (Debt > settings.DebtLimit)
                 {
-                    return (new[] { new Seizure(player.Id, Debt - player.Money) }, player.Pay(player.Money));
+                    return (Array.Empty<IAction>(), player.Pay(player.Money));
                 }
                 return (new[] { new Loan(Debtor, (uint)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
             }
             return (new[] { this }, player);
+        }
+        public (IAction[], State.Province) Perform(State.Province province, State.Player active)
+        {
+            if (active.Id == Debtor && province is State.Land land && land.IsControlledBy(Debtor) && Debt > settings.DebtLimit + active.Money)
+            {
+                var (new_province, actions) = land.Revolt();
+                return (land.Price > Debt ? actions : actions.Concat(new Loan(Debtor, Debt - land.Price, settings)), new_province);
+            }
+            return (new[] { this }, province);
         }
         public (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
         {

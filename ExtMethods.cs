@@ -52,11 +52,13 @@ namespace Imperit
                 switch (i)
                 {
                     // Red is the dominant color
+                    case -1:
                     case 5:
                         R = V;
                         G = pv;
                         B = qv;
                         break;
+                    case 6:
                     case 0:
                         R = V;
                         G = tv;
@@ -84,22 +86,8 @@ namespace Imperit
                         G = pv;
                         B = V;
                         break;
-                    // Just in case we overshoot on our math by a little, we put these here.
-                    // Since its a switch it won't slow us down at all to put these here
-                    case 6:
-                        R = V;
-                        G = tv;
-                        B = pv;
-                        break;
-                    case -1:
-                        R = V;
-                        G = pv;
-                        B = qv;
-                        break;
-                    // The color is not defined, we should throw an error.
-
+                    // The color is not defined, we should throw an error
                     default:
-                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
                         R = G = B = V; // Just pretend its black/white
                         break;
                 }
@@ -140,6 +128,15 @@ namespace Imperit
                 T value = list[k];
                 list[k] = list[n];
                 list[n] = value;
+            }
+        }
+        public static IEnumerable<T> Shuffled<T>(this Random rand, IReadOnlyList<T> ls)
+        {
+            int[] indices = Enumerable.Range(0, ls.Count).ToArray();
+            rand.Shuffle(indices);
+            for (int i = 0; i < indices.Length; ++i)
+            {
+                yield return ls[indices[i]];
             }
         }
         public static T[] SortBy<T>(this IReadOnlyList<T> list, Func<T, byte> value)

@@ -5,14 +5,14 @@ namespace Imperit.Load
 {
     public class PlayerPower
     {
-        public uint Soldiers { get; set; }
-        public uint Money { get; set; }
-        public uint Income { get; set; }
+        public long Total { get; set; }
+        public double Change { get; set; }
+        public double Ratio { get; set; }
     }
     public class PowersLoader : IConvertibleToWith<State.PlayerPower[], bool>
     {
         public IEnumerable<PlayerPower>? Powers { get; set; }
-        public State.PlayerPower[] Convert(int i, bool a) => Powers.Select(p => new State.PlayerPower(p.Soldiers, p.Money, p.Income)).ToArray();
-        public static PowersLoader From(State.PlayerPower[] pp) => new PowersLoader() { Powers = pp.Select(p => new PlayerPower() { Soldiers = p.Soldiers, Money = p.Money, Income = p.Income }) };
+        public State.PlayerPower[] Convert(int i, bool a) => Powers.Select(p => new State.PlayerPower(p.Total, p.Change, p.Ratio)).ToArray();
+        public static PowersLoader From(State.PlayerPower[] pp) => new PowersLoader() { Powers = pp.Select(p => new PlayerPower() { Total = p.Total, Change = p.Change, Ratio = p.Ratio }) };
     }
 }

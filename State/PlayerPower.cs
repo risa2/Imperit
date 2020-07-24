@@ -2,12 +2,13 @@ namespace Imperit.State
 {
     public readonly struct PlayerPower
     {
-        public readonly uint Soldiers, Money, Income;
-        public PlayerPower(uint soldiers, uint money, uint income)
+        public readonly long Total;
+        public readonly double Change, Ratio;
+        public PlayerPower(long total, double change, double ratio)
         {
-            Soldiers = soldiers;
-            Money = money;
-            Income = income;
+            Total = total;
+            Change = change;
+            Ratio = ratio;
         }
     }
 }

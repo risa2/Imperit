@@ -27,14 +27,30 @@ namespace Imperit.Services
             loader.Clear();
             powers.Clear();
         }
-        public void Add(IReadOnlyCollection<State.Player> players)
+        uint[] SoldiersOf(IReadOnlyCollection<State.Player> players)
         {
             var soldiers = new uint[players.Count];
             foreach (var army in provinces.Provinces.Select(p => p.Army as State.PlayerArmy).NotNull())
             {
                 soldiers[army.Player.Id] += army.Soldiers;
             }
-            powers.Add(players.Select((p, i) => new State.PlayerPower(soldiers[i], p.Money, p.Income)).ToArray());
+            return soldiers;
+        }
+        static double Div(double a, double b) => (a / b) switch
+        {
+            double.NaN => 0.0,
+            double.PositiveInfinity => double.MaxValue,
+            double.NegativeInfinity => double.MinValue,
+            _ => a / b
+        };
+        public void Add(IReadOnlyCollection<State.Player> players)
+        {
+            var soldiers = SoldiersOf(players);
+            var totals = players.Select((p, i) => (long)soldiers[i] + p.Money + (p.Income * 5)).ToArray();
+            var changes = players.Select((p, i) => powers.Any() ? Div(totals[i], powers.Last()[i].Total) - 1 : 0.0).ToArray();
+            var sum_sm = players.Select((p, i) => (long)soldiers[i] + p.Money).Sum();
+            var ratios = players.Select((p, i) => Div(soldiers[i] + p.Money, sum_sm)).ToArray();
+            powers.Add(players.Select((p, i) => new State.PlayerPower(totals[i], changes[i], ratios[i])).ToArray());
             loader.Add(powers.Last());
         }
         public IEnumerator<State.PlayerPower[]> GetEnumerator() => powers.GetEnumerator();
