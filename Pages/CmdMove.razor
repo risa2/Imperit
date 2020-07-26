@@ -1,6 +1,6 @@
 @inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
-@inject Services.IProvincesLoader pr;
+@inject Services.IProvincesLoader provinces;
 @inject Services.IPlayersLoader players;
 
 @code{
@@ -12,7 +12,7 @@
     public int Limit { get; set; }
     protected override void OnInitialized()
     {
-        Limit = (int)pr.Provinces.CanMove(From!, To!);
+        Limit = (int)provinces.CanMove(From!.Id, To!.Id);
         if (Limit == 0)
         {
             Return();

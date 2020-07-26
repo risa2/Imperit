@@ -5,7 +5,7 @@ namespace Imperit.Dynamics.Actions
 {
     public class Mortality : IAction
     {
-        public (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        public (IAction[], State.Player) Perform(State.Player player, State.Player active, State.IProvinces provinces)
         {
             return (new[] { this }, provinces.Any(prov => prov.IsControlledBy(player.Id)) ? player : player.Die());
         }

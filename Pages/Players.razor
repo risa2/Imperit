@@ -1,7 +1,7 @@
 @inject Services.IActionLoader actions;
 @inject Services.IActivePlayer active;
 @inject Services.IPlayersLoader players;
-@inject Services.IProvincesLoader pr;
+@inject Services.IProvincesLoader provinces;
 
 @using Mode = GameSwitch.Mode;
 
@@ -52,13 +52,13 @@
 }
 @foreach (var Attack in actions.Actions.Select(a => a as Dynamics.Actions.Attack).NotNull())
 {
-    <p><Player Who="@((Attack.Army as State.PlayerArmy)!.Player)"/> pochoduje s @Attack.Soldiers vojáky směr <Province This="pr.Provinces[Attack.Province]"/> s úmyslem zaútočit</p>
+    <p><Player Who="@((Attack.Army as State.PlayerArmy)!.Player)"/> pochoduje s @Attack.Soldiers vojáky směr <Province This="provinces[Attack.Province]"/> s úmyslem zaútočit</p>
 }
 @foreach (var Add in actions.Actions.Select(a => a as Dynamics.Actions.AddSoldiers).NotNull())
 {
-    <p>Do provincie <Province This="pr.Provinces[Add.Province]"/> dorazí na pomoc @Add.Soldiers vojáků</p>
+    <p>Do provincie <Province This="provinces[Add.Province]"/> dorazí na pomoc @Add.Soldiers vojáků</p>
 }
-@foreach (var land in pr.Provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied).OrderBy(l => -l.Instability))
+@foreach (var land in provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied).OrderBy(l => -l.Instability))
 {
     <p>Riziko odtržení země <Province This="land"/>: @((land.Instability + 0.002).ProbabilityToString(prec: 1))</p>
 }

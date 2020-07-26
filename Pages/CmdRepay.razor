@@ -27,8 +27,8 @@ else if (model.Amount > LoggedIn!.Money)
 }
 <EditForm Model="@model" OnValidSubmit="DoRepay">
     <label>
-        Dlužíš @(Debt)@Sym.Money, splátka:<br />
-        <InputNumber @bind-Value="model.Amount" min="1" autofocus /><br />
+        Dlužíš @(Debt)@Sym.Money, splátka:<br/>
+        <InputNumber @bind-Value="model.Amount" min="1" autofocus/><br/>
     </label>
     <button type="submit">Splatit</button>
 </EditForm>

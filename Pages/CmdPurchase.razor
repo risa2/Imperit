@@ -1,7 +1,7 @@
 @inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
 @inject Services.IPlayersLoader players;
-@inject Services.IProvincesLoader pr;
+@inject Services.IProvincesLoader provinces;
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
@@ -22,7 +22,7 @@
         }
     }
 }
-@if (!purchase_without_money.Allowed(players, pr.Provinces))
+@if (!purchase_without_money.Allowed(players, provinces))
 {
     Return();
 }
@@ -31,7 +31,7 @@ else if (purchase.Price > Player!.Money)
     <p>@Land!.Name stojí @(Land!.Price)@Sym.Money Chceš si půjčit @(purchase.Price - Player!.Money)@Sym.Money a koupit? </p>
     <button @onclick="DoBorrowPurchase">Koupit na dluh</button>
 }
-else if (!purchase.Allowed(players, pr.Provinces))
+else if (!purchase.Allowed(players, provinces))
 {
     Return();
 }

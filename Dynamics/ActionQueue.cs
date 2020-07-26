@@ -58,7 +58,7 @@ namespace Imperit.Dynamics
         {
             return DoActions(players, provinces, active, actions);
         }
-        (ActionSeq, bool) Interactions(ICommand command, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        (ActionSeq, bool) Interactions(ICommand command, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             bool allowed = true;
             var new_actions = NoActions;
@@ -71,11 +71,11 @@ namespace Imperit.Dynamics
             }
             return (new_actions.AddRange(actions.Skip(i)), allowed);
         }
-        bool IsAllowed(ICommand cmd, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        bool IsAllowed(ICommand cmd, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             return cmd.Allowed(players, provinces) && actions.All(action => action.Allows(cmd, players, provinces));
         }
-        public (ActionQueue, State.Player[], State.Province[], bool) Add(ICommand command, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        public (ActionQueue, State.Player[], State.Province[], bool) Add(ICommand command, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             if (IsAllowed(command, players, provinces))
             {

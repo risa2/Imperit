@@ -30,7 +30,7 @@ namespace Imperit.Services
             powers.Add(players);
             active.Next(players);
         }
-        void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(sl.Settings, pr.Provinces));
+        void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(sl.Settings, pr));
         void AllRobotsactions()
         {
             while (players[active.Id] is State.Robot robot && AreHumansAlive)

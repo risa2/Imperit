@@ -6,8 +6,8 @@ namespace Imperit.Dynamics
     {
         (IAction[], State.Province) Perform(State.Province province, State.Player active) => (new[] { this }, province);
         (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces) => (new[] { this }, player);
-        (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces) => (this, true);
-        bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces) => true;
+        (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces) => (this, true);
+        bool Allows(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces) => true;
         byte Priority { get; }
     }
 }

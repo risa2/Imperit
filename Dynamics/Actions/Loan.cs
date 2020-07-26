@@ -14,7 +14,7 @@ namespace Imperit.Dynamics.Actions
             Debt = debt;
             settings = set;
         }
-        public (IAction[], State.Player) Perform(State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        public (IAction[], State.Player) Perform(State.Player player, State.Player active, State.IProvinces provinces)
         {
             if (player == active && player.Id == Debtor)
             {
@@ -35,7 +35,7 @@ namespace Imperit.Dynamics.Actions
             }
             return (new[] { this }, province);
         }
-        public (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        public (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             return another switch
             {

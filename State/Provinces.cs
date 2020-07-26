@@ -4,7 +4,15 @@ using System.Linq;
 
 namespace Imperit.State
 {
-    public class Provinces : IReadOnlyList<Province>
+    public interface IProvinces : IReadOnlyList<Province>
+    {
+        new Province this[int i] { get; set; }
+        Province IReadOnlyList<Province>.this[int index] => this[index];
+        uint CanMove(int from, int to);
+        uint NeighborCount(int prov);
+        IEnumerable<Province> NeighborsOf(int prov);
+    }
+    public class Provinces : IProvinces
     {
         readonly Province[] provinces;
         public readonly Graph Graph;
@@ -14,11 +22,9 @@ namespace Imperit.State
             Graph = graph;
         }
         public Provinces With(Province[] new_provinces) => new Provinces(new_provinces, Graph);
-        public uint CanMove(Province from, Province to) => Graph.Passable(from.Id, to.Id) ? from.CanMoveTo(to) : 0;
         public uint CanMove(int from, int to) => Graph.Passable(from, to) ? provinces[from].CanMoveTo(provinces[to]) : 0;
-        public uint NeighborCount(Province prov) => Graph.NeighborCount(prov.Id);
-        public IEnumerable<Province> NeighborsOf(int prov) => Graph[prov].Select(vertex => provinces[vertex]);
-        public IEnumerable<Province> NeighborsOf(Province prov) => NeighborsOf(prov.Id);
+        public uint NeighborCount(int id) => Graph.NeighborCount(id);
+        public IEnumerable<Province> NeighborsOf(int id) => Graph[id].Select(vertex => provinces[vertex]);
 
         public Province this[int key]
         {

@@ -1,5 +1,5 @@
 @inject Services.ISettingsLoader sl;
-@inject Services.IProvincesLoader pr;
+@inject Services.IProvincesLoader provinces;
 @inject Services.IPlayersLoader players;
 @inject Services.IMountains mountains;
 @inject Services.INewGame newgame;
@@ -10,7 +10,7 @@
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
-<Map Provinces="@pr.Provinces" Mountains="@mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="9"/>
+<Map Provinces="@provinces" Mountains="@mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="9"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{
@@ -24,9 +24,9 @@
     State.Color ColorFn(State.Province prov) => prov == Selected ? Color : IsValidLand(prov) ? new State.Color(60,60,60) : Shape.ColorOf(prov);
     void OnClick(int i)
     {
-        if (IsValidLand(pr.Provinces[i]))
+        if (IsValidLand(provinces[i]))
         {
-            Selected = pr.Provinces[i] as State.Land;
+            Selected = provinces[i] as State.Land;
             this.StateHasChanged();
         }
     }

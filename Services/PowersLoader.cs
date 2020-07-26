@@ -30,7 +30,7 @@ namespace Imperit.Services
         uint[] SoldiersOf(IReadOnlyCollection<State.Player> players)
         {
             var soldiers = new uint[players.Count];
-            foreach (var army in provinces.Provinces.Select(p => p.Army as State.PlayerArmy).NotNull())
+            foreach (var army in provinces.Select(p => p.Army as State.PlayerArmy).NotNull())
             {
                 soldiers[army.Player.Id] += army.Soldiers;
             }

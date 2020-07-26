@@ -9,7 +9,7 @@ namespace Imperit.Dynamics.Actions
         {
             return Province == province.Id ? (System.Array.Empty<IAction>(), province.ReinforcedBy(Army)) : (new[] { this }, province);
         }
-        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             if (another is Commands.Reinforcement reinf && Army.IsControlledBy(reinf.Player) && reinf.To.Id == Province)
             {

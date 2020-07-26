@@ -18,13 +18,13 @@ namespace Imperit.Services
     public class ActionLoader : IActionLoader
     {
         readonly IPlayersLoader players;
-        readonly IProvincesLoader pr;
+        readonly IProvincesLoader provinces;
         readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)> loader;
         public Dynamics.ActionQueue Actions { get; private set; }
-        public ActionLoader(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IServiceIO io)
+        public ActionLoader(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IServiceIO io)
         {
             this.players = players;
-            this.pr = pr;
+            this.provinces = provinces;
             loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)>(io.Actions, (sl.Settings, players), Load.Action.FromAction);
             Actions = new Dynamics.ActionQueue(loader.Load());
         }
@@ -33,11 +33,11 @@ namespace Imperit.Services
             bool changed = false;
             foreach (var command in commands)
             {
-                var (queue, new_players, new_provinces, ch) = Actions.Add(command, players, pr.Provinces);
+                var (queue, new_players, new_provinces, ch) = Actions.Add(command, players, provinces);
                 Actions = queue;
                 if (ch)
                 {
-                    pr.Set(new_provinces);
+                    provinces.Set(new_provinces);
                     players.Set(new_players);
                     changed = true;
                 }
@@ -48,9 +48,9 @@ namespace Imperit.Services
         public Dynamics.ActionQueue Where(Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(Actions.Where(cond));
         public void EndOfTurn(int active)
         {
-            var (queue, new_players, new_provinces) = Actions.EndOfTurn(players, pr.Provinces, active);
+            var (queue, new_players, new_provinces) = Actions.EndOfTurn(players, provinces, active);
             Actions = queue;
-            pr.Set(new_provinces.ToArray());
+            provinces.Set(new_provinces.ToArray());
             players.Set(new_players);
         }
         public void Clear() => Save(new Dynamics.ActionQueue());

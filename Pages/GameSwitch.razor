@@ -39,38 +39,38 @@
 <main>
     @if (Current == Mode.Map)
     {
-        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="false" />
+        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="false"/>
     }
     else if (Current == Mode.Preview)
     {
-        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="true" />
+        <GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="true"/>
     }
     else if (Current == Mode.Powers)
     {
-        <Powers Switch="Switch" />
+        <Powers Switch="Switch"/>
     }
     else if (Current == Mode.CmdMove)
     {
-        <CmdMove Player="@players[LoggedIn]" From="@From" To="@To" Return="@(() => Switch())" />
+        <CmdMove Player="@players[LoggedIn]" From="@From" To="@To" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.CmdPurchase && To is State.Land L2)
     {
-        <CmdPurchase Player="@players[LoggedIn]" Land="@L2" Return="@(() => Switch())" />
+        <CmdPurchase Player="@players[LoggedIn]" Land="@L2" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.CmdRecruit && To is State.Land L1)
     {
-        <CmdRecruit Player="@players[LoggedIn]" Land="@L1" Return="@(() => Switch())" />
+        <CmdRecruit Player="@players[LoggedIn]" Land="@L1" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.CmdRepay)
     {
-        <CmdRepay LoggedIn="@players[LoggedIn]" Return="@(() => Switch())" />
+        <CmdRepay LoggedIn="@players[LoggedIn]" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.CmdTransaction)
     {
-        <CmdTransaction Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())" />
+        <CmdTransaction Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.Players)
     {
-        <Players LoggedIn="@players[LoggedIn]" Switch="Switch" />
+        <Players LoggedIn="@players[LoggedIn]" Switch="Switch"/>
     }
 </main>

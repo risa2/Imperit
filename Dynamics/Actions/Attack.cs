@@ -14,7 +14,7 @@ namespace Imperit.Dynamics.Actions
             }
             return (new[] { this }, province);
         }
-        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces)
+        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces)
         {
             if (another is Commands.Attack attack && Army.IsControlledBy(attack.Player) && attack.To.Id == Province)
             {

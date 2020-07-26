@@ -12,7 +12,7 @@ namespace Imperit.Dynamics.Actions
             Army = army;
         }
         public abstract (IAction[], State.Province) Perform(State.Province province, State.Player active);
-        public abstract (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.Provinces provinces);
+        public abstract (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces);
         public uint Soldiers => Army.Soldiers;
         public byte Priority => 50;
     }
