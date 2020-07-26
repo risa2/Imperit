@@ -18,11 +18,11 @@ namespace Imperit.Services
         public ProvincesLoader(IServiceIO io, ISettingsLoader settings, IPlayersLoader players)
         {
             this.io = io;
-            loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings.Settings, players);
+            loader = new Load.ProvincesLoader(io.Provinces, io.Graph, io.Shapes, settings.Settings, players);
             Provinces = loader.Load();
         }
         public void Save() => loader.Save(Provinces);
         public void Set(IEnumerable<State.Province> new_provinces) => Provinces = Provinces.With(new_provinces.ToArray());
-        public void Reset(State.Settings settings, IReadOnlyList<State.Player> players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, settings, players);
+        public void Reset(State.Settings settings, IReadOnlyList<State.Player> players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, io.Shapes, settings, players);
     }
 }

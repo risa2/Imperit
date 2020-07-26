@@ -3,15 +3,14 @@
     [Parameter] public int Height { get; set; }
     [Parameter] public int FontSize { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
-    [Parameter] public State.Province? Province { get; set; }
-    [Parameter] public State.Point Center { get; set; }
-    [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = Shape.ColorOf;
+    [Parameter] public State.Province? This { get; set; }
+    State.Point Center => This!.Shape.Center;
 }
 
 <a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">
-    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@Province!.Name</text>
-    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(Province.Soldiers)&#x1F468; @if (Province is State.Land land) {<text>+@(land.Earnings)@Sym.Money</text>}</text>
-    @if (Province is State.Port Port)
+    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@This!.Name</text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(This.Soldiers)&#x1F468; @if (This is State.Land land) {<text>+@(land.Earnings)@Sym.Money</text>}</text>
+    @if (This is State.Port Port)
     {
         <text><text x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)@Sym.Anchor</text></text>
     }

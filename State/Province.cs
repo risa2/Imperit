@@ -6,12 +6,14 @@ namespace Imperit.State
     {
         public readonly int Id;
         public readonly string Name;
+        public readonly Shape Shape;
         public readonly IArmy Army, DefaultArmy;
         public readonly uint Earnings;
-        public Province(int id, string name, IArmy army, IArmy defaultArmy, uint earnings)
+        public Province(int id, string name, Shape shape, IArmy army, IArmy defaultArmy, uint earnings)
         {
             Id = id;
             Name = name;
+            Shape = shape;
             Army = army;
             DefaultArmy = defaultArmy;
             Earnings = earnings;

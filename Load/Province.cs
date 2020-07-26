@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Imperit.Load
 {
-    public class Province : IConvertibleToWith<State.Province, (State.Settings, IReadOnlyList<State.Player>)>
+    public class Province : IConvertibleToWith<State.Province, (State.Settings, IReadOnlyList<State.Player>, IReadOnlyList<State.Shape>)>
     {
         public string? Type { get; set; }
         public string? Name { get; set; }
@@ -12,13 +12,14 @@ namespace Imperit.Load
         public uint? CanBoard { get; set; }
         public uint? Capacity { get; set; }
         public bool? IsStart { get; set; }
-        public State.Province Convert(int i, (State.Settings, IReadOnlyList<State.Player>) arg)
+        public State.Province Convert(int i, (State.Settings, IReadOnlyList<State.Player>, IReadOnlyList<State.Shape>) arg)
         {
+            var (settings, players, shapes) = arg;
             return Type switch
             {
-                "S" => new State.Sea(i, name: Name!, army: Army!.Convert(i, arg)),
-                "L" => new State.Land(i, name: Name!, army: Army!.Convert(i, arg), isStart: IsStart ?? true, earnings: Earnings ?? 0, defaultArmy: DefaultArmy!.Convert(i, arg)),
-                "P" => new State.Port(i, name: Name!, army: Army!.Convert(i, arg), isStart: IsStart ?? true, earnings: Earnings ?? 0, defaultArmy: DefaultArmy!.Convert(i, arg), capacity: Capacity ?? 0, boardLimit: CanBoard ?? 0),
+                "S" => new State.Sea(i, Name!, shapes[i], Army!.Convert(i, (settings, players))),
+                "L" => new State.Land(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0),
+                "P" => new State.Port(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, Capacity ?? 0, CanBoard ?? 0),
                 _ => throw new System.Exception("Unknown State.Province type: " + Type)
             };
         }

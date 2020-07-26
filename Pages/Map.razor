@@ -1,25 +1,23 @@
 @code{
     [Parameter] public int Width { get; set; }
     [Parameter] public int Height { get; set; }
-    [Parameter] public IEnumerable<State.Shape> Shapes { get; set; } = new State.Shape[0];
-    [Parameter] public IEnumerable<State.Province> Provinces { get; set; } = new State.Province[0];
-    [Parameter] public IEnumerable<State.MountainRange> Mountains { get; set; } = new State.MountainRange[0];
+    [Parameter] public IReadOnlyList<State.Province> Provinces { get; set; } = new State.Province[0];
+    [Parameter] public IReadOnlyList<State.MountainRange> Mountains { get; set; } = new State.MountainRange[0];
     [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = Shape.ColorOf;
     [Parameter] public Action<int> OnClick { get; set; } = (a => { });
     [Parameter] public int FontSize { get; set; }
-    Action OnClickArg(State.Province s) => () => OnClick(s.Id);
 } 
     <svg viewBox="0 0 @Width @Height">
-        @foreach (var (s, p) in Shapes.Zip(Provinces))
+        @foreach (var province in Provinces)
         {
-            <Shape Width="@Width" Height="@Height" This="@s" Province="@p" OnClick="@OnClickArg(p)" ColorFn="@ColorFn"/>
+            <Shape Width="@Width" Height="@Height" This="@province" OnClick="@(() => OnClick(province.Id))" ColorFn="@ColorFn"/>
         }
         @foreach (var mountain in Mountains)
         {
             <MountainRange Width="@Width" Height="@Height" This="@mountain" Color="#606070"/>
         }
-        @foreach (var (s, p) in Shapes.Zip(Provinces))
+        @foreach (var province in Provinces)
         {
-            <ProvinceCaption Width="@Width" Height="@Height" Province="@p" Center="@s.Center" FontSize="@FontSize" ColorFn="@ColorFn" OnClick="@OnClickArg(p)"/>
+            <ProvinceCaption Width="@Width" Height="@Height" This="@province" FontSize="@FontSize" OnClick="@(() => OnClick(province.Id))"/>
         }
     </svg>

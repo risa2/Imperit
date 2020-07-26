@@ -1,4 +1,4 @@
-@inject Services.IMap map;
+@inject Services.IMountains mountains;
 @inject Services.IPlayersLoader players;
 @inject Services.IProvincesLoader pr;
 @inject Services.IActionLoader actions;
@@ -53,4 +53,4 @@
         provinces = queue.EndOfTurn(players, pr.Provinces, active.Id).Item3;
     }
 }
-<Map Width="1000" Height="1000" Shapes="@map.Shapes" Provinces="@provinces" Mountains="@map.Mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Provinces="@provinces" Mountains="@mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>
