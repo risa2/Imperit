@@ -14,7 +14,7 @@ namespace Imperit.Dynamics
         public ActionQueue(ActionSeq actions) => this.actions = actions;
         public ActionQueue(IEnumerable<IAction> actions) => this.actions = ImmutableSortedSet.CreateRange(cmp, actions);
         public IEnumerator<IAction> GetEnumerator() => actions!.GetEnumerator();
-        static (ActionSeq Actions, State.Province Province) ApplyAll(IReadOnlyList<IAction> actions, State.Province province, State.Player active)
+        static (ActionSeq, State.Province) ApplyAll(IReadOnlyList<IAction> actions, State.Province province, State.Player active)
         {
             return actions.Aggregate((actions: NoActions, province), (acc, action) =>
             {
@@ -22,7 +22,7 @@ namespace Imperit.Dynamics
                 return (acc.actions.AddRange(added_actions), new_province);
             });
         }
-        static (ActionSeq Actions, State.Player Player) ApplyAll(IReadOnlyList<IAction> actions, State.Player player, State.Player active, IReadOnlyList<State.Province> provinces)
+        static (ActionSeq, State.Player) ApplyAll(IReadOnlyList<IAction> actions, State.Player player, State.Player active, State.IProvinces provinces)
         {
             return actions.Aggregate((actions: NoActions, player), (acc, action) =>
             {
@@ -30,16 +30,16 @@ namespace Imperit.Dynamics
                 return (acc.actions.AddRange(added_actions), new_player);
             });
         }
-        static (IReadOnlyList<IAction>, State.Province[]) ApplyAllToAll(IReadOnlyList<State.Province> provinces, State.Player active, IReadOnlyList<IAction> actions)
+        static (IReadOnlyList<IAction>, State.Provinces) ApplyAllToAll(State.IProvinces provinces, State.Player active, IReadOnlyList<IAction> actions)
         {
             var new_provinces = new State.Province[provinces.Count];
             foreach (var (i, province) in provinces.Enumerate())
             {
                 (actions, new_provinces[i]) = ApplyAll(actions, province, active);
             }
-            return (actions, new_provinces);
+            return (actions, provinces.With(new_provinces));
         }
-        static (IReadOnlyList<IAction>, State.Player[]) ApplyAllToAll(IReadOnlyList<State.Player> players, State.Player active, IReadOnlyList<State.Province> provinces, IReadOnlyList<IAction> actions)
+        static (IReadOnlyList<IAction>, State.Player[]) ApplyAllToAll(IReadOnlyList<State.Player> players, State.Player active, State.IProvinces provinces, IReadOnlyList<IAction> actions)
         {
             var new_players = new State.Player[players.Count];
             foreach (var (i, player) in players.Enumerate())
@@ -48,13 +48,13 @@ namespace Imperit.Dynamics
             }
             return (actions, new_players);
         }
-        static (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) DoActions(IReadOnlyList<State.Player> players, IReadOnlyList<State.Province> provinces, int active, IReadOnlyList<IAction> actions)
+        static (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) DoActions(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active, IReadOnlyList<IAction> actions)
         {
             (actions, provinces) = ApplyAllToAll(provinces, players[active], actions);
             (actions, players) = ApplyAllToAll(players, players[active], provinces, actions);
             return (new ActionQueue(actions), players, provinces);
         }
-        public (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) EndOfTurn(IReadOnlyList<State.Player> players, IReadOnlyList<State.Province> provinces, int active)
+        public (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) EndOfTurn(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active)
         {
             return DoActions(players, provinces, active, actions);
         }

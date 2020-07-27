@@ -11,6 +11,7 @@ namespace Imperit.State
         uint CanMove(int from, int to);
         uint NeighborCount(int prov);
         IEnumerable<Province> NeighborsOf(int prov);
+        Provinces With(Province[] provinces);
     }
     public class Provinces : IProvinces
     {

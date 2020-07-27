@@ -2,7 +2,7 @@
 
 @code {
     [Parameter] public State.Player? LoggedIn { get; set; }
-    [Parameter] public Action Return { get; set; }
+    [Parameter] public Action Return { get; set; } = (() => { });
     uint Debt;
     protected override void OnInitialized()
     {

@@ -33,7 +33,8 @@ namespace Imperit.Services
             set => provinces[i] = value;
         }
         public void Save() => loader.Save(provinces);
-        public void Set(IEnumerable<State.Province> new_provinces) => provinces = provinces.With(new_provinces.ToArray());
+        public State.Provinces With(State.Province[] new_provinces) => new State.Provinces(new_provinces, provinces.Graph);
+        public void Set(IEnumerable<State.Province> new_provinces) => provinces = With(new_provinces.ToArray());
         public void Reset(State.Settings settings, IReadOnlyList<State.Player> players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, io.Shapes, settings, players);
     }
 }
