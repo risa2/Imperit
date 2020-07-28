@@ -58,7 +58,7 @@
 {
     <p>Do provincie <Province This="provinces[Add.Province]"/> dorazí na pomoc @Add.Soldiers vojáků</p>
 }
-@foreach (var land in provinces.Select(p => p as State.Land).NotNull().Where(l => !l.IsStart && l.Occupied).OrderBy(l => -l.Instability))
+@foreach (var land in provinces.Select(p => p as State.Land).NotNull().Where(l => l.Occupied).OrderBy(l => -l.Instability))
 {
-    <p>Riziko odtržení země <Province This="land"/>: @((land.Instability + 0.002).ProbabilityToString(prec: 1))</p>
+    <p>Riziko odtržení země <Province This="land"/>: @(land.Instability.ProbabilityToString(prec: 1))</p>
 }

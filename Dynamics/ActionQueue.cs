@@ -48,13 +48,13 @@ namespace Imperit.Dynamics
             }
             return (actions, new_players);
         }
-        static (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) DoActions(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active, IReadOnlyList<IAction> actions)
+        static (ActionQueue, IReadOnlyList<State.Player>, State.IProvinces) DoActions(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active, IReadOnlyList<IAction> actions)
         {
             (actions, provinces) = ApplyAllToAll(provinces, players[active], actions);
             (actions, players) = ApplyAllToAll(players, players[active], provinces, actions);
             return (new ActionQueue(actions), players, provinces);
         }
-        public (ActionQueue, IReadOnlyList<State.Player>, IReadOnlyList<State.Province>) EndOfTurn(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active)
+        public (ActionQueue, IReadOnlyList<State.Player>, State.IProvinces) EndOfTurn(IReadOnlyList<State.Player> players, State.IProvinces provinces, int active)
         {
             return DoActions(players, provinces, active, actions);
         }

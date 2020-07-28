@@ -33,7 +33,7 @@ namespace Imperit.State
         void Recruit(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
         {
             info[land.Id].Coming += count;
-            result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, new PlayerArmy(settings, this, count)));
+            result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, new PlayerArmy(this, count)));
             spent += count;
         }
         void DefensiveRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
@@ -79,7 +79,7 @@ namespace Imperit.State
         static bool ShouldAttack(IProvinces provinces, int from, int to, PInfo[] info) => info[to].Relation != Relation.Ally && CanAttackSuccesfully(provinces, from, to, info);
         void Attack(List<Dynamics.ICommand> result, Settings settings, IProvinces provinces, PInfo[] info, int from, int to, uint count)
         {
-            result.Add(new Dynamics.Commands.Attack(Id, from, provinces[to], new PlayerArmy(settings, this, count)));
+            result.Add(new Dynamics.Commands.Attack(Id, from, provinces[to], new PlayerArmy(this, count)));
             info[from].Soldiers -= count;
             if (provinces[from].Occupied && count >= provinces[to].Soldiers)
             {
@@ -117,7 +117,7 @@ namespace Imperit.State
         }
         void Transport(List<Dynamics.ICommand> result, Settings settings, PInfo[] info, int from, Province to, uint count)
         {
-            result.Add(new Dynamics.Commands.Reinforcement(Id, from, to, new PlayerArmy(settings, this, count)));
+            result.Add(new Dynamics.Commands.Reinforcement(Id, from, to, new PlayerArmy(this, count)));
             info[from].Soldiers -= count;
             info[to.Id].Coming += count;
         }

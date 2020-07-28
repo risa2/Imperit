@@ -57,7 +57,7 @@ namespace Imperit.Services
             provinces.Reset(sl.Settings, players);
             for (int i = 0; i < count; ++i)
             {
-                (provinces[start_lands[i].Id], _) = start_lands[i].GiveUpTo(new State.PlayerArmy(sl.Settings, players[previous + i], start_lands[i].Soldiers));
+                (provinces[start_lands[i].Id], _) = start_lands[i].GiveUpTo(new State.PlayerArmy(players[previous + i], start_lands[i].Soldiers));
             }
             provinces.Save();
         }
@@ -74,7 +74,7 @@ namespace Imperit.Services
             var player = new State.Player(players.Count, name, color, password, sl.Settings.DefaultMoney, alive: true, income: land.Earnings);
             players.Add(player);
             provinces.Reset(sl.Settings, players);
-            (provinces[land.Id], _) = land.GiveUpTo(new State.PlayerArmy(sl.Settings, player, land.Soldiers));
+            (provinces[land.Id], _) = land.GiveUpTo(new State.PlayerArmy(player, land.Soldiers));
             provinces.Save();
         }
     }

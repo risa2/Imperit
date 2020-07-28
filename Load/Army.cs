@@ -13,7 +13,7 @@ namespace Imperit.Load
             return Type switch
             {
                 "Peasant" => new State.PeasantArmy(Soldiers),
-                "Player" => new State.PlayerArmy(settings, players[Player], Soldiers),
+                "Player" => new State.PlayerArmy(players[Player], Soldiers),
                 _ => throw new System.Exception("Unknown Army type: " + Type),
             };
         }

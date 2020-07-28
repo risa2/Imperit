@@ -7,8 +7,8 @@
     [Parameter] public Action Return { get; set; } = (() => { });
     [Parameter] public State.Player? Player { get; set; }
     [Parameter] public State.Land? Land { get; set; }
-    Dynamics.Commands.Purchase purchase => new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, Land!.Price);
-    Dynamics.Commands.Purchase purchase_without_money => new Dynamics.Commands.Purchase(new State.PlayerArmy(sl.Settings, Player!, 0), Land!.Id, 0);
+    Dynamics.Commands.Purchase purchase => new Dynamics.Commands.Purchase(new State.PlayerArmy(Player!, 0), Land!.Id, Land!.Price);
+    Dynamics.Commands.Purchase purchase_without_money => new Dynamics.Commands.Purchase(new State.PlayerArmy(Player!, 0), Land!.Id, 0);
     void DoPurchase()
     {
         actions.Add(purchase!);

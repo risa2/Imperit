@@ -17,7 +17,7 @@
         {
             actions.Add(new Dynamics.Commands.Loan(Player!.Id, Missing, sl.Settings));
         }
-        if (actions.Add(new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(sl.Settings, Player!, (uint)model.Soldiers))))
+        if (actions.Add(new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(Player!, (uint)model.Soldiers))))
         {
             Return();
         }

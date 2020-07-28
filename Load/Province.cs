@@ -18,8 +18,8 @@ namespace Imperit.Load
             return Type switch
             {
                 "S" => new State.Sea(i, Name!, shapes[i], Army!.Convert(i, (settings, players))),
-                "L" => new State.Land(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0),
-                "P" => new State.Port(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, Capacity ?? 0, CanBoard ?? 0),
+                "L" => new State.Land(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, settings),
+                "P" => new State.Port(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, settings, Capacity ?? 0, CanBoard ?? 0),
                 _ => throw new System.Exception("Unknown State.Province type: " + Type)
             };
         }

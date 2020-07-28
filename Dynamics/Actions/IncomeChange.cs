@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Imperit.Dynamics.Actions
 {
     public class IncomeChange : IAction

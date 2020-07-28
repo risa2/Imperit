@@ -3,7 +3,6 @@ namespace Imperit.State
     public interface IArmy
     {
         uint Soldiers { get; }
-        double Hostility { get; }
         Dynamics.IAction? Lose(Province where);
         Dynamics.IAction? Gain(Province where);
         IArmy Join(IArmy another);

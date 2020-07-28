@@ -5,7 +5,6 @@
     [Parameter] public State.Player? Associate { get; set; }
     [Parameter] public Action Return { get; set; } = (() => { });
     Models.CmdTransaction model = new Models.CmdTransaction();
-    bool Error = false;
     void DoDonate()
     {
         if (actions.Add(new Dynamics.Commands.Donation(Player!.Id, Associate!.Id, (uint)model.Amount)))

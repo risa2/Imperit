@@ -24,7 +24,7 @@ namespace Imperit.State
         static double MinLoanRepayment(uint loan, uint time, double mul) => loan * Math.Pow(mul, time) * (mul - 1) / (Math.Pow(mul, time) - 1);
         public uint LoanRepayment(uint loan, uint time) => (uint)Math.Ceiling(MinLoanRepayment(loan, time, 1.0 + Interest));
         public uint LoanDebt(uint loan, uint time) => (uint)Math.Ceiling(time * MinLoanRepayment(loan, time, 1.0 + Interest));
-        public double Instability(uint soldiers) => DefaultInstability / Math.Pow(2, soldiers / 50.0);
+        public double Instability(uint soldiers, uint defaultSoldiers) => DefaultInstability * Math.Max((int)defaultSoldiers - soldiers, 0) / defaultSoldiers;
         public string RobotName(int i) => i < RobotNames.Length ? RobotNames[i] : "AI " + i;
     }
 }
