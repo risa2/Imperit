@@ -1,8 +1,10 @@
+using System.Globalization;
+
 namespace Imperit.State
 {
     public readonly struct Color : System.IEquatable<Color>
     {
-        static byte FromHex(string s) => byte.Parse(s, System.Globalization.NumberStyles.HexNumber);
+        static byte FromHex(string s) => byte.Parse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         public readonly byte r, g, b;
         public Color(byte R, byte G, byte B)
         {

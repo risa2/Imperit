@@ -12,7 +12,7 @@ namespace Imperit
         public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
         public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
         public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
-        public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException("Argument must not be null");
+        public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
         public static string ProbabilityToString(this double prob, uint prec = 0)
         {
@@ -95,10 +95,6 @@ namespace Imperit
             return new State.Color(clamp((int)(R * 255.0)), clamp((int)(G * 255.0)), clamp((int)(B * 255.0)));
             static byte clamp(int i) => i < 0 ? (byte)0 : i > 255 ? (byte)255 : (byte)i;
         }
-        public static State.Color NextColor(this Random rand)
-        {
-            return HsvToRgb(rand.Next(360), (rand.Next(2) + 1) / 2.0, (rand.Next(2) + 1) / 2.0);
-        }
         public static double NextDouble(this Random rand, double min, double max) => (rand.NextDouble() * (max - min)) + min;
         public static State.Color[] NextColors(this Random rand, int count)
         {
@@ -138,27 +134,6 @@ namespace Imperit
             {
                 yield return ls[indices[i]];
             }
-        }
-        public static T[] SortBy<T>(this IReadOnlyList<T> list, Func<T, byte> value)
-        {
-            T[] result = new T[list.Count];
-            uint[] counts = new uint[256];
-            uint[] starts = new uint[256];
-            for (int i = 0; i < list.Count; ++i)
-            {
-                ++counts[value(list[i])];
-            }
-            for (int i = 1; i < 256; ++i)
-            {
-                starts[i] = starts[i - 1] + counts[i - 1];
-            }
-            for (int i = 0; i < list.Count; ++i)
-            {
-                byte idx = value(list[i]);
-                result[starts[idx]] = list[i];
-                ++starts[idx];
-            }
-            return result;
         }
         public static (TU, T) Swap<T, TU>(this (T, TU) pair) => (pair.Item2, pair.Item1);
         public static (TA, TB) Unzip<T, TU, TA, TB>(this IEnumerable<(T, TU)> en, Func<IEnumerable<T>, TA> s1, Func<IEnumerable<TU>, TB> s2)

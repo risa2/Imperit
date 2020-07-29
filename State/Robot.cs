@@ -30,23 +30,23 @@ namespace Imperit.State
         IEnumerable<Province> NeighborEnemies(IProvinces provinces, Province prov) => provinces.NeighborsOf(prov.Id).Where(neighbor => !neighbor.IsControlledBy(Id) && neighbor.Occupied);
         uint EnemiesCount(IProvinces provinces, Province prov) => (uint)NeighborEnemies(provinces, prov).Sum(neighbor => neighbor.Soldiers);
         Relation GetRelationTo(Province prov) => prov.IsControlledBy(Id) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
-        void Recruit(Settings settings, List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
+        void Recruit(List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
         {
             info[land.Id].Coming += count;
             result.Add(new Dynamics.Commands.Recruitment(Id, land.Id, new PlayerArmy(this, count)));
             spent += count;
         }
-        void DefensiveRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
+        void DefensiveRecruitments(List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
         {
             foreach (Land l in my)
             {
                 if (info[l.Id].Bilance < 0 && info[l.Id].Bilance + Money - spent >= 0)
                 {
-                    Recruit(settings, result, ref spent, l, info, (uint)-info[l.Id].Bilance);
+                    Recruit(result, ref spent, l, info, (uint)-info[l.Id].Bilance);
                 }
             }
         }
-        void StabilisatingRecruitments(Settings settings, List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
+        void StabilisatingRecruitments(List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
         {
             foreach (Land l in my)
             {
@@ -56,28 +56,28 @@ namespace Imperit.State
                 }
                 if (info[l.Id].SoldiersNext < 80)
                 {
-                    Recruit(settings, result, ref spent, l, info, Min(Money - spent, 80 - info[l.Id].SoldiersNext));
+                    Recruit(result, ref spent, l, info, Min(Money - spent, 80 - info[l.Id].SoldiersNext));
                 }
             }
         }
-        void Recruitments(Settings settings, List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
+        void Recruitments(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         {
             uint spent = 0;
             var lands = my.Select(i => provinces[i] as Land).NotNull().ToArray();
-            DefensiveRecruitments(settings, result, ref spent, info, lands);
-            StabilisatingRecruitments(settings, result, ref spent, info, lands);
+            DefensiveRecruitments(result, ref spent, info, lands);
+            StabilisatingRecruitments(result, ref spent, info, lands);
             if (Money - spent > 0 && lands.Any())
             {
-                Recruit(settings, result, ref spent, lands.MinBy(prov => prov.Soldiers), info, Money - spent);
+                Recruit(result, ref spent, lands.MinBy(prov => prov.Soldiers), info, Money - spent);
             }
         }
-        static bool RevengeDoesNotMatter(IProvinces provinces, int from, int to) => provinces.NeighborsOf(from).Concat(provinces.NeighborsOf(to)).All(n => !n.Occupied || n.IsAllyOf(provinces[to].Army) || n.IsAllyOf(provinces[from].Army));
+        static bool RevengeDoesNotMatter(IProvinces provinces, int from, int to) => provinces.NeighborsOf(from).Concat(provinces.NeighborsOf(to)).All(n => !n.Occupied || n.IsAllyOf(provinces[to]) || n.IsAllyOf(provinces[from]));
         static bool CanConquerProvince(PInfo from, PInfo to) => from.Soldiers > to.Soldiers;
         static bool CanKeepConqueredProvince(PInfo from, PInfo to) => from.Soldiers >= to.Soldiers + to.Enemies;
         static bool CanKeepAttackStartProvinceAfterAttack(IProvinces provinces, int from, int to, PInfo[] info) => info[from].Bilance > (RevengeDoesNotMatter(provinces, from, to) ? 0 : info[to].Enemies) + (info[to].Relation == Relation.Empty ? 0 : info[to].Soldiers);
         static bool CanAttackSuccesfully(IProvinces provinces, int from, int to, PInfo[] info) => CanConquerProvince(info[from], info[to]) && (CanKeepConqueredProvince(info[from], info[to]) || RevengeDoesNotMatter(provinces, from, to)) && CanKeepAttackStartProvinceAfterAttack(provinces, from, to, info);
         static bool ShouldAttack(IProvinces provinces, int from, int to, PInfo[] info) => info[to].Relation != Relation.Ally && CanAttackSuccesfully(provinces, from, to, info);
-        void Attack(List<Dynamics.ICommand> result, Settings settings, IProvinces provinces, PInfo[] info, int from, int to, uint count)
+        void Attack(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int from, int to, uint count)
         {
             result.Add(new Dynamics.Commands.Attack(Id, from, provinces[to], new PlayerArmy(this, count)));
             info[from].Soldiers -= count;
@@ -89,18 +89,18 @@ namespace Imperit.State
                 }
             }
         }
-        void Attacks(List<Dynamics.ICommand> result, Settings settings, IProvinces provinces, PInfo[] info, int[] my)
+        void Attacks(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         {
             foreach (int from in my)
             {
                 foreach (var to in provinces.NeighborsOf(from).Where(to => ShouldAttack(provinces, from, to.Id, info)))
                 {
-                    Attack(result, settings, provinces, info, from, to.Id, Min(Min(info[from].Soldiers, provinces[from].CanMoveTo(to)), to.Soldiers + info[to.Id].Enemies + 1));
+                    Attack(result, provinces, info, from, to.Id, Min(Min(info[from].Soldiers, provinces[from].CanMoveTo(to)), to.Soldiers + info[to.Id].Enemies + 1));
                 }
             }
         }
         static uint MultiAttackSoldiers(IProvinces provinces, PInfo[] info, int from, int to) => Min((uint)info[from].Bilance + provinces[to].Soldiers, info[from].Soldiers);
-        void MultiAttacks(List<Dynamics.ICommand> result, Settings settings, IProvinces provinces, PInfo[] info, int[] my)
+        void MultiAttacks(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         {
             foreach (int to in my.SelectMany(i => provinces.NeighborsOf(i).Where(p => p.Occupied && !p.IsControlledBy(Id)).Select(p => p.Id)).Distinct())
             {
@@ -110,18 +110,18 @@ namespace Imperit.State
                 {
                     foreach (var from in starts)
                     {
-                        Attack(result, settings, provinces, info, from.Id, to, MultiAttackSoldiers(provinces, info, from.Id, to));
+                        Attack(result, provinces, info, from.Id, to, MultiAttackSoldiers(provinces, info, from.Id, to));
                     }
                 }
             }
         }
-        void Transport(List<Dynamics.ICommand> result, Settings settings, PInfo[] info, int from, Province to, uint count)
+        void Transport(List<Dynamics.ICommand> result, PInfo[] info, int from, Province to, uint count)
         {
             result.Add(new Dynamics.Commands.Reinforcement(Id, from, to, new PlayerArmy(this, count)));
             info[from].Soldiers -= count;
             info[to.Id].Coming += count;
         }
-        void SpreadSoldiers(List<Dynamics.ICommand> result, Settings settings, IProvinces provinces, PInfo[] info, int[] my)
+        void SpreadSoldiers(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         {
             foreach (int from in my)
             {
@@ -129,29 +129,29 @@ namespace Imperit.State
                 {
                     if (info[from].Enemies <= 0 && info[dest.Id].Enemies > 0)
                     {
-                        Transport(result, settings, info, from, dest, info[from].Soldiers);
+                        Transport(result, info, from, dest, info[from].Soldiers);
                     }
                     else if (info[from].Enemies <= 0 && info[dest.Id].Enemies <= 0)
                     {
-                        Transport(result, settings, info, from, dest, info[from].Soldiers / Max(provinces.NeighborCount(from) - 1, 1));
+                        Transport(result, info, from, dest, info[from].Soldiers / Max(provinces.NeighborCount(from) - 1, 1));
                     }
                     else if (info[from].Bilance > 0 && info[from].Bilance >= info[dest.Id].Bilance)
                     {
-                        Transport(result, settings, info, from, dest, Min((uint)info[from].Bilance, info[from].Soldiers));
+                        Transport(result, info, from, dest, Min((uint)info[from].Bilance, info[from].Soldiers));
                     }
                 }
             }
         }
-        public List<Dynamics.ICommand> Think(Settings settings, IProvinces provinces)
+        public List<Dynamics.ICommand> Think(IProvinces provinces)
         {
             var my = provinces.Where(p => p.IsControlledBy(Id)).Select(p => p.Id).ToArray();
             var info = provinces.Select(prov => new PInfo(prov.Soldiers, EnemiesCount(provinces, prov), 0, GetRelationTo(prov))).ToArray();
 
             var result = new List<Dynamics.ICommand>();
-            Recruitments(settings, result, provinces, info, my);
-            Attacks(result, settings, provinces, info, my);
-            MultiAttacks(result, settings, provinces, info, my);
-            SpreadSoldiers(result, settings, provinces, info, my);
+            Recruitments(result, provinces, info, my);
+            Attacks(result, provinces, info, my);
+            MultiAttacks(result, provinces, info, my);
+            SpreadSoldiers(result, provinces, info, my);
             return result;
         }
     }

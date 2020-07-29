@@ -4,7 +4,7 @@
     [Parameter] public int FontSize { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
     [Parameter] public State.Province? This { get; set; }
-    State.Point Center => This!.Shape.Center;
+    State.Point Center => This!.Center;
 }
 
 <a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">

@@ -8,15 +8,13 @@ namespace Imperit.Services
     }
     public class EndOfTurn : IEndOfTurn
     {
-        readonly ISettingsLoader sl;
         readonly IPlayersLoader players;
         readonly IProvincesLoader pr;
         readonly IActionLoader actions;
         readonly IActivePlayer active;
         readonly IPowersLoader powers;
-        public EndOfTurn(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
+        public EndOfTurn(IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
         {
-            this.sl = sl;
             this.players = players;
             this.pr = pr;
             this.actions = actions;
@@ -30,7 +28,7 @@ namespace Imperit.Services
             powers.Add(players);
             active.Next(players);
         }
-        void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(sl.Settings, pr));
+        void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(pr));
         void AllRobotsactions()
         {
             while (players[active.Id] is State.Robot robot && AreHumansAlive)

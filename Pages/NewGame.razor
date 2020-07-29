@@ -27,7 +27,7 @@
     {
         if (Validate())
         {
-            new_game.New(model.Interest, (uint)model.DefaultMoney, (uint)model.DebtLimit, model.DefaultInstability, model.SingleClient, model.RobotNames.Split(',').Select(name=>name.Trim()).ToArray(), model.MaxRobotCount);
+            new_game.New(model.Interest, (uint)model.DefaultMoney, (uint)model.DebtLimit, model.DefaultInstability, model.SingleClient, model.RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), model.MaxRobotCount);
             pw.Set(model.NewPassword);
             GoTo(Mode.Registration);
         }

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Imperit.Services
 {
-    public interface IPowersLoader : IReadOnlyList<State.PlayerPower[]>
+    public interface IPowersLoader : IReadOnlyList<ImmutableArray<State.PlayerPower>>
     {
         void Add(IReadOnlyCollection<State.Player> players);
         void Clear();
@@ -12,13 +13,13 @@ namespace Imperit.Services
     public class PowersLoader : IPowersLoader
     {
         readonly IProvincesLoader provinces;
-        readonly Load.Writer<Load.PowersLoader, State.PlayerPower[], bool> loader;
-        readonly List<State.PlayerPower[]> powers;
+        readonly Load.Writer<Load.PowersLoader, ImmutableArray<State.PlayerPower>, bool> loader;
+        readonly List<ImmutableArray<State.PlayerPower>> powers;
         public int Count => powers.Count;
-        public State.PlayerPower[] this[int i] => powers[i];
+        public ImmutableArray<State.PlayerPower> this[int i] => powers[i];
         public PowersLoader(IServiceIO io, IProvincesLoader provinces)
         {
-            loader = new Load.Writer<Load.PowersLoader, State.PlayerPower[], bool>(io.Powers, false, Load.PowersLoader.From);
+            loader = new Load.Writer<Load.PowersLoader, ImmutableArray<State.PlayerPower>, bool>(io.Powers, false, Load.PowersLoader.From);
             powers = loader.Load().ToList();
             this.provinces = provinces;
         }
@@ -29,12 +30,8 @@ namespace Imperit.Services
         }
         uint[] SoldiersOf(IReadOnlyCollection<State.Player> players)
         {
-            var soldiers = new uint[players.Count];
-            foreach (var army in provinces.Select(p => p.Army as State.PlayerArmy).NotNull())
-            {
-                soldiers[army.Player.Id] += army.Soldiers;
-            }
-            return soldiers;
+            return players.Select(player => (uint)provinces.Where(prov => prov.IsControlledBy(player.Id))
+                                                           .Sum(prov => prov.Soldiers)).ToArray();
         }
         static double Div(double a, double b) => (a / b) switch
         {
@@ -50,10 +47,10 @@ namespace Imperit.Services
             var changes = players.Select((p, i) => powers.Any() ? Div(totals[i], powers.Last()[i].Total) - 1 : 0.0).ToArray();
             var sum_sm = players.Select((p, i) => (long)soldiers[i] + p.Money).Sum();
             var ratios = players.Select((p, i) => Div(soldiers[i] + p.Money, sum_sm)).ToArray();
-            powers.Add(players.Select((p, i) => new State.PlayerPower(totals[i], changes[i], ratios[i])).ToArray());
+            powers.Add(players.Select((p, i) => new State.PlayerPower(totals[i], changes[i], ratios[i])).ToImmutableArray());
             loader.Add(powers.Last());
         }
-        public IEnumerator<State.PlayerPower[]> GetEnumerator() => powers.GetEnumerator();
+        public IEnumerator<ImmutableArray<State.PlayerPower>> GetEnumerator() => powers.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

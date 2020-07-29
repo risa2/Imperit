@@ -4,6 +4,7 @@ namespace Imperit.State
     {
         public readonly Player Player;
         public uint Soldiers { get; }
+        public Color? Color => Player.Color;
         public PlayerArmy(Player player, uint soldiers)
         {
             Player = player;

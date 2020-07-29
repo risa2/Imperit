@@ -5,7 +5,7 @@
     [Parameter] public Action OnClick { get; set; } = (() => { });
     [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = ColorOf;
     static State.Color EmptyColor(State.Province prov) => prov is State.Sea ? new State.Color(20, 176, 255) : new State.Color(17, 17, 17);
-    public static State.Color ColorOf(State.Province prov) => (prov.Army is State.PlayerArmy pl ? pl.Player.Color : EmptyColor(prov));
+    public static State.Color ColorOf(State.Province prov) => prov.Color ?? EmptyColor(prov);
     State.Color Fill => This is State.Sea ? ColorFn(This!).Mix(new State.Color(20, 176, 255)) : ColorFn(This!);
     string Points => string.Join(" ", This!.Shape.Select(point => Width * point.x + "," + Height * point.y));
 }

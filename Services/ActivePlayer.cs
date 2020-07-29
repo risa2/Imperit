@@ -15,8 +15,8 @@ namespace Imperit.Services
         public ActivePlayer(IServiceIO io) => inout = io.Active;
         public int Id
         {
-            get => int.Parse(inout.Read());
-            private set => inout.Write(value.ToString());
+            get => int.Parse(inout.Read(), System.Globalization.CultureInfo.InvariantCulture);
+            private set => inout.Write(value.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
         public void Next(IReadOnlyList<State.Player> players)
         {

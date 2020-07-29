@@ -17,7 +17,7 @@
         {
             Return();
         }
-        model.Type = From!.IsAllyOf(To!.Army) ? Models.MoveType.Reinforcement : Models.MoveType.Attack;
+        model.Type = From!.IsAllyOf(To!) ? Models.MoveType.Reinforcement : Models.MoveType.Attack;
         model.Soldiers = Limit;
     }
     void DoMove()
@@ -44,7 +44,7 @@
         Kolik vojáků chceš přesunout z provincie @From!.Name (@(From!.Soldiers)@Sym.Soldiers) směrem <Province This="@To"/> (@(To!.Soldiers)@Sym.Soldiers)?<br/>
         <InputNumber @bind-Value="model.Soldiers" min="1" autofocus/><br/>
     </label>
-    @if (!From!.IsAllyOf(To!.Army))
+    @if (!From!.IsAllyOf(To!))
     {
         <label>
             Typ přesunu:<br/>

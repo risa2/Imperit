@@ -3,6 +3,7 @@ namespace Imperit.State
     public class PeasantArmy : IArmy
     {
         public uint Soldiers { get; }
+        public Color? Color => null;
         public PeasantArmy(uint soldiers) => Soldiers = soldiers;
         public Dynamics.IAction? Gain(Province where) => null;
         public Dynamics.IAction? Lose(Province where) => null;

@@ -30,8 +30,11 @@ namespace Imperit.State
         public Province ReinforcedBy(IArmy another) => WithArmy(Army.Join(another));
         public bool IsControlledBy(int p) => Army.IsControlledBy(p);
         public bool IsAllyOf(IArmy army) => Army.IsAllyOf(army);
+        public bool IsAllyOf(Province prov) => Army.IsAllyOf(prov.Army);
         public uint Soldiers => Army.Soldiers;
         public bool Occupied => !(Army is PeasantArmy);
+        public Color? Color => Army.Color;
+        public Point Center => Shape.Center;
 
         public override bool Equals(object? obj) => obj != null && obj is Province p && p.Id == Id;
         public override int GetHashCode() => Id.GetHashCode();

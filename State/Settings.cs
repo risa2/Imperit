@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 
 namespace Imperit.State
 {
@@ -6,10 +7,10 @@ namespace Imperit.State
     {
         public readonly double Interest, DefaultInstability;
         public readonly uint DefaultMoney, DebtLimit;
-        public readonly string[] RobotNames;
+        public readonly ImmutableArray<string> RobotNames;
         public readonly int MaxRobotCount;
         public readonly bool SingleClient, Started;
-        public Settings(double interest, double defaultInstability, uint defaultMoney, uint debtLimit, string[] robotNames, int maxRobotCount, bool singleClient, bool started)
+        public Settings(double interest, double defaultInstability, uint defaultMoney, uint debtLimit, ImmutableArray<string> robotNames, int maxRobotCount, bool singleClient, bool started)
         {
             Interest = interest;
             DefaultInstability = defaultInstability;
