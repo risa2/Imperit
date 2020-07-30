@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Imperit
 {
-    interface IEnumerableImpl<T> : IEnumerable<T>
+    public interface IEnumerableImpl<T> : IEnumerable<T>
     {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

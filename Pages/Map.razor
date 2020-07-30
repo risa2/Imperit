@@ -3,21 +3,25 @@
     [Parameter] public int Height { get; set; }
     [Parameter] public IReadOnlyList<State.Province> Provinces { get; set; } = new State.Province[0];
     [Parameter] public IReadOnlyList<State.MountainRange> Mountains { get; set; } = new State.MountainRange[0];
-    [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = Shape.ColorOf;
-    [Parameter] public Action<int> OnClick { get; set; } = (a => { });
+    [Parameter] public State.Color SelectedColor { get; set; }
+    [Parameter] public Func<int, State.Province?, State.Province?> OnClick { get; set; } = ((a, b) => b);
     [Parameter] public int FontSize { get; set; }
+    State.Province? selected;
+    Shape? shape;
+    Action OnClickArg(int i) => () => { shape?.Select(selected = OnClick(i, selected)); };
 } 
-    <svg viewBox="0 0 @Width @Height">
-        @foreach (var province in Provinces)
-        {
-            <Shape Width="@Width" Height="@Height" This="@province" OnClick="@(() => OnClick(province.Id))" ColorFn="@ColorFn"/>
-        }
-        @foreach (var mountain in Mountains)
-        {
-            <MountainRange Width="@Width" Height="@Height" This="@mountain" Color="#606070"/>
-        }
-        @foreach (var province in Provinces)
-        {
-            <ProvinceCaption Width="@Width" Height="@Height" This="@province" FontSize="@FontSize" OnClick="@(() => OnClick(province.Id))"/>
-        }
-    </svg>
+<svg viewBox="0 0 @Width @Height">
+    @foreach (var province in Provinces)
+    {
+        <Shape This="@province" Width="@Width" Height="@Height" OnClick="@OnClickArg(province.Id)"/>
+    }
+    <Shape @ref="shape" This="@selected" Width="@Width" Height="@Height" OnClick="@OnClickArg(selected?.Id ?? 0)" Fill="@SelectedColor"/>
+    @foreach (var mountain in Mountains)
+    {
+        <Shape This="@mountain" Width="@Width" Height="@Height" StrokeWidth="3"/>
+    }
+    @foreach (var province in Provinces)
+    {
+        <ProvinceCaption This="@province" Width="@Width" Height="@Height" FontSize="@FontSize" OnClick="@OnClickArg(province.Id)"/>
+    }
+</svg>

@@ -13,7 +13,10 @@ namespace Imperit.Load
         public bool Started { get; set; }
         public IEnumerable<string>? RobotNames { get; set; }
         public int MaxRobotCount { get; set; }
-        public State.Settings Convert(int useless_i, bool useless_b) => new State.Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames!.ToImmutableArray(), MaxRobotCount, SingleClient, Started);
-        public static Settings FromSettings(State.Settings s) => new Settings() { Interest = s.Interest, DefaultInstability = s.DefaultInstability, DefaultMoney = s.DefaultMoney, DebtLimit = s.DebtLimit, SingleClient = s.SingleClient, Started = s.Started, RobotNames = s.RobotNames, MaxRobotCount = s.MaxRobotCount };
+        public string? SeaColor { get; set; }
+        public string? LandColor { get; set; }
+        public string? MountainsColor { get; set; }
+        public State.Settings Convert(int useless_i, bool useless_b) => new State.Settings(Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames!.ToImmutableArray(), MaxRobotCount, SingleClient, State.Color.Parse(SeaColor!), State.Color.Parse(LandColor!), State.Color.Parse(MountainsColor!), Started);
+        public static Settings FromSettings(State.Settings s) => new Settings() { Interest = s.Interest, DefaultInstability = s.DefaultInstability, DefaultMoney = s.DefaultMoney, DebtLimit = s.DebtLimit, SingleClient = s.SingleClient, Started = s.Started, RobotNames = s.RobotNames, MaxRobotCount = s.MaxRobotCount, LandColor = s.LandColor.ToString(), SeaColor = s.SeaColor.ToString(), MountainsColor = s.MountainsColor.ToString() };
     }
 }

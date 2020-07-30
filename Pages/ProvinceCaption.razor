@@ -7,7 +7,7 @@
     State.Point Center => This!.Center;
 }
 
-<a fill="#fff" font-size="@FontSize px" text-anchor="middle" @onclick="OnClick">
+<a fill="#fff" text-anchor="middle" @onclick="OnClick">
     <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@This!.Name</text>
     <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(This.Soldiers)&#x1F468; @if (This is State.Land land) {<text>+@(land.Earnings)@Sym.Money</text>}</text>
     @if (This is State.Port Port)

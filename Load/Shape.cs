@@ -7,6 +7,9 @@ namespace Imperit.Load
     {
         public IEnumerable<Point>? Border { get; set; }
         public Point? Center { get; set; }
-        public State.Shape Convert(int _1, bool _2) => new State.Shape(Border!.Select(pt => pt.Convert()), Center!.Convert());
+        public State.Shape Convert(int _, bool __)
+        {
+            return new State.Shape(Border!.Select(pt => pt.Convert()).ToArray(), Center!.Convert());
+        }
     }
 }

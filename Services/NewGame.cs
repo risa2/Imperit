@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Imperit.Services
 {
     interface INewGame
     {
-        void New(double interest, uint defaultMoney, uint debtLimit, double defaultInstability, bool singleClient, ImmutableArray<string> robotNames, int maxRobotCount);
+        void New(State.Settings settings);
         void Registration(string name, State.Password password, State.Color color, State.Land land);
         void Start();
     }
@@ -33,9 +32,9 @@ namespace Imperit.Services
             var (province, _) = p.Revolt();
             return province is State.Port Port ? Port.Renew() : province;
         }
-        public void New(double interest, uint defaultMoney, uint debtLimit, double defaultInstability, bool singleClient, ImmutableArray<string> robotNames, int maxRobotCount)
+        public void New(State.Settings settings)
         {
-            sl.Settings = new State.Settings(interest, defaultInstability, defaultMoney, debtLimit, robotNames, maxRobotCount, singleClient, false);
+            sl.Settings = settings;
             players.Clear();
             powers.Clear();
             actions.Clear();

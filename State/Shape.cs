@@ -4,13 +4,13 @@ namespace Imperit.State
 {
     public class Shape : IEnumerableImpl<Point>
     {
-        readonly IEnumerable<Point> border;
+        readonly Point[] border;
         public readonly Point Center;
-        public Shape(IEnumerable<Point> points, Point center)
+        public Shape(Point[] points, Point center)
         {
             border = points;
             Center = center;
         }
-        public IEnumerator<Point> GetEnumerator() => border.GetEnumerator();
+        public IEnumerator<Point> GetEnumerator() => (border as IEnumerable<Point>).GetEnumerator();
     }
 }

@@ -11,46 +11,40 @@
     [Parameter] public bool IsActive { get; set; }
     [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public bool Preview { get; set; }
-    State.Province? From = null;
-    void OnClick(int clicked)
+    State.Province? OnClick(int clicked, State.Province? from)
     {
-        if (IsActive)
+        if (!IsActive)
         {
-            if (From == null)
-            {
-                if (provinces[clicked].IsControlledBy(Player!.Id))
-                {
-                    From = provinces[clicked];
-                    this.StateHasChanged();
-                }
-                else if (provinces[clicked] is State.Land L1 && !L1.Occupied)
-                {
-                    Switch(Mode.CmdPurchase, L1, L1, null);
-                }
-            }
-            else if (From?.Id != clicked)
-            {
-                Switch(Mode.CmdMove, From, provinces[clicked], null);
-            }
-            else if (From is State.Land)
-            {
-                Switch(Mode.CmdRecruit, From, From, null);
-            }
-            else
-            {
-                From = null;
-                this.StateHasChanged();
-            }
+            return null;
         }
+        if (from is null && provinces[clicked].IsControlledBy(Player!.Id))
+        {
+            return provinces[clicked];
+        }
+        if (from is null && provinces[clicked] is State.Land L1 && !L1.Occupied)
+        {
+            Switch(Mode.CmdPurchase, L1, L1, null);
+            return null;
+        }
+        if (from?.Id != clicked)
+        {
+            Switch(Mode.CmdMove, from, provinces[clicked], null);
+            return null;
+        }
+        if (from is State.Land)
+        {
+            Switch(Mode.CmdRecruit, from, from, null);
+            return null;
+        }
+        return from;
     }
-    State.Color ColorFn(State.Province province) => Shape.ColorOf(province).Darken(light: province == From ? (byte)120 : (byte)255);
 }
 @{ 
-    IReadOnlyList<State.Province> prov = provinces;
+    State.IProvinces prov = provinces;
     if (Preview)
     {
         var queue = actions.Where(x => x is Dynamics.Actions.ArmyOperation || x is Dynamics.Actions.PortRenewal);
         prov = queue.EndOfTurn(players, provinces, active.Id).Item3;
     }
 }
-<Map Width="1000" Height="1000" Provinces="@prov" Mountains="@mountains" ColorFn="ColorFn" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Provinces="@prov" Mountains="@mountains" OnClick="OnClick" FontSize="9"/>

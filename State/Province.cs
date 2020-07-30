@@ -1,15 +1,17 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Imperit.State
 {
-    public abstract class Province
+    public abstract class Province : IAppearance
     {
         public readonly int Id;
         public readonly string Name;
         public readonly Shape Shape;
         public readonly IArmy Army, DefaultArmy;
         public readonly uint Earnings;
-        public Province(int id, string name, Shape shape, IArmy army, IArmy defaultArmy, uint earnings)
+        protected readonly Settings settings;
+        public Province(int id, string name, Shape shape, IArmy army, IArmy defaultArmy, uint earnings, Settings set)
         {
             Id = id;
             Name = name;
@@ -17,6 +19,7 @@ namespace Imperit.State
             Army = army;
             DefaultArmy = defaultArmy;
             Earnings = earnings;
+            settings = set;
         }
         public abstract uint CanMoveTo(Province dest);
         protected abstract Province WithArmy(IArmy army);
@@ -33,7 +36,8 @@ namespace Imperit.State
         public bool IsAllyOf(Province prov) => Army.IsAllyOf(prov.Army);
         public uint Soldiers => Army.Soldiers;
         public bool Occupied => !(Army is PeasantArmy);
-        public Color? Color => Army.Color;
+        public virtual Color Fill => Army.Color;
+        public IEnumerator<Point> GetEnumerator() => Shape.GetEnumerator();
         public Point Center => Shape.Center;
 
         public override bool Equals(object? obj) => obj != null && obj is Province p && p.Id == Id;

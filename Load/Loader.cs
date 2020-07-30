@@ -18,16 +18,7 @@ namespace Imperit.Load
             this.io = io;
             this.arg = arg;
         }
-        TK Selector(string line, int i)
-        {
-            var des = JsonSerializer.Deserialize<T>(line);
-            return des.Convert(i, arg);
-        }
-        public IEnumerable<TK> Load()
-        {
-            var lines = io.Read().Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            return lines.Select(Selector);
-        }
+        public IEnumerable<TK> Load() => io.Read().Split('\n', StringSplitOptions.RemoveEmptyEntries).Select((line, i) => JsonSerializer.Deserialize<T>(line).Convert(i, arg));
         public TK LoadOne() => JsonSerializer.Deserialize<T>(io.Read()).Convert(0, arg);
     }
 }

@@ -1,12 +1,16 @@
 @code{
-    [Parameter] public int Width { get; set; }
-    [Parameter] public int Height { get; set; }
-    [Parameter] public State.Province? This { get; set; }
+    [Parameter] public int Width { get; set; } = 1;
+    [Parameter] public int Height { get; set; } = 1;
+    [Parameter] public State.IAppearance? This { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
-    [Parameter] public Func<State.Province, State.Color> ColorFn { get; set; } = ColorOf;
-    static State.Color EmptyColor(State.Province prov) => prov is State.Sea ? new State.Color(20, 176, 255) : new State.Color(17, 17, 17);
-    public static State.Color ColorOf(State.Province prov) => prov.Color ?? EmptyColor(prov);
-    State.Color Fill => This is State.Sea ? ColorFn(This!).Mix(new State.Color(20, 176, 255)) : ColorFn(This!);
-    string Points => string.Join(" ", This!.Shape.Select(point => Width * point.x + "," + Height * point.y));
+    [Parameter] public int StrokeWidth { get; set; } = 0;
+    [Parameter] public State.Color? Fill { get; set; }
+    [Parameter] public State.Color? Stroke { get; set; }
+    string Points => string.Join(" ", This?.Select(point => Width * point.x + "," + Height * point.y) ?? new[] { "" });
+    public void Select(State.IAppearance? appearance)
+    {
+        This = appearance;
+        this.StateHasChanged();
+    }
 }
-<polyline points="@Points" fill="@Fill" @onclick="OnClick"></polyline>
+<polyline points="@Points" fill="@(Fill ?? This?.Fill)" stroke="@(Stroke ?? This?.Stroke)" stroke-width="@StrokeWidth" @onclick="OnClick"></polyline>

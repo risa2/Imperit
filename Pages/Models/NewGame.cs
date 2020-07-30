@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Imperit.Pages.Models
 {
@@ -20,5 +22,19 @@ namespace Imperit.Pages.Models
         public string RobotNames { get; set; } = "";
         [Range(0, int.MaxValue, ErrorMessage = "Záporný poèet robotù není možný")]
         public int MaxRobotCount { get; set; }
+        public void Init(State.Settings old)
+        {
+            Interest = old.Interest;
+            DefaultInstability = old.DefaultInstability;
+            DefaultMoney = (int)old.DefaultMoney;
+            DebtLimit = (int)old.DebtLimit;
+            SingleClient = old.SingleClient;
+            RobotNames = string.Join(", ", old.RobotNames);
+            MaxRobotCount = old.MaxRobotCount;
+        }
+        public State.Settings GetSettings(State.Settings old)
+        {
+            return new State.Settings(Interest, DefaultInstability, (uint)DefaultMoney, (uint)DebtLimit, RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), MaxRobotCount, SingleClient, old.SeaColor, old.LandColor, old.MountainsColor, false);
+        }
     }
 }

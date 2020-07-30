@@ -8,9 +8,9 @@ namespace Imperit.Services
     public class Mountains : IMountains
     {
         readonly State.MountainRange[] mountains;
-        public Mountains(IServiceIO io)
+        public Mountains(IServiceIO io, ISettingsLoader sl)
         {
-            mountains = new Load.Loader<Load.MountainRange, State.MountainRange, bool>(io.Mountains, false).Load().ToArray();
+            mountains = new Load.Loader<Load.MountainRange, State.MountainRange, State.Settings>(io.Mountains, sl.Settings).Load().ToArray();
         }
         public State.MountainRange this[int i] => mountains[i];
         public int Count => mountains.Length;

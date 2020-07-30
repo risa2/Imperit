@@ -10,7 +10,7 @@
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
-<Map Provinces="@provinces" Mountains="@mountains" Width="1000" Height="1000" ColorFn="@ColorFn" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Provinces="@provinces" Mountains="@mountains" SelectedColor="@Color" OnClick="OnClick" FontSize="9"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{
@@ -21,14 +21,13 @@
     State.Color Color => State.Color.Parse(ColorStr);
     State.Land? Selected = null;
     static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
-    State.Color ColorFn(State.Province prov) => prov == Selected ? Color : IsValidLand(prov) ? new State.Color(60,60,60) : Shape.ColorOf(prov);
-    void OnClick(int i)
+    State.Province? OnClick(int i, State.Province? from)
     {
         if (IsValidLand(provinces[i]))
         {
             Selected = provinces[i] as State.Land;
-            this.StateHasChanged();
         }
+        return Selected;
     }
     void OnSubmit()
     {
