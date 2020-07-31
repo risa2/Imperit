@@ -4,5 +4,6 @@
     {
         Color Fill => new Color();
         Color Stroke => new Color();
+        int StrokeWidth => 0;
     }
 }

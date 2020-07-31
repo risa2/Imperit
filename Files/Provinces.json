@@ -102,3 +102,15 @@
 {"Type":"L","Name":"Valencie","Army":{"Type":"Peasant","Soldiers":140,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":140,"Player":0},"Earnings":28,"IsStart":false}
 {"Type":"P","Name":"Mallorca","Army":{"Type":"Peasant","Soldiers":125,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":125,"Player":0},"Earnings":32,"CanBoard":30,"Capacity":30,"IsStart":false}
 {"Type":"L","Name":"Kastilie","Army":{"Type":"Peasant","Soldiers":100,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":100,"Player":0},"Earnings":20,"IsStart":true}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}
+{"Type":"M","Name":"","Army":{"Type":"Peasant","Soldiers":0,"Player":0},"DefaultArmy":{"Type":"Peasant","Soldiers":0,"Player":0},"Earnings":0}

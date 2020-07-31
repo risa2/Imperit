@@ -36,7 +36,9 @@ namespace Imperit.State
         public bool IsAllyOf(Province prov) => Army.IsAllyOf(prov.Army);
         public uint Soldiers => Army.Soldiers;
         public bool Occupied => !(Army is PeasantArmy);
-        public virtual Color Fill => Army.Color;
+        public virtual Color Fill => new Color();
+        public virtual Color Stroke => new Color();
+        public virtual int StrokeWidth => 0;
         public IEnumerator<Point> GetEnumerator() => Shape.GetEnumerator();
         public Point Center => Shape.Center;
 

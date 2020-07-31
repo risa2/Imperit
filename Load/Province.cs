@@ -20,16 +20,18 @@ namespace Imperit.Load
                 "S" => new State.Sea(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), settings),
                 "L" => new State.Land(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, settings),
                 "P" => new State.Port(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), IsStart ?? true, Earnings ?? 0, settings, Capacity ?? 0, CanBoard ?? 0),
+                "M" => new State.Mountains(i, Name!, shapes[i], Army!.Convert(i, (settings, players)), DefaultArmy!.Convert(i, (settings, players)), settings),
                 _ => throw new System.Exception("Unknown State.Province type: " + Type)
             };
         }
-        public static Province FromProvince(State.Province value)
+        public static Province FromProvince(State.Province prov)
         {
-            return value switch
+            return prov switch
             {
                 State.Port Port => new Province() { Type = "P", Name = Port.Name, Army = Army.FromArmy(Port.Army), IsStart = Port.IsStart, Earnings = Port.Earnings, DefaultArmy = Army.FromArmy(Port.DefaultArmy), Capacity = Port.Capacity, CanBoard = Port.CanBoard },
                 State.Land Land => new Province() { Type = "L", Name = Land.Name, Army = Army.FromArmy(Land.Army), IsStart = Land.IsStart, Earnings = Land.Earnings, DefaultArmy = Army.FromArmy(Land.DefaultArmy) },
                 State.Sea Sea => new Province() { Type = "S", Name = Sea.Name, Army = Army.FromArmy(Sea.Army) },
+                State.Mountains Mountains => new Province() { Type = "M", Name = Mountains.Name, Army = Army.FromArmy(Mountains.Army), DefaultArmy = Army.FromArmy(Mountains.DefaultArmy) },
                 _ => throw new System.Exception("Unknown type of Province")
             };
         }

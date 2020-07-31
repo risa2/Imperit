@@ -1,7 +1,6 @@
 @inject Services.ISettingsLoader sl;
 @inject Services.IProvincesLoader provinces;
 @inject Services.IPlayersLoader players;
-@inject Services.IMountains mountains;
 @inject Services.INewGame newgame;
 
 @using Mode = StartSwitch.Mode; 
@@ -10,7 +9,8 @@
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
-<Map Width="1000" Height="1000" Provinces="@provinces" Mountains="@mountains" SelectedColor="@Color" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Provinces="@provinces" SelectedColor="@Color" OnClick="OnClick"
+     FontSize="9" Name="@(p => (p is State.Land L && L.IsStart ? Sym.Flag : "") + p.Name)"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{

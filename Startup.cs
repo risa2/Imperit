@@ -21,7 +21,6 @@ namespace Imperit
                     .AddSingleton<Services.IPlayersLoader, Services.PlayersLoader>()
                     .AddSingleton<Services.IProvincesLoader, Services.ProvincesLoader>()
                     .AddSingleton<Services.IPowersLoader, Services.PowersLoader>()
-                    .AddSingleton<Services.IMountains, Services.Mountains>()
                     .AddTransient<Services.IActivePlayer, Services.ActivePlayer>()
                     .AddTransient<Services.INewGame, Services.NewGame>()
                     .AddTransient<Services.IPassword, Services.Password>()

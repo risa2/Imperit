@@ -4,14 +4,21 @@
     [Parameter] public int FontSize { get; set; }
     [Parameter] public Action OnClick { get; set; } = (() => { });
     [Parameter] public State.Province? This { get; set; }
+    [Parameter] public Func<State.Province, string> Name { get; set; } = (p => p.Name);
     State.Point Center => This!.Center;
 }
 
-<a fill="#fff" text-anchor="middle" @onclick="OnClick">
-    <text x="@(Center.x * Width)" y="@(Center.y * Height - FontSize)">@This!.Name</text>
-    <text x="@(Center.x * Width)" y="@(Center.y * Height)">@(This.Soldiers)&#x1F468; @if (This is State.Land land) {<text>+@(land.Earnings)@Sym.Money</text>}</text>
+@if (!(This is State.Mountains))
+{
+<text>
+    <text x="@(Center.x * Width)" y="@(Center.y * Height)" @onclick="OnClick" fill="#fff" dominant-baseline="middle" text-anchor="middle">
+    <tspan x="@(Center.x * Width)" dy="@(-FontSize)">@Name(This!)</tspan>
+    <tspan x="@(Center.x * Width)" dy="@FontSize">@(This!.Soldiers)&#x1F468; @if (This is State.Land land)
+    {<text>+@(land.Earnings)@Sym.Money</text>}</tspan>
     @if (This is State.Port Port)
     {
-        <text><text x="@(Center.x * Width)" y="@(Center.y * Height + FontSize)">@(Port.CanBoard)@Sym.Anchor</text></text>
+        <text><tspan x="@(Center.x * Width)" dy="@FontSize">@(Port.CanBoard)@Sym.Anchor</tspan></text>
     }
-</a>
+    </text>
+</text>
+}
