@@ -6,7 +6,7 @@ namespace Imperit.Services
     }
     public class SettingsLoader : ISettingsLoader
     {
-        readonly Load.Writer<Load.Settings, State.Settings, bool> loader;
+        readonly Load.JsonWriter<Load.JsonSettings, State.Settings, bool> loader;
         State.Settings settings;
         public State.Settings Settings
         {
@@ -19,7 +19,7 @@ namespace Imperit.Services
         }
         public SettingsLoader(IServiceIO io)
         {
-            loader = new Load.Writer<Load.Settings, State.Settings, bool>(io.Settings, false, Load.Settings.FromSettings);
+            loader = new Load.JsonWriter<Load.JsonSettings, State.Settings, bool>(io.Settings, false, Load.JsonSettings.From);
             settings = loader.LoadOne();
         }
     }

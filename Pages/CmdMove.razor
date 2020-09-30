@@ -5,54 +5,75 @@
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public State.Province? From { get; set; }
-    [Parameter] public State.Province? To { get; set; }
-    [Parameter] public State.Player? Player { get; set; }
-    Models.CmdMove model = new Models.CmdMove();
-    public int Limit { get; set; }
+    [Parameter] public Province? From { get; set; }
+    [Parameter] public Province? To { get; set; }
+    [Parameter] public Player? Player { get; set; }
+    MoveModel model = new MoveModel();
+    Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], (uint)count.Value)));
+    Army MovingArmy => new Army(MovingSoldiers, Player!);
+    public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
     protected override void OnInitialized()
     {
-        Limit = (int)provinces.CanMove(From!.Id, To!.Id);
-        if (Limit == 0)
+        model.SoldierTypes = From!.SoldierTypes.ToArray();
+        model.Soldiers = new IntModel[model.SoldierTypes.Length];
+        for (int i = 0; i < model.Soldiers.Length; ++i)
+        {
+            model.Soldiers[i] = new IntModel() { Value = (int)From!.Soldiers[i].Count };
+        }
+        model.IsAttack = !From!.IsAllyOf(To!);
+        if (!CanMove)
         {
             Return();
         }
-        model.Type = From!.IsAllyOf(To!) ? Models.MoveType.Reinforcement : Models.MoveType.Attack;
-        model.Soldiers = Limit;
     }
     void DoMove()
     {
-        var move = model.Type == Models.MoveType.Attack
-                  ? new Dynamics.Commands.Attack(Player!.Id, From!.Id, To!, new State.PlayerArmy(Player, (uint)model.Soldiers)) as Dynamics.Commands.Move
-                  : new Dynamics.Commands.Reinforcement(Player!.Id, From!.Id, To!, new State.PlayerArmy(Player, (uint)model.Soldiers));
+        var move = model.IsAttack
+            ? new Attack(Player!.Id, From!.Id, To!, MovingArmy) as Move
+            : new Reinforce(Player!.Id, From!.Id, To!, MovingArmy);
         if (actions.Add(move))
         {
             Return();
         }
     }
+    string SubmitText => model.IsAttack ? "Zaútočit" : "Podpořit";
 }
-@if (model.Soldiers > Limit)
+
+@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
 {
-    <p>Z místa @From!.Name na místo @To!.Name se může přesunout nejvýše @Limit vojáků</p>
+    @if (count < model.Soldiers[i].Value)
+    {
+        <p>Nemůžeš přesunout @(model.Soldiers[i].Value)@type.Symbol, máš jen @count</p>
+    }
 }
-@{ 
-    var submit_text = model.IsAttack ? "Zaútočit" : "Podpořit";
+
+@if (!CanMove)
+{
+    <p>Vojsko nemůže přesun provést</p>
 }
 <EditForm Model="@model" OnValidSubmit="DoMove">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>
-        Kolik vojáků chceš přesunout z provincie @From!.Name (@(From!.Soldiers)@Sym.Soldiers) směrem <Province This="@To"/> (@(To!.Soldiers)@Sym.Soldiers)?<br/>
-        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus/><br/>
-    </label>
-    @if (!From!.IsAllyOf(To!))
-    {
-        <label>
-            Typ přesunu:<br/>
-            <InputSelect @bind-Value="model.Type">
-                <option value="@Models.MoveType.Attack">Útok</option>
-                <option value="@Models.MoveType.Reinforcement">Podpora</option>
-            </InputSelect><br/>
-        </label>
-    }
-    <button type="submit">@submit_text</button>
+    <DataAnnotationsValidator /><ValidationSummary />
+    <p>Kolik vojáků kterého typu chceš přesunout?</p>
+    <table>
+        @foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
+        {
+            <tr>
+                <td>@(type.Name) (máš @count)</td>
+                <td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
+            </tr>
+        }
+        @if (!From!.IsAllyOf(To!))
+        {
+            <tr>
+                <td>Typ přesunu</td>
+                <td colspan="2">
+                    <InputSelect @bind-Value="model.MoveType">
+                        <option value="@MoveModel.Type.Attack">Útok</option>
+                        <option value="@MoveModel.Type.Reinforcement">Podpora</option>
+                    </InputSelect>
+                </td>
+            </tr>
+        }
+        <tr><td></td><td><button type="submit">@SubmitText</button></td></tr>
+    </table>
 </EditForm>

@@ -6,7 +6,7 @@
 @using Mode = GameSwitch.Mode; 
 
 @code{
-    [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public int LoggedIn { get; set; }
     [Parameter] public Action NextTurn { get; set; } = (() => { });
     [Parameter] public Action LogOut { get; set; } = (() => { });
@@ -56,7 +56,7 @@
     {
         <a class="this">Splátka</a>
     }
-    else if (This == Mode.CmdTransaction)
+    else if (This == Mode.CmdDonation)
     {
         <a class="this">Transakce</a>
     }

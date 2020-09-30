@@ -1,29 +1,30 @@
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Commands
 {
     public class Purchase : ICommand
     {
-        public readonly State.PlayerArmy Army;
+        public readonly Player Player;
         public readonly int Land;
         public readonly uint Price;
-        public Purchase(State.PlayerArmy army, int land, uint price)
+        public Purchase(Player player, int land, uint price)
         {
-            Army = army;
+            Player = player;
             Land = land;
             Price = price;
         }
-        public bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces)
-            => players[Army.Player.Id].Money >= Price && provinces.NeighborsOf(Land).Any(prov => prov is State.Land land && land.IsAllyOf(Army));
+        public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
+            => players[Player.Id].Money >= Price && provinces.NeighborsOf(Land).Any(prov => prov is Land land && land.IsControlledBy(Player.Id));
 
-        public (IAction[], State.Province) Perform(State.Province province)
+        public (IAction[], Province) Perform(Province province)
         {
-            return province.Id == Land ? province.GiveUpTo(Army).Swap() : (System.Array.Empty<IAction>(), province);
+            return province.Id == Land ? province.GiveUpTo(Player).Swap() : (System.Array.Empty<IAction>(), province);
         }
-        public (IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces)
+        public (IAction[], Player) Perform(Player player, IProvinces provinces)
         {
-            return (System.Array.Empty<IAction>(), player == Army.Player ? player.Pay(Price) : player);
+            return (System.Array.Empty<IAction>(), Player == player ? player.Pay(Price) : player);
         }
     }
 }

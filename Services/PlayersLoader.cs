@@ -1,30 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Imperit.State;
 
 namespace Imperit.Services
 {
-    public interface IPlayersLoader : IReadOnlyList<State.Player>
+    public interface IPlayersLoader : IReadOnlyList<Player>
     {
         void Save();
         void Clear();
-        void Add(State.Player player);
-        void Set(IReadOnlyList<State.Player> new_players);
+        void Add(Player player);
+        void Set(IReadOnlyList<Player> new_players);
     }
     public class PlayersLoader : IPlayersLoader
     {
-        readonly Load.Writer<Load.Player, State.Player, bool> loader;
+        readonly Load.JsonWriter<Load.JsonPlayer, Player, Settings> loader;
         readonly List<State.Player> players;
-        public PlayersLoader(IServiceIO io)
+        public PlayersLoader(IServiceIO io, ISettingsLoader sl)
         {
-            loader = new Load.Writer<Load.Player, State.Player, bool>(io.Players, false, Load.Player.FromPlayer);
+            loader = new Load.JsonWriter<Load.JsonPlayer, Player, Settings>(io.Players, sl.Settings, Load.JsonPlayer.From);
             players = loader.Load().ToList();
         }
         public int Count => players.Count;
-        public bool IsReadOnly => ((ICollection<State.Player>)players).IsReadOnly;
-        public State.Player this[int i] => players[i];
+        public bool IsReadOnly => ((ICollection<Player>)players).IsReadOnly;
+        public Player this[int i] => players[i];
         public void Save() => loader.Save(players);
-        public void Add(State.Player player)
+        public void Add(Player player)
         {
             players.Add(player);
             loader.Add(player);
@@ -34,10 +35,10 @@ namespace Imperit.Services
             players.Clear();
             loader.Clear();
         }
-        public IEnumerator<State.Player> GetEnumerator() => players.GetEnumerator();
+        public IEnumerator<Player> GetEnumerator() => players.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => players.GetEnumerator();
 
-        public void Set(IReadOnlyList<State.Player> new_players)
+        public void Set(IReadOnlyList<Player> new_players)
         {
             for (int i = 0; i < players.Count && i < new_players.Count; ++i)
             {

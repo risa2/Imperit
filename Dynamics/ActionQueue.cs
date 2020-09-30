@@ -7,7 +7,7 @@ namespace Imperit.Dynamics
 {
     public class ActionQueue : IEnumerableImpl<IAction>
     {
-        static readonly IComparer<IAction> cmp = new AllowDuplicatesComparer<IAction, byte>(a => a.Priority);
+        static readonly IComparer<IAction> cmp = new FnComparer<IAction, byte>(a => a.Priority, allowDuplicates: true);
         static readonly ActionSeq NoActions = ImmutableSortedSet.Create(cmp);
         readonly ActionSeq actions;
         public ActionQueue() => actions = NoActions;

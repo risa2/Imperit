@@ -1,14 +1,14 @@
 ﻿@inject Services.INewGame new_game;
-@inject Services.IPassword pw;
+@inject Services.ISettingsLoader sl;
 
 @using Mode = StartSwitch.Mode;
 
 @code{
     [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
-    Models.StartGame model = new Models.StartGame();
+    StartGameModel model = new StartGameModel();
     void Start()
     {
-        if (pw.IsCorrect(model.Password))
+        if (sl.Settings.Password.IsCorrect(model.Password))
         {
             new_game.Start();
             GoTo(Mode.Login);

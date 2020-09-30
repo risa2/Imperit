@@ -1,0 +1,8 @@
+﻿@code{
+    [Parameter] public Soldiers Soldiers { get; set; } = new Soldiers();
+}
+
+@foreach (var (type, count) in Soldiers)
+{
+    <text>@(count)@(type.Symbol)&#x20;</text>
+}

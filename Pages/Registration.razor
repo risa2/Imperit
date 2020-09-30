@@ -18,10 +18,10 @@
     string Username { get; set; } = "";
     string Password { get; set; } = "";
     string ColorStr { get; set; } = "#0000FF";
-    State.Color Color => State.Color.Parse(ColorStr);
-    State.Land? Selected = null;
-    static bool IsValidLand(State.Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
-    State.Province? OnClick(int i, State.Province? from)
+    Color Color => State.Color.Parse(ColorStr);
+    Land? Selected = null;
+    static bool IsValidLand(Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
+    Province? OnClick(int i, Province? from)
     {
         if (IsValidLand(provinces[i]))
         {
@@ -33,7 +33,7 @@
     {
         if (Username != "" && Password != "" && Selected != null)
         {
-            newgame.Registration(Username, State.Password.FromString(Password), Color, Selected);
+            newgame.Registration(Username, new Password(Password), Color, Selected);
             GoTo(Mode.Login);
         }
     }

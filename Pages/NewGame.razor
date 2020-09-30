@@ -1,17 +1,16 @@
 @inject Services.INewGame new_game;
-@inject Services.IPassword pw;
 @inject Services.ISettingsLoader sl;
 
 @using Mode = StartSwitch.Mode;
 
 @code{
     [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
-    Models.NewGame model = new Models.NewGame();
+    NewGameModel model = new NewGameModel();
     protected override void OnInitialized() => model.Init(sl.Settings);
     bool Validate()
     {
         bool success = !string.IsNullOrWhiteSpace(model.OldPassword) && !string.IsNullOrWhiteSpace(model.NewPassword);
-        success = success && !string.IsNullOrWhiteSpace(model.RobotNames) && pw.IsCorrect(model.OldPassword);
+        success = success && !string.IsNullOrWhiteSpace(model.RobotNames) && sl.Settings.Password.IsCorrect(model.OldPassword);
         return success;
     }
     void New()
@@ -19,7 +18,6 @@
         if (Validate())
         {
             new_game.New(model.GetSettings(sl.Settings));
-            pw.Set(model.NewPassword);
             GoTo(Mode.Registration);
         }
         else

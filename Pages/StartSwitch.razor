@@ -7,7 +7,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Current = players.Count > 0 ? Mode.Login : Mode.Registration;
+        Current = players.Count >= 2 ? Mode.Login : Mode.Registration;
     }
     void GoTo(Mode mode)
     {

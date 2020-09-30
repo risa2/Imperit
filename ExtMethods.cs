@@ -8,17 +8,42 @@ namespace Imperit
 {
     public static class ExtMethods
     {
+        public static CultureInfo Culture { get; } = CultureInfo.InvariantCulture;
         public static IEnumerable<T> NotNull<T>(this IEnumerable<T?> e) where T : class => e.Where(it => it != null)!;
         public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
         public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
         public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
         public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+        public static int Find<T>(this IList<T> ts, Func<T, bool> cond)
+        {
+            int i = 0;
+            while (i < ts.Count && !cond(ts[i]))
+            {
+                ++i;
+            }
+            return i;
+        }
+        public static void InsertMatch<T>(this IList<T> s1, IReadOnlyList<T> s2, Func<T, T, bool> eq, Func<T, T, T> match)
+        {
+            foreach (var t2 in s2)
+            {
+                var i = s1.Find(t1 => eq(t1, t2));
+                if (i < s1.Count)
+                {
+                    s1[i] = match(s1[i], t2);
+                }
+                else
+                {
+                    s1.Add(t2);
+                }
+            }
+        }
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
         public static string ProbabilityToString(this double prob, uint prec = 0)
         {
             int percents = (int)(prob * 100);
             int frac = percents >= 100 ? 0 : (int)(prob * 100 * Math.Pow(10, prec)) - (int)(percents * Math.Pow(10, prec));
-            return Math.Max(0, Math.Min(100, percents)).ToString(CultureInfo.InvariantCulture) + "." + frac.ToString(CultureInfo.InvariantCulture).PadRight((int)prec, '0') + " %";
+            return Math.Max(0, Math.Min(100, percents)).ToString(Culture) + "." + frac.ToString(Culture).PadRight((int)prec, '0') + " %";
         }
         public static T[] Concat<T>(this T[] array, params T[] args)
         {
@@ -27,7 +52,7 @@ namespace Imperit
             args.CopyTo(result, array.Length);
             return result;
         }
-        public static string ToHexString(this byte num) => num.ToString("x2", CultureInfo.InvariantCulture);
+        public static string ToHexString(this byte num) => num.ToString("x2", Culture);
         public static State.Color HsvToRgb(double H, double S, double V)
         {
             while (H < 0) { H += 360; }

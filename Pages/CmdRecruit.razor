@@ -3,21 +3,28 @@
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public State.Land? Land { get; set; }
-    [Parameter] public State.Player? Player { get; set; }
-    Models.CmdRecruit model = new Models.CmdRecruit();
+    [Parameter] public Land? Land { get; set; }
+    [Parameter] public Player? Player { get; set; }
+    RecruitModel model = new RecruitModel();
     protected override void OnInitialized()
     {
-        model.Soldiers = (int)Player!.Money;
+        model.SoldierTypes = Player!.SoldierTypes.Where(type => type.IsRecruitable(Land!)).ToArray();
+        model.Soldiers = new IntModel[model.SoldierTypes.Length];
+        for (int i = 0; i < model.Soldiers.Length; ++i)
+        {
+            model.Soldiers[i] = new IntModel();
+        }
     }
-    uint Missing => (uint)Math.Max(0, model.Soldiers - Player!.Money);
+    Soldiers RecruitedSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], (uint)count.Value)));
+    uint Price => RecruitedSoldiers.Price;
+    uint Missing => (uint)Math.Max(0, Price - (int)Player!.Money);
     void DoRecruit()
     {
         if (model.Borrow && Missing > 0)
         {
-            actions.Add(new Dynamics.Commands.Loan(Player!.Id, Missing, sl.Settings));
+            actions.Add(new Borrow(Player!.Id, Missing, sl.Settings));
         }
-        if (actions.Add(new Dynamics.Commands.Recruitment(Player!.Id, Land!.Id, new State.PlayerArmy(Player!, (uint)model.Soldiers))))
+        if (actions.Add(new Recruit(Player!.Id, Land!.Id, new Army(RecruitedSoldiers, Player!))))
         {
             Return();
         }
@@ -25,20 +32,36 @@
 }
 <EditForm Model="@model" OnValidSubmit="DoRecruit">
     <DataAnnotationsValidator/><ValidationSummary/>
-    <label>
-        @Land!.Name má @(Land!.Soldiers)@Sym.Soldiers. Kolik chcete naverbovat?<br/>
-        <InputNumber @bind-Value="model.Soldiers" min="1" autofocus/><br/>
-    </label>
-    @if (Missing > 0)
-    {
-        <label>
-            Chybí ti @(Missing)@Sym.Money<br/>
-            Verbovat na dluh: <InputCheckbox @bind-Value="model.Borrow"/><br/>
-        </label>
-    }
-    else
-    {
-        model.Borrow = false;
-    }
-    <button type="submit">Verbovat</button>
+    <p>@Land!.Name
+        @if (Land!.Soldiers.Any)
+        {
+            <text>má <SoldiersByType Soldiers="@Land!.Soldiers"/></text>
+        }
+        else
+        {
+            <text>nemá žádné vojáky</text>
+        }
+    </p>
+    <table>
+        @foreach (var (i, type) in model.SoldierTypes.Enumerate())
+        {
+            <tr>
+                <td>@type.Name (@(type.Price)@(Sym.Money)/@type.Symbol)</td>
+                <td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
+            </tr>
+        }
+        @if (Missing > 0)
+        {
+            <tr><td colspan="2">Chybí ti @(Missing)@Sym.Money</td></tr>
+            <tr>
+                <td>Verbovat na dluh</td>
+                <td><InputCheckbox @bind-Value="model.Borrow"/></td>
+            </tr>
+        }
+        else
+        {
+            model.Borrow = false;
+        }
+        <tr><td></td><td><button type="submit">Verbovat</button></td></tr>
+    </table>
 </EditForm>

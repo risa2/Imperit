@@ -5,10 +5,10 @@
 
 @code{
     [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public State.Player? Player { get; set; }
-    [Parameter] public State.Land? Land { get; set; }
-    Dynamics.Commands.Purchase purchase => new Dynamics.Commands.Purchase(new State.PlayerArmy(Player!, 0), Land!.Id, Land!.Price);
-    Dynamics.Commands.Purchase purchase_without_money => new Dynamics.Commands.Purchase(new State.PlayerArmy(Player!, 0), Land!.Id, 0);
+    [Parameter] public Player? Player { get; set; }
+    [Parameter] public Land? Land { get; set; }
+    Purchase purchase => new Purchase(Player!, Land!.Id, Land!.Price);
+    Purchase purchase_without_money => new Purchase(Player!, Land!.Id, 0);
     void DoPurchase()
     {
         actions.Add(purchase!);
@@ -16,7 +16,7 @@
     }
     void DoBorrowPurchase()
     {
-        if (actions.Add(new Dynamics.Commands.Loan(Player!.Id, purchase.Price - Player!.Money, sl.Settings)))
+        if (actions.Add(new Borrow(Player!.Id, purchase.Price - Player!.Money, sl.Settings)))
         {
             DoPurchase();
         }

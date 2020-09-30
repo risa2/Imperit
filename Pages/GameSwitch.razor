@@ -9,11 +9,11 @@
 @code{
     [Parameter] public int LoggedIn { get; set; }
     [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
-    public enum Mode { Map, CmdMove, CmdPurchase, CmdRecruit, CmdRepay, CmdTransaction, Players, Powers, Preview}
+    public enum Mode { Map, CmdMove, CmdPurchase, CmdRecruit, CmdRepay, CmdDonation, Players, Powers, Preview}
     Mode Current;
-    State.Province? From = null, To = null;
-    State.Player? SelectedPlayer = null;
-    void Switch(Mode mode = Mode.Map, State.Province? from = null, State.Province? to = null, State.Player? player = null)
+    Province? From = null, To = null;
+    Player? SelectedPlayer = null;
+    void Switch(Mode mode = Mode.Map, Province? from = null, Province? to = null, Player? player = null)
     {
         Current = mode;
         From = from;
@@ -65,9 +65,9 @@
     {
         <CmdRepay LoggedIn="@players[LoggedIn]" Return="@(() => Switch())"/>
     }
-    else if (Current == Mode.CmdTransaction)
+    else if (Current == Mode.CmdDonation)
     {
-        <CmdTransaction Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())"/>
+        <CmdDonation Player="@players[LoggedIn]" Associate="@SelectedPlayer" Return="@(() => Switch())"/>
     }
     else if (Current == Mode.Players)
     {

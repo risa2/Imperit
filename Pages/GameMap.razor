@@ -6,11 +6,11 @@
 @using Mode = GameSwitch.Mode;
 
 @code{
-    [Parameter] public State.Player? Player { get; set; }
+    [Parameter] public Player? Player { get; set; }
     [Parameter] public bool IsActive { get; set; }
-    [Parameter] public Action<Mode, State.Province?, State.Province?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, Province?, Province?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
     [Parameter] public bool Preview { get; set; }
-    State.Province? OnClick(int clicked, State.Province? from)
+    Province? OnClick(int clicked, Province? from)
     {
         if (!IsActive || from is State.Mountains)
         {
@@ -20,30 +20,30 @@
         {
             return provinces[clicked];
         }
-        if (from is null && provinces[clicked] is State.Land L1 && !L1.Occupied)
+        if (from is null && provinces[clicked] is Land L1 && !L1.Occupied)
         {
             Switch(Mode.CmdPurchase, L1, L1, null);
             return null;
         }
-        if (from?.Id != clicked)
-        {
-            Switch(Mode.CmdMove, from, provinces[clicked], null);
-            return null;
-        }
-        if (from is State.Land)
+        if (from?.Id == clicked)
         {
             Switch(Mode.CmdRecruit, from, from, null);
+            return null;
+        }
+        if (from is Province)
+        {
+            Switch(Mode.CmdMove, from, provinces[clicked], null);
             return null;
         }
         return from;
     }
 }
 @{ 
-    State.IProvinces prov = provinces;
+    IProvinces prov = provinces;
     if (Preview)
     {
-        var queue = actions.Where(x => x is Dynamics.Actions.ArmyOperation || x is Dynamics.Actions.PortRenewal);
+        var queue = actions.Where(x => x is ArmyAction);
         prov = queue.EndOfTurn(players, provinces, active.Id).Item3;
     }
 }
-<Map Width="1000" Height="1000" Provinces="@prov" OnClick="OnClick" FontSize="9"/>
+<Map Width="1000" Height="1000" Provinces="@prov" OnClick="OnClick" FontSize="9" SelectedColor="@(new Color(0, 0, 0, 100))"/>

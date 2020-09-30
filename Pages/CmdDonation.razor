@@ -1,0 +1,28 @@
+@inject Services.IActionLoader actions;
+
+@code{
+    [Parameter] public Player? Player { get; set; }
+    [Parameter] public Player? Associate { get; set; }
+    [Parameter] public Action Return { get; set; } = (() => { });
+    DonationModel model = new DonationModel();
+    void DoDonate()
+    {
+        if (actions.Add(new Donate(Player!.Id, Associate!.Id, (uint)model.Amount)))
+        {
+            Return();
+        }
+    }
+}
+@if (model.Amount > Player!.Money)
+{
+    <p>Máš jen @(Player!.Money)@Sym.Money</p>
+}
+<EditForm Model="@model" OnValidSubmit="DoDonate">
+    <DataAnnotationsValidator/><ValidationSummary/>
+    <label>
+        Darovaná částka:<br/>
+        <InputNumber @bind-Value="model.Amount" min="1" autofocus/><br/>
+    </label>
+    <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
+    <button type="submit">Věnovat</button>
+</EditForm>

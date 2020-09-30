@@ -3,11 +3,11 @@
 
 @code{
     [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
-    Models.Login model = new Models.Login();
+    LoginModel model = new LoginModel();
     bool Wrong = false;
     void LoginAction()
     {
-        if (players[model.Id].Password == State.Password.FromString(model.Password))
+        if (players[model.Id].Password.IsCorrect(model.Password))
         {
             LogIn(model.Id);
         }
@@ -27,7 +27,7 @@
     <DataAnnotationsValidator/><ValidationSummary/>
     <label>
         Hráč:<br/>
-        <IntSelect @bind-Value="model.Id" Options="@players.Where(p => !(p is State.Robot))" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
+        <IntSelect @bind-Value="model.Id" Options="@players.Where(p => p.GetType() == typeof(Player))" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
     </label>
     <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
     <button type="submit">Přihlásit se</button>

@@ -19,13 +19,13 @@ namespace Imperit.Services
     {
         readonly IPlayersLoader players;
         readonly IProvincesLoader provinces;
-        readonly Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)> loader;
+        readonly Load.JsonWriter<Load.JsonAction, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)> loader;
         public Dynamics.ActionQueue Actions { get; private set; }
         public ActionLoader(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IServiceIO io)
         {
             this.players = players;
             this.provinces = provinces;
-            loader = new Load.Writer<Load.Action, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)>(io.Actions, (sl.Settings, players), Load.Action.FromAction);
+            loader = new Load.JsonWriter<Load.JsonAction, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)>(io.Actions, (sl.Settings, players), Load.JsonAction.From);
             Actions = new Dynamics.ActionQueue(loader.Load());
         }
         public bool Add(IEnumerable<Dynamics.ICommand> commands)

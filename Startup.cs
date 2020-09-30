@@ -23,7 +23,6 @@ namespace Imperit
                     .AddSingleton<Services.IPowersLoader, Services.PowersLoader>()
                     .AddTransient<Services.IActivePlayer, Services.ActivePlayer>()
                     .AddTransient<Services.INewGame, Services.NewGame>()
-                    .AddTransient<Services.IPassword, Services.Password>()
                     .AddTransient<Services.IEndOfTurn, Services.EndOfTurn>();
         }
 

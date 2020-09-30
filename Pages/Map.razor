@@ -1,23 +1,27 @@
 @code{
     [Parameter] public int Width { get; set; }
     [Parameter] public int Height { get; set; }
-    [Parameter] public IEnumerable<State.Province> Provinces { get; set; } = new State.Province[0];
-    [Parameter] public State.Color SelectedColor { get; set; }
-    [Parameter] public Func<int, State.Province?, State.Province?> OnClick { get; set; } = ((a, b) => b);
-    [Parameter] public Func<State.Province, string> Name { get; set; } = (p => p.Name);
+    [Parameter] public IEnumerable<Province> Provinces { get; set; } = new State.Province[0];
+    [Parameter] public Color SelectedColor { get; set; }
+    [Parameter] public Func<int, Province?, Province?> OnClick { get; set; } = ((a, b) => b);
+    [Parameter] public Func<Province, string> Name { get; set; } = (p => p.Name);
     [Parameter] public int FontSize { get; set; }
-    State.Province? selected;
-    Shape? shape;
-    Action OnClickArg(int i) => () => { shape?.Select(selected = OnClick(i, selected)); };
+    Province? selected;
+    Country? country;
+    void ClickSelect(int i)
+    {
+        selected = OnClick(i, selected);
+        country?.Select(selected);
+    }
 }
 <svg viewBox="0 0 @Width @Height">
     @foreach (var province in Provinces)
     {
-        <Shape This="@province" Width="@Width" Height="@Height" OnClick="@OnClickArg(province.Id)"/>
+        <Country This="@province" Width="@Width" Height="@Height" OnClick="@(() => ClickSelect(province.Id))" />
     }
-    <Shape @ref="shape" This="@selected" Width="@Width" Height="@Height" OnClick="@OnClickArg(selected?.Id ?? 0)" Fill="@SelectedColor"/>
+    <Country @ref="country" This="@selected" Width="@Width" Height="@Height" OnClick="@(() => ClickSelect(selected!.Id))" Fill="@SelectedColor" />
     @foreach (var province in Provinces)
     {
-        <ProvinceCaption This="@province" Width="@Width" Height="@Height" FontSize="@FontSize" OnClick="@OnClickArg(province.Id)" Name="@Name"/>
+        <ProvinceCaption This="@province" Width="@Width" Height="@Height" FontSize="@FontSize" OnClick="@(() => ClickSelect(province.Id))" Name="@Name" />
     }
 </svg>

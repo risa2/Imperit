@@ -21,14 +21,14 @@
 </style>
 
 <nav>
-    @if (players.Count > 0)
+    @if (players.Count >= 2)
     {
         <a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
     }
     @if (!sl.Settings.Started)
     {
         <a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
-        @if (players.Count > 0)
+        @if (players.Count >= 2)
         {
             <a class="@ClassFor(Mode.StartGame)" @onclick="@(() => GoTo(Mode.StartGame))">Zahájit</a>
         }

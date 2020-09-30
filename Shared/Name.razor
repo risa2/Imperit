@@ -1,0 +1,12 @@
+@code{
+    [Parameter] public State.Player? Who { get; set; }
+    [Parameter] public State.Province? What { get; set; }
+}
+@if (Who is Player)
+{
+    <span style="color:@Who.Color">@Who.Name</span>
+}
+else if (What is Province)
+{
+    <span style="color:@What.Fill">@What.Name</span>
+}

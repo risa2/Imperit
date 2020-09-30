@@ -4,7 +4,7 @@
 @using Mode = GameSwitch.Mode;
 
 @code{
-    [Parameter] public Action<Mode, State.Land?, State.Land?, State.Player?> Switch { get; set; } = ((a, x, y, z) => { });
+    [Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
     static string Polyline(IEnumerable<long> y_values, int count, long max_y, int x_offset, int y_offset, int width, int height)
     {
         return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
@@ -16,14 +16,14 @@
 <p>lidé se dost vraždili,</p>
 <p>a přitom šlo jenom o to,</p>
 <p>vladnout aspoň na chvíli.</p>
-<br/>
+<br />
 <p>Chci, praví lví duch,</p>
 <p>skoč na volný vzduch,</p>
 <p>viz cenu, již mají tvé statky,</p>
 <p>než dlouhý mír lepší je krátký.</p>
 @{
-    var total_avg = powers.Select(p => p.Sum(x => x.Total) / players.Count);
-    var total_max = powers.SelectMany(i => i).Max(p => p.Total);
+    var total_avg = powers.Select(p => p.Where((x, i) => !(players[i] is Savage)).Sum(x => x.Total) / players.Count);
+    var total_max = powers.Max(p => p.Where((x, i) => !(players[i] is Savage)).Max(x => x.Total));
 }
 <svg viewBox="-10 -10 1220 620" class="diagram">
     @for (int i = 0; i < players.Count; ++i)
