@@ -5,8 +5,8 @@ namespace Imperit.Dynamics.Commands
 	public class Repay : ICommand
 	{
 		public readonly int Debtor;
-		public readonly uint Amount;
-		public Repay(int debtor, uint amount)
+		public readonly int Amount;
+		public Repay(int debtor, int amount)
 		{
 			Debtor = debtor;
 			Amount = amount;

@@ -5,8 +5,8 @@ namespace Imperit.Dynamics.Commands
 	public class Donate : ICommand
 	{
 		public readonly int Player, Recipient;
-		public readonly uint Amount;
-		public Donate(int player, int recipient, uint amount)
+		public readonly int Amount;
+		public Donate(int player, int recipient, int amount)
 		{
 			Player = player;
 			Recipient = recipient;

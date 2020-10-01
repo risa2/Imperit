@@ -9,8 +9,8 @@ namespace Imperit.State
 		new Province this[int i] { get; set; }
 		Province IReadOnlyList<Province>.this[int index] => this[index];
 		bool Passable(int from, int to);
-		uint? Distance(int from, int to);
-		uint NeighborCount(int prov);
+		int? Distance(int from, int to);
+		int NeighborCount(int prov);
 		IEnumerable<Province> NeighborsOf(int prov);
 		Provinces With(Province[] provinces);
 	}
@@ -25,8 +25,8 @@ namespace Imperit.State
 		}
 		public Provinces With(Province[] new_provinces) => new Provinces(new_provinces, graph);
 		public bool Passable(int from, int to) => graph.Passable(from, to);
-		public uint? Distance(int from, int to) => graph.Distance(from, to);
-		public uint NeighborCount(int id) => graph.NeighborCount(id);
+		public int? Distance(int from, int to) => graph.Distance(from, to);
+		public int NeighborCount(int id) => graph.NeighborCount(id);
 		public IEnumerable<Province> NeighborsOf(int id) => graph[id].Select(vertex => provinces[vertex]);
 
 		public Province this[int key]

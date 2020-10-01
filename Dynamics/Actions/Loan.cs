@@ -7,8 +7,8 @@ namespace Imperit.Dynamics.Actions
 	{
 		readonly State.Settings settings;
 		public readonly int Debtor;
-		public readonly uint Debt;
-		public Loan(int debtor, uint debt, State.Settings set)
+		public readonly int Debt;
+		public Loan(int debtor, int debt, State.Settings set)
 		{
 			Debtor = debtor;
 			Debt = debt;
@@ -22,7 +22,7 @@ namespace Imperit.Dynamics.Actions
 				{
 					return (Array.Empty<IAction>(), player.Pay(player.Money));
 				}
-				return (new[] { new Loan(Debtor, (uint)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
+				return (new[] { new Loan(Debtor, (int)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
 			}
 			return (new[] { this }, player);
 		}

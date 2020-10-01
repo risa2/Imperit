@@ -3,7 +3,7 @@
 @code {
     [Parameter] public Player? LoggedIn { get; set; }
     [Parameter] public Action Return { get; set; } = (() => { });
-    uint Debt;
+    int Debt;
     protected override void OnInitialized()
     {
         Debt = actions.Actions.OfType<Loan>().FirstOrDefault()?.Debt ?? 0;
@@ -11,7 +11,7 @@
     RepayModel model = new RepayModel();
     void DoRepay()
     {
-        if (actions.Add(new Repay(LoggedIn!.Id, Math.Min((uint)model.Amount, Debt))))
+        if (actions.Add(new Repay(LoggedIn!.Id, Math.Min(model.Amount, Debt))))
         {
             Return();
         }

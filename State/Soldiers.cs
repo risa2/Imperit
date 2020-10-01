@@ -6,54 +6,57 @@ using System.Linq;
 
 namespace Imperit.State
 {
-	public class Soldiers : IEnumerable<(SoldierType Type, uint Count)>
+	public class Soldiers : IEnumerable<(SoldierType Type, int Count)>
 	{
-		readonly ImmutableArray<(SoldierType Type, uint Count)> soldiers;
-		public Soldiers() => soldiers = ImmutableArray<(SoldierType Type, uint Count)>.Empty;
-		public Soldiers(ImmutableArray<(SoldierType, uint)> list) => soldiers = list;
-		public Soldiers(IEnumerable<(SoldierType, uint)> list) => soldiers = list.ToImmutableArray();
-		public Soldiers(params (SoldierType, uint)[] list) => soldiers = list.ToImmutableArray();
-		public Soldiers Add(Soldiers snd)
+		readonly ImmutableArray<(SoldierType Type, int Count)> soldiers;
+		public Soldiers() => soldiers = ImmutableArray<(SoldierType Type, int Count)>.Empty;
+		public Soldiers(ImmutableArray<(SoldierType, int)> list) => soldiers = list;
+		public Soldiers(IEnumerable<(SoldierType, int)> list) => soldiers = list.ToImmutableArray();
+		public Soldiers(params (SoldierType, int)[] list) => soldiers = list.ToImmutableArray();
+		public Soldiers Add(Soldiers s)
 		{
-			var bld = soldiers.ToBuilder();
-			bld.InsertMatch(snd.soldiers, (a, b) => a.Type == b.Type, (a, b) => (a.Type, a.Count + b.Count));
-			return new Soldiers(bld.ToImmutable());
+			var res = soldiers.ToBuilder();
+			res.InsertMatch(s.Where(p => p.Count > 0), (a, b) => a.Type == b.Type, (a, b) => (a.Type, a.Count + b.Count));
+			return new Soldiers(res.ToImmutable());
 		}
-		public bool Contains(Soldiers snd)
+		public bool Contains(Soldiers s)
 		{
-			return snd.soldiers.All(s2 => soldiers.Any(s1 => s1.Type == s2.Type && s1.Count >= s2.Count));
+			return s.soldiers.All(s2 => soldiers.Any(s1 => s1.Type == s2.Type && s1.Count >= s2.Count));
 		}
-		public Soldiers Subtract(Soldiers snd)
+		public Soldiers Subtract(Soldiers s)
 		{
-			var bld = soldiers.ToBuilder();
-			bld.InsertMatch(snd.soldiers, (a, b) => a.Type == b.Type, (a, b) => (a.Type, a.Count - b.Count));
-			return new Soldiers(bld.Where(x => x.Count > 0).ToImmutableArray());
+			var res = soldiers.ToBuilder();
+			res.InsertMatch(s.Where(p => p.Count > 0), (a, b) => a.Type == b.Type, (a, b) => (a.Type, a.Count - b.Count));
+			return new Soldiers(res.Where(x => x.Count > 0).ToImmutableArray());
 		}
-		public Soldiers Multiply(uint mul) => new Soldiers(soldiers.Select(s => (s.Type, s.Count * mul)));
-		public IEnumerable<(SoldierType Type, uint Count)> Split() => soldiers;
+		public Soldiers Multiply(int mul) => new Soldiers(soldiers.Select(s => (s.Type, s.Count * mul)));
 		public IEnumerable<SoldierType> Types => soldiers.Select(p => p.Type);
-		public uint AttackPower => (uint)soldiers.Sum(p => p.Count * p.Type.AttackPower);
-		public uint DefensePower => (uint)soldiers.Sum(p => p.Count * p.Type.DefensePower);
-		public uint Weight => (uint)soldiers.Sum(p => p.Count * p.Type.Weight);
-		public uint Price => (uint)soldiers.Sum(p => p.Count * p.Type.Price);
-		public uint Count => (uint)soldiers.Sum(p => p.Count);
+		public int AttackPower => soldiers.Sum(p => p.Count * p.Type.AttackPower);
+		public int DefensePower => soldiers.Sum(p => p.Count * p.Type.DefensePower);
+		public int Weight => soldiers.Sum(p => p.Count * p.Type.Weight);
+		public int Price => soldiers.Sum(p => p.Count * p.Type.Price);
+		public int Count => soldiers.Sum(p => p.Count);
 		public bool Any => soldiers.Any(p => p.Count > 0);
 
 		public int TypeCount => soldiers.Length;
-		public (SoldierType Type, uint Count) this[int index] => soldiers[index];
+		public (SoldierType Type, int Count) this[int index] => soldiers[index];
 
 		public bool CanMove(IProvinces provinces, int from, int to)
 		{
 			return Any && provinces[from].Soldiers.Contains(this) && soldiers.Sum(p => p.Count * (p.Type.CanMove(provinces, from, to) - p.Type.Weight)) >= 0;
 		}
-		static uint[] Fight(ImmutableArray<(SoldierType Type, uint Count)> soldiers, uint me, uint enemy, Func<SoldierType, uint> powerof)
+		public bool CanSurviveIn(Province province) => soldiers.Sum(p => (p.Type.CanSustain(province) - p.Type.Weight) * p.Count) >= 0;
+		static int[] Fight(ImmutableArray<(SoldierType Type, int Count)> soldiers, int me, int enemy, Func<SoldierType, int> powerof)
 		{
-			uint died = 0;
-			uint[] remaining = new uint[soldiers.Length];
+			int died = 0;
+			int[] remaining = new int[soldiers.Length];
 			for (int i = 0; i < remaining.Length; ++i)
 			{
-				remaining[i] = soldiers[i].Count - (soldiers[i].Count * enemy / me);
-				died += (soldiers[i].Count - remaining[i]) * powerof(soldiers[i].Type);
+				if (powerof(soldiers[i].Type) > 0)
+				{
+					remaining[i] = soldiers[i].Count - (soldiers[i].Count * enemy / me);
+					died += (soldiers[i].Count - remaining[i]) * powerof(soldiers[i].Type);
+				}
 			}
 			for (int i = 0; died < enemy && i < remaining.Length; ++i)
 			{
@@ -69,14 +72,14 @@ namespace Imperit.State
 		}
 		public Soldiers AttackedBy(Soldiers s2)
 		{
-			uint defensePower = DefensePower, attackPower = s2.AttackPower;
+			int defensePower = DefensePower, attackPower = s2.AttackPower;
 			var (s, power1, power2, powerof) = defensePower >= attackPower
-					? (soldiers, defensePower, attackPower, (Func<SoldierType, uint>)(type => type.DefensePower))
+					? (soldiers, defensePower, attackPower, (Func<SoldierType, int>)(type => type.DefensePower))
 					: (s2.soldiers, attackPower, defensePower, type => type.AttackPower);
 			var remaining = Fight(s, power1, power2, powerof).Select((count, i) => (s[i].Type, count));
 			return new Soldiers(remaining.Where(pair => pair.count > 0));
 		}
-		public IEnumerator<(SoldierType, uint)> GetEnumerator() => (soldiers as IEnumerable<(SoldierType, uint)>).GetEnumerator();
+		public IEnumerator<(SoldierType, int)> GetEnumerator() => (soldiers as IEnumerable<(SoldierType, int)>).GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

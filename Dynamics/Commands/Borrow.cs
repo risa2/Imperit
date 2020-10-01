@@ -6,8 +6,8 @@ namespace Imperit.Dynamics.Commands
 	{
 		readonly State.Settings settings;
 		public readonly int Player;
-		public readonly uint Amount;
-		public Borrow(int player, uint amount, State.Settings set)
+		public readonly int Amount;
+		public Borrow(int player, int amount, State.Settings set)
 		{
 			Player = player;
 			Amount = amount;

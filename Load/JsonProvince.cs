@@ -9,7 +9,7 @@ namespace Imperit.Load
 		public string Name { get; set; } = "";
 		public JsonArmy Army { get; set; } = new JsonArmy();
 		public JsonArmy DefaultArmy { get; set; } = new JsonArmy();
-		public uint? Earnings { get; set; }
+		public int? Earnings { get; set; }
 		public bool? IsStart { get; set; }
 		public Province Convert(int i, (Settings, IReadOnlyList<Player>, IReadOnlyList<Shape>) arg)
 		{

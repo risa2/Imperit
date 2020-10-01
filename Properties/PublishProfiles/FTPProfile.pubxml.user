@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Tento soubor je používán procesem publikování nebo balení webového projektu. Chování tohoto procesu můžete přizpůsobit
+úpravou tohoto souboru MSBuild. Další informace o tomto procesu najdete na webu https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhJchaSp3PEWJevQpPj+V9wAAAAACAAAAAAAQZgAAAAEAACAAAABIZUaOnHJR/DvH1zFccTuu8lu3gSkhJqXwNP9TmsW6FAAAAAAOgAAAAAIAACAAAAAjlx/TigtsHd6SKH7aMrLuCzKIdMD57H/RbhHrlt2eNyAAAAARqr9d47EoLxJdhl/S5zBjrzi0SH0hEsMkOUPwyVx4y0AAAADGDpZ7M8wTYj52uRe6cmunZzv7hiVQmMJabU9WsWhs6gHbNGPxQ03b0ijpomIcAnJ65Odbjz7nqikyGlcfrII7</EncryptedPassword>
+    <_PublishTargetUrl>ftp://free.aspify.com</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>03/11/2020 21:11:20</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>03/11/2020 21:11:20</publishTime>
+    </File>
+    <File Include="DocumentFormat.OpenXml.dll">
+      <publishTime>05/21/2020 21:48:48</publishTime>
+    </File>
+    <File Include="Files/Actions.json">
+      <publishTime>10/01/2020 20:41:59</publishTime>
+    </File>
+    <File Include="Files/Active.json">
+      <publishTime>10/01/2020 20:34:27</publishTime>
+    </File>
+    <File Include="Files/Graph.json">
+      <publishTime>07/31/2020 21:02:24</publishTime>
+    </File>
+    <File Include="Files/Players.json">
+      <publishTime>10/01/2020 20:41:59</publishTime>
+    </File>
+    <File Include="Files/Powers.json">
+      <publishTime>10/01/2020 20:41:58</publishTime>
+    </File>
+    <File Include="Files/Provinces.json">
+      <publishTime>10/01/2020 20:41:59</publishTime>
+    </File>
+    <File Include="Files/Settings.json">
+      <publishTime>10/01/2020 20:41:58</publishTime>
+    </File>
+    <File Include="Files/Shapes.json">
+      <publishTime>07/31/2020 21:34:03</publishTime>
+    </File>
+    <File Include="Imperit.deps.json">
+      <publishTime>10/01/2020 20:53:22</publishTime>
+    </File>
+    <File Include="Imperit.dll">
+      <publishTime>10/01/2020 20:53:20</publishTime>
+    </File>
+    <File Include="Imperit.exe">
+      <publishTime>10/01/2020 20:53:20</publishTime>
+    </File>
+    <File Include="Imperit.pdb">
+      <publishTime>10/01/2020 20:53:20</publishTime>
+    </File>
+    <File Include="Imperit.runtimeconfig.json">
+      <publishTime>10/01/2020 20:43:33</publishTime>
+    </File>
+    <File Include="Imperit.Views.dll">
+      <publishTime>10/01/2020 20:53:21</publishTime>
+    </File>
+    <File Include="Imperit.Views.pdb">
+      <publishTime>10/01/2020 20:53:21</publishTime>
+    </File>
+    <File Include="System.IO.Packaging.dll">
+      <publishTime>11/15/2019 08:37:18</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>10/01/2020 20:53:22</publishTime>
+    </File>
+    <File Include="wwwroot/css/site.css">
+      <publishTime>09/30/2020 20:20:50</publishTime>
+    </File>
+    <File Include="wwwroot/favicon.ico">
+      <publishTime>07/04/2020 17:56:29</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

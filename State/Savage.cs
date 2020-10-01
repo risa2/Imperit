@@ -6,8 +6,8 @@ namespace Imperit.State
 	{
 		public Savage(int id, ImmutableArray<SoldierType> types)
 			: base(id, "", new Color(), new Password(""), 0, true, 0, types) { }
-		public override Player GainMoney(uint amount) => new Savage(Id, SoldierTypes);
-		public override Player Pay(uint amount) => new Savage(Id, SoldierTypes);
+		public override Player GainMoney(int amount) => new Savage(Id, SoldierTypes);
+		public override Player Pay(int amount) => new Savage(Id, SoldierTypes);
 		public override Player Die() => new Savage(Id, SoldierTypes);
 		public override Player ChangeIncome(int change) => new Savage(Id, SoldierTypes);
 	}

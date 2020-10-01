@@ -15,7 +15,7 @@
 {"Type":"P","Name":"Nizozem\u00ED","Army":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"Earnings":30,"IsStart":false}
 {"Type":"L","Name":"Braniborsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"Earnings":23,"IsStart":false}
 {"Type":"L","Name":"Pozna\u0148sko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"Earnings":19,"IsStart":false}
-{"Type":"L","Name":"Anhaltsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":375}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":375}]},"Player":0},"Earnings":75,"IsStart":false}
+{"Type":"L","Name":"Anhaltsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":300}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":300}]},"Player":0},"Earnings":75,"IsStart":false}
 {"Type":"S","Name":"Pr\u016Fliv La Manche","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"L","Name":"Podkarpat\u00ED","Army":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"Earnings":20,"IsStart":false}
 {"Type":"L","Name":"Lod\u017E","Army":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"Earnings":25,"IsStart":true}
@@ -45,7 +45,7 @@
 {"Type":"L","Name":"Sedmihradsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"Earnings":25,"IsStart":true}
 {"Type":"L","Name":"Tours","Army":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"Earnings":24,"IsStart":false}
 {"Type":"L","Name":"Burgundsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"Earnings":24,"IsStart":false}
-{"Type":"P","Name":"\u0160v\u00FDcarsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":250}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":250}]},"Player":0},"Earnings":50,"IsStart":false}
+{"Type":"P","Name":"\u0160v\u00FDcarsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"Earnings":50,"IsStart":false}
 {"Type":"S","Name":"Bodensee","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"L","Name":"Akvit\u00E1nie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"Earnings":20,"IsStart":false}
 {"Type":"P","Name":"Ben\u00E1tsko","Army":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"Earnings":25,"IsStart":false}
@@ -78,16 +78,16 @@
 {"Type":"L","Name":"\u0158\u00EDm","Army":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"Earnings":22,"IsStart":true}
 {"Type":"L","Name":"Abruzzo","Army":{"Soldiers":{"Items":[{"Type":0,"Count":90}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":90}]},"Player":0},"Earnings":18,"IsStart":false}
 {"Type":"S","Name":"St\u0159edozemn\u00ED mo\u0159e","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"P","Name":"Korsika","Army":{"Soldiers":{"Items":[{"Type":0,"Count":175}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":175}]},"Player":0},"Earnings":35,"IsStart":false}
+{"Type":"P","Name":"Korsika","Army":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"Earnings":40,"IsStart":false}
 {"Type":"L","Name":"Molise","Army":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":125}]},"Player":0},"Earnings":25,"IsStart":false}
 {"Type":"P","Name":"Apulie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":120}]},"Player":0},"Earnings":24,"IsStart":false}
 {"Type":"P","Name":"Neapol","Army":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"Earnings":30,"IsStart":false}
-{"Type":"P","Name":"Sardinie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"Earnings":40,"IsStart":false}
+{"Type":"P","Name":"Sardinie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":160}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":160}]},"Player":0},"Earnings":40,"IsStart":false}
 {"Type":"L","Name":"Basilicata","Army":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"Earnings":19,"IsStart":false}
 {"Type":"S","Name":"J\u00F3nsk\u00E9 mo\u0159e","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"L","Name":"Kal\u00E1brie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"Earnings":22,"IsStart":true}
-{"Type":"P","Name":"Kla\u010D","Army":{"Soldiers":{"Items":[{"Type":0,"Count":235}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":235}]},"Player":0},"Earnings":47,"IsStart":false}
-{"Type":"P","Name":"Sic\u00EDlie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":190}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":190}]},"Player":0},"Earnings":38,"IsStart":false}
+{"Type":"P","Name":"Kla\u010D","Army":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"Earnings":50,"IsStart":false}
+{"Type":"P","Name":"Sic\u00EDlie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"Earnings":35,"IsStart":false}
 {"Type":"L","Name":"Litva","Army":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"Earnings":23,"IsStart":true}
 {"Type":"S","Name":"Baltsk\u00E9 mo\u0159e","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"L","Name":"Zakarpat\u00ED","Army":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":100}]},"Player":0},"Earnings":20,"IsStart":false}

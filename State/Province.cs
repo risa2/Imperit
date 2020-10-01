@@ -9,9 +9,9 @@ namespace Imperit.State
 		public readonly string Name;
 		public readonly Shape Shape;
 		public readonly Army Army, DefaultArmy;
-		public readonly uint Earnings;
+		public readonly int Earnings;
 		protected readonly Settings settings;
-		public Province(int id, string name, Shape shape, Army army, Army defaultArmy, uint earnings, Settings set)
+		public Province(int id, string name, Shape shape, Army army, Army defaultArmy, int earnings, Settings set)
 		{
 			Id = id;
 			Name = name;
@@ -38,6 +38,7 @@ namespace Imperit.State
 		public Soldiers DefaultSoldiers => DefaultArmy.Soldiers;
 		public IEnumerable<SoldierType> SoldierTypes => Soldiers.Types;
 		public bool Occupied => Army.PlayerType != typeof(Savage);
+		public bool CanSoldiersSurvive => Soldiers.CanSurviveIn(this);
 		public virtual Color Fill => new Color();
 		public virtual Color Stroke => new Color();
 		public virtual int StrokeWidth => 0;

@@ -8,8 +8,8 @@ namespace Imperit.Dynamics.Commands
     {
         public readonly Player Player;
         public readonly int Land;
-        public readonly uint Price;
-        public Purchase(Player player, int land, uint price)
+        public readonly int Price;
+        public Purchase(Player player, int land, int price)
         {
             Player = player;
             Land = land;

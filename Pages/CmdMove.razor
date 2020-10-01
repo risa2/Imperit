@@ -9,8 +9,9 @@
     [Parameter] public Province? To { get; set; }
     [Parameter] public Player? Player { get; set; }
     MoveModel model = new MoveModel();
-    Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], (uint)count.Value)));
+    Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
     Army MovingArmy => new Army(MovingSoldiers, Player!);
+    public bool CanAnyMove => MovingSoldiers.Any(p => p.Type.CanMoveAlone(provinces, From!.Id, To!.Id));
     public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
     protected override void OnInitialized()
     {
@@ -18,10 +19,10 @@
         model.Soldiers = new IntModel[model.SoldierTypes.Length];
         for (int i = 0; i < model.Soldiers.Length; ++i)
         {
-            model.Soldiers[i] = new IntModel() { Value = (int)From!.Soldiers[i].Count };
+            model.Soldiers[i] = new IntModel() { Value = From!.Soldiers[i].Count };
         }
         model.IsAttack = !From!.IsAllyOf(To!);
-        if (!CanMove)
+        if (!CanAnyMove)
         {
             Return();
         }

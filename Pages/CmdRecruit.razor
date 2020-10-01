@@ -15,9 +15,9 @@
             model.Soldiers[i] = new IntModel();
         }
     }
-    Soldiers RecruitedSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], (uint)count.Value)));
-    uint Price => RecruitedSoldiers.Price;
-    uint Missing => (uint)Math.Max(0, Price - (int)Player!.Money);
+    Soldiers RecruitedSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
+    int Price => RecruitedSoldiers.Price;
+    int Missing => Math.Max(0, Price - Player!.Money);
     void DoRecruit()
     {
         if (model.Borrow && Missing > 0)

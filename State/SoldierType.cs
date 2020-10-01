@@ -10,12 +10,14 @@ namespace Imperit.State
 		public string Name => Description.Name;
 		public string Symbol => Description.Symbol;
 		public string Text => Description.Text;
-		public abstract uint AttackPower { get; }
-		public abstract uint DefensePower { get; }
-		public abstract uint Weight { get; }
-		public abstract uint Price { get; }
+		public abstract int AttackPower { get; }
+		public abstract int DefensePower { get; }
+		public abstract int Weight { get; }
+		public abstract int Price { get; }
 		public abstract bool IsRecruitable(Province province);
-		public abstract uint CanMove(IProvinces provinces, int from, int to);
+		public abstract int CanSustain(Province province);
+		public abstract int CanMove(IProvinces provinces, int from, int to);
+		public bool CanMoveAlone(IProvinces provinces, int from, int to) => CanMove(provinces, from, to) >= Weight;
 		protected virtual IComparable Identity => (GetType(), Name, Symbol, Text, AttackPower, DefensePower, Weight, Price);
 		public int CompareTo(SoldierType? type) => Identity.CompareTo(type?.Identity);
 		public sealed override int GetHashCode() => Identity.GetHashCode();

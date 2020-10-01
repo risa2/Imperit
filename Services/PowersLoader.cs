@@ -29,9 +29,9 @@ namespace Imperit.Services
 			loader.Clear();
 			powers.Clear();
 		}
-		uint[] SoldiersOf(IReadOnlyCollection<Player> players)
+		int[] SoldiersOf(IReadOnlyCollection<Player> players)
 		{
-			return players.Select(player => (uint)provinces.Where(prov => prov.IsControlledBy(player.Id))
+			return players.Select(player => provinces.Where(prov => prov.IsControlledBy(player.Id))
 														   .Sum(prov => prov.Soldiers.Price)).ToArray();
 		}
 		static double Div(double a, double b) => (a / b) switch

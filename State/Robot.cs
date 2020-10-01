@@ -7,50 +7,50 @@ namespace Imperit.State
 {
     public class Robot : Player
     {
-        public Robot(int id, string name, Color color, Password password, uint money, bool alive, uint income, ImmutableArray<SoldierType> types)
+        public Robot(int id, string name, Color color, Password password, int money, bool alive, int income, ImmutableArray<SoldierType> types)
             : base(id, name, color, password, money, alive, income, types) { }
-        public override Player GainMoney(uint amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive, Income, SoldierTypes);
-        public override Player Pay(uint amount) => new Robot(Id, Name, Color, Password, Money - amount, Alive, Income, SoldierTypes);
+        public override Player GainMoney(int amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive, Income, SoldierTypes);
+        public override Player Pay(int amount) => new Robot(Id, Name, Color, Password, Money - amount, Alive, Income, SoldierTypes);
         public override Player Die() => new Robot(Id, Name, Color, Password, 0, false, 0, ImmutableArray<SoldierType>.Empty);
-        public override Player ChangeIncome(int change) => new Robot(Id, Name, Color, Password, Money, Alive, Income + (uint)change, SoldierTypes);
+        public override Player ChangeIncome(int change) => new Robot(Id, Name, Color, Password, Money, Alive, Income + change, SoldierTypes);
         public override Player AddSoldierTypes(params SoldierType[] types) => new Robot(Id, Name, Color, Password, Money, Alive, Income, SoldierTypes.AddRange(types));
         //enum Relation { Enemy, Ally, Empty }
         //class PInfo
         //{
         //    public Relation Relation;
-        //    public uint Soldiers, Enemies, Coming;
-        //    public PInfo(uint soldiers, uint enemies, uint coming, Relation relation)
+        //    public int Soldiers, Enemies, Coming;
+        //    public PInfo(int soldiers, int enemies, int coming, Relation relation)
         //    {
         //        Soldiers = soldiers;
         //        Enemies = enemies;
         //        Coming = coming;
         //        Relation = relation;
         //    }
-        //    public uint SoldiersNext => Soldiers + Coming;
-        //    public int Bilance => (int)SoldiersNext - (int)Enemies;
+        //    public int SoldiersNext => Soldiers + Coming;
+        //    public int Bilance => SoldiersNext - Enemies;
         //}
-        //static uint Min(uint a, uint b) => a > b ? b : a;
-        //static uint Max(uint a, uint b) => a > b ? a : b;
+        //static int Min(int a, int b) => a > b ? b : a;
+        //static int Max(int a, int b) => a > b ? a : b;
         //IEnumerable<Province> NeighborEnemies(IProvinces provinces, Province prov) => provinces.NeighborsOf(prov.Id).Where(neighbor => !neighbor.IsControlledBy(Id) && neighbor.Occupied);
-        //uint EnemiesCount(IProvinces provinces, Province prov) => (uint)NeighborEnemies(provinces, prov).Sum(neighbor => neighbor.Soldiers);
+        //int EnemiesCount(IProvinces provinces, Province prov) => NeighborEnemies(provinces, prov).Sum(neighbor => neighbor.Soldiers);
         //Relation GetRelationTo(Province prov) => prov.IsControlledBy(Id) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
-        //void Recruit(List<Dynamics.ICommand> result, ref uint spent, Land land, PInfo[] info, uint count)
+        //void Recruit(List<Dynamics.ICommand> result, ref int spent, Land land, PInfo[] info, int count)
         //{
         //    info[land.Id].Coming += count;
         //    result.Add(new Recruitment(Id, land.Id, new PlayerArmy(this, count)));
         //    spent += count;
         //}
-        //void DefensiveRecruitments(List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
+        //void DefensiveRecruitments(List<Dynamics.ICommand> result, ref int spent, PInfo[] info, Land[] my)
         //{
         //    foreach (Land l in my)
         //    {
         //        if (info[l.Id].Bilance < 0 && info[l.Id].Bilance + Money - spent >= 0)
         //        {
-        //            Recruit(result, ref spent, l, info, (uint)-info[l.Id].Bilance);
+        //            Recruit(result, ref spent, l, info, -info[l.Id].Bilance);
         //        }
         //    }
         //}
-        //void StabilisatingRecruitments(List<Dynamics.ICommand> result, ref uint spent, PInfo[] info, Land[] my)
+        //void StabilisatingRecruitments(List<Dynamics.ICommand> result, ref int spent, PInfo[] info, Land[] my)
         //{
         //    foreach (Land l in my)
         //    {
@@ -66,7 +66,7 @@ namespace Imperit.State
         //}
         //void Recruitments(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         //{
-        //    uint spent = 0;
+        //    int spent = 0;
         //    var lands = my.Select(i => provinces[i] as Land).NotNull().ToArray();
         //    DefensiveRecruitments(result, ref spent, info, lands);
         //    StabilisatingRecruitments(result, ref spent, info, lands);
@@ -81,7 +81,7 @@ namespace Imperit.State
         //static bool CanKeepAttackStartProvinceAfterAttack(IProvinces provinces, int from, int to, PInfo[] info) => info[from].Bilance > (RevengeDoesNotMatter(provinces, from, to) ? 0 : info[to].Enemies) + (info[to].Relation == Relation.Empty ? 0 : info[to].Soldiers);
         //static bool CanAttackSuccesfully(IProvinces provinces, int from, int to, PInfo[] info) => CanConquerProvince(info[from], info[to]) && (CanKeepConqueredProvince(info[from], info[to]) || RevengeDoesNotMatter(provinces, from, to)) && CanKeepAttackStartProvinceAfterAttack(provinces, from, to, info);
         //static bool ShouldAttack(IProvinces provinces, int from, int to, PInfo[] info) => info[to].Relation != Relation.Ally && CanAttackSuccesfully(provinces, from, to, info);
-        //void Attack(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int from, int to, uint count)
+        //void Attack(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int from, int to, int count)
         //{
         //    result.Add(new Attack(Id, from, provinces[to], new PlayerArmy(this, count)));
         //    info[from].Soldiers -= count;
@@ -103,13 +103,13 @@ namespace Imperit.State
         //        }
         //    }
         //}
-        //static uint MultiAttackSoldiers(IProvinces provinces, PInfo[] info, int from, int to) => Min((uint)info[from].Bilance + provinces[to].Soldiers, info[from].Soldiers);
+        //static int MultiAttackSoldiers(IProvinces provinces, PInfo[] info, int from, int to) => Min(info[from].Bilance + provinces[to].Soldiers, info[from].Soldiers);
         //void MultiAttacks(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
         //{
         //    foreach (int to in my.SelectMany(i => provinces.NeighborsOf(i).Where(p => p.Occupied && !p.IsControlledBy(Id)).Select(p => p.Id)).Distinct())
         //    {
         //        var starts = provinces.NeighborsOf(to).Where(n => n.IsControlledBy(Id) && info[n.Id].Bilance + provinces[to].Soldiers > 0);
-        //        uint bilance = (uint)starts.Sum(n => MultiAttackSoldiers(provinces, info, n.Id, to));
+        //        int bilance = starts.Sum(n => MultiAttackSoldiers(provinces, info, n.Id, to));
         //        if (bilance > info[to].Soldiers + (starts.All(n => RevengeDoesNotMatter(provinces, n.Id, to)) ? 0 : info[to].Enemies))
         //        {
         //            foreach (var from in starts)
@@ -119,7 +119,7 @@ namespace Imperit.State
         //        }
         //    }
         //}
-        //void Transport(List<Dynamics.ICommand> result, PInfo[] info, int from, Province to, uint count)
+        //void Transport(List<Dynamics.ICommand> result, PInfo[] info, int from, Province to, int count)
         //{
         //    result.Add(new Reinforcement(Id, from, to, new PlayerArmy(this, count)));
         //    info[from].Soldiers -= count;
@@ -141,7 +141,7 @@ namespace Imperit.State
         //            }
         //            else if (info[from].Bilance > 0 && info[from].Bilance >= info[dest.Id].Bilance)
         //            {
-        //                Transport(result, info, from, dest, Min((uint)info[from].Bilance, info[from].Soldiers));
+        //                Transport(result, info, from, dest, Min(info[from].Bilance, info[from].Soldiers));
         //            }
         //        }
         //    }

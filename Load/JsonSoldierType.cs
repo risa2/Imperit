@@ -7,11 +7,11 @@ namespace Imperit.Load
 	{
 		public string Type { get; set; } = "";
 		public JsonDescription Description { get; set; } = new JsonDescription();
-		public uint AttackPower { get; set; }
-		public uint DefensePower { get; set; }
-		public uint Weight { get; set; }
-		public uint Price { get; set; }
-		public uint? Capacity { get; set; }
+		public int AttackPower { get; set; }
+		public int DefensePower { get; set; }
+		public int Weight { get; set; }
+		public int Price { get; set; }
+		public int? Capacity { get; set; }
 		public SoldierType Convert(int i, bool _b) => Type switch
 		{
 			"P" => new Pedestrian(i, Description.Convert(), AttackPower, DefensePower, Weight, Price),

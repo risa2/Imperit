@@ -9,7 +9,7 @@ namespace Imperit.Load
 		public class Pair
 		{
 			public int Type { get; set; }
-			public uint Count { get; set; }
+			public int Count { get; set; }
 		}
 		public IEnumerable<Pair> Items { get; set; } = System.Array.Empty<Pair>();
 		public Soldiers Convert(int i, IReadOnlyList<SoldierType> types)

@@ -16,14 +16,14 @@ namespace Imperit.State
 			Soldiers = soldiers;
 			player = plr;
 		}
-		public IAction Gain(Province what) => new IncomeChange(PlayerId, (int)what.Earnings);
-		public IAction Lose(Province what) => new IncomeChange(PlayerId, -(int)what.Earnings);
+		public IAction Gain(Province what) => new IncomeChange(PlayerId, what.Earnings);
+		public IAction Lose(Province what) => new IncomeChange(PlayerId, -what.Earnings);
 		public Army Join(Army another) => new Army(Soldiers.Add(another.Soldiers), player);
 		public Army Subtract(Army another) => new Army(Soldiers.Subtract(another.Soldiers), player);
 		public bool IsControlledBy(int player) => PlayerId == player;
 		public bool IsAllyOf(Army another) => another.IsControlledBy(PlayerId);
-		public uint AttackPower => Soldiers.AttackPower;
-		public uint DefensePower => Soldiers.DefensePower;
+		public int AttackPower => Soldiers.AttackPower;
+		public int DefensePower => Soldiers.DefensePower;
 		public Army AttackedBy(Army another)
 		{
 			var soldiers = Soldiers.AttackedBy(another.Soldiers);

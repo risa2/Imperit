@@ -3,8 +3,8 @@
 	public class Seizure : IAction
 	{
 		public readonly int Player;
-		public readonly uint Amount;
-		public Seizure(int player, uint amount)
+		public readonly int Amount;
+		public Seizure(int player, int amount)
 		{
 			Player = player;
 			Amount = amount;

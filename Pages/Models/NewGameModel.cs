@@ -26,15 +26,15 @@ namespace Imperit.Pages
 		{
 			Interest = old.Interest;
 			DefaultInstability = old.DefaultInstability;
-			DefaultMoney = (int)old.DefaultMoney;
-			DebtLimit = (int)old.DebtLimit;
+			DefaultMoney = old.DefaultMoney;
+			DebtLimit = old.DebtLimit;
 			SingleClient = old.SingleClient;
 			RobotNames = string.Join(", ", old.RobotNames);
 			MaxRobotCount = old.MaxRobotCount;
 		}
 		public State.Settings GetSettings(State.Settings old)
 		{
-			return new State.Settings(false, SingleClient, Interest, DefaultInstability, (uint)DefaultMoney, (uint)DebtLimit, RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), MaxRobotCount, old.SeaColor, old.LandColor, old.MountainsColor, old.MountainsWidth, old.DefaultSoldierTypes, new State.Password(NewPassword));
+			return new State.Settings(false, SingleClient, Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), MaxRobotCount, old.SeaColor, old.LandColor, old.MountainsColor, old.MountainsWidth, old.SoldierTypes, old.DefaultSoldierTypes, new State.Password(NewPassword));
 		}
 	}
 }

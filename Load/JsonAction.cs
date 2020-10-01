@@ -11,7 +11,7 @@ namespace Imperit.Load
 		public JsonArmy? Army { get; set; }
 		public int? Player { get; set; }
 		public int? Amount { get; set; }
-		public uint? Debt { get; set; }
+		public int? Debt { get; set; }
 		public Dynamics.IAction Convert(int i, (Settings, IReadOnlyList<Player>) arg)
 		{
 			var (settings, players) = arg;

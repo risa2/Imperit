@@ -5,12 +5,12 @@ namespace Imperit.State.SoldierTypes
 	public class Ship : SoldierType
 	{
 		public override Description Description { get; }
-		public override uint AttackPower { get; }
-		public override uint DefensePower { get; }
-		public override uint Weight { get; }
-		public override uint Price { get; }
-		public uint Capacity { get; }
-		public Ship(int id, Description description, uint attackPower, uint defensePower, uint weight, uint price, uint capacity) : base(id)
+		public override int AttackPower { get; }
+		public override int DefensePower { get; }
+		public override int Weight { get; }
+		public override int Price { get; }
+		public int Capacity { get; }
+		public Ship(int id, Description description, int attackPower, int defensePower, int weight, int price, int capacity) : base(id)
 		{
 			Description = description;
 			AttackPower = attackPower;
@@ -19,14 +19,15 @@ namespace Imperit.State.SoldierTypes
 			Price = price;
 			Capacity = capacity;
 		}
-		public override uint CanMove(IProvinces provinces, int from, int to)
+		protected override IComparable Identity => (base.Identity, Capacity);
+		public override int CanMove(IProvinces provinces, int from, int to)
 		{
 			return ((provinces[from] is Port && provinces[to] is Sea)
 				  || (provinces[from] is Sea && provinces[to] is Sea)
-				  || (provinces[from] is Sea && provinces[to] is Port)
-				  || from == to) && provinces.Passable(from, to) ? Capacity + Weight : 0;
+				  || (provinces[from] is Sea && provinces[to] is Port))
+				  && provinces.Passable(from, to) ? Capacity + Weight : 0;
 		}
-		protected override IComparable Identity => (base.Identity, Capacity);
 		public override bool IsRecruitable(Province province) => province is Port;
+		public override int CanSustain(Province province) => province is Sea ? Capacity + Weight : province is Port ? Weight : 0;
 	}
 }

@@ -12,9 +12,9 @@ namespace Imperit.State
 			this.edges = edges;
 			this.starts = starts;
 		}
-		uint? Distance(int from, int to, int limit)
+		int? Distance(int from, int to, int limit)
 		{
-			var stack = new List<(int Pos, uint Distance)>() { (from, 0) };
+			var stack = new List<(int Pos, int Distance)>() { (from, 0) };
 			var visited = new bool[Count];
 			visited[from] = true;
 			for (int i = 0; i < stack.Count; ++i)
@@ -34,9 +34,9 @@ namespace Imperit.State
 			}
 			return null;
 		}
-		public uint? Distance(int from, int to) => Distance(from, to, int.MaxValue);
-		public bool Passable(int from, int to) => Distance(from, to, 1) is uint;
-		public uint NeighborCount(int vertex) => (uint)(starts[vertex + 1] - starts[vertex]);
+		public int? Distance(int from, int to) => Distance(from, to, int.MaxValue);
+		public bool Passable(int from, int to) => Distance(from, to, 1) is int;
+		public int NeighborCount(int vertex) => (starts[vertex + 1] - starts[vertex]);
 		public IEnumerable<int> this[int vertex] => edges.Take(starts[vertex + 1]).Skip(starts[vertex]);
 		public int Count => starts.Length - 1;
 		public IEnumerator<IEnumerable<int>> GetEnumerator() => Enumerable.Range(0, Count).Select(i => this[i]).GetEnumerator();

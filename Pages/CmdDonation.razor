@@ -7,7 +7,7 @@
     DonationModel model = new DonationModel();
     void DoDonate()
     {
-        if (actions.Add(new Donate(Player!.Id, Associate!.Id, (uint)model.Amount)))
+        if (actions.Add(new Donate(Player!.Id, Associate!.Id, model.Amount)))
         {
             Return();
         }
