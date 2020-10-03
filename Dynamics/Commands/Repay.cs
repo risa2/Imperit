@@ -13,7 +13,7 @@ namespace Imperit.Dynamics.Commands
 		}
 		public (IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces)
 		{
-			return (System.Array.Empty<IAction>(), player.Id == Debtor ? player.Pay(Amount) : player);
+			return (System.Array.Empty<IAction>(), player.Id == Debtor ? player.ChangeMoney(-Amount) : player);
 		}
 		public bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces) => players[Debtor].Money >= Amount;
 	}

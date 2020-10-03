@@ -21,7 +21,7 @@
             {
                 <td><Name Who="@player"/></td>
                 <td>@(player.Money)@Sym.Money</td>
-                <td>(+@(player.Income)@Sym.Money)</td>
+                <td>(+@provinces.ControlledBy(player.Id).Sum(p => p.Earnings)@Sym.Money)</td>
                 @if (player != LoggedIn)
                 {
                     <td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>

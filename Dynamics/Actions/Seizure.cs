@@ -13,8 +13,7 @@
 		{
 			if (province is State.Land land && land.IsControlledBy(Player) && Amount > 0)
 			{
-				var (new_province, actions) = land.Revolt();
-				return (Amount <= land.Price ? actions : actions.Concat(new Seizure(Player, Amount - land.Price)), new_province);
+				return (Amount <= land.Price ? System.Array.Empty<IAction>() : new[] { new Seizure(Player, Amount - land.Price) }, land.Revolt());
 			}
 			return (new[] { this }, province);
 		}

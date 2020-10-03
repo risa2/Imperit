@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Imperit.Dynamics.Actions
 {
@@ -20,7 +19,7 @@ namespace Imperit.Dynamics.Actions
 			{
 				if (Debt > settings.DebtLimit)
 				{
-					return (Array.Empty<IAction>(), player.Pay(player.Money));
+					return (Array.Empty<IAction>(), player.ChangeMoney(-player.Money));
 				}
 				return (new[] { new Loan(Debtor, (int)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
 			}
@@ -30,20 +29,16 @@ namespace Imperit.Dynamics.Actions
 		{
 			if (active.Id == Debtor && province is State.Land land && land.IsControlledBy(Debtor) && Debt > settings.DebtLimit + active.Money)
 			{
-				var (new_province, actions) = land.Revolt();
-				return (land.Price > Debt ? actions : actions.Concat(new Loan(Debtor, Debt - land.Price, settings)), new_province);
+				return (land.Price > Debt ? Array.Empty<IAction>() : new[] { new Loan(Debtor, Debt - land.Price, settings) }, land.Revolt());
 			}
 			return (new[] { this }, province);
 		}
-		public (IAction?, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces)
+		public (IAction?, bool) Interact(ICommand another) => another switch
 		{
-			return another switch
-			{
-				Commands.Borrow Loan when Loan.Player == Debtor => (new Loan(Debtor, Debt + Loan.Amount, settings), false),
-				Commands.Repay Rep when Rep.Debtor == Debtor => (Rep.Amount >= Debt ? null : new Loan(Debtor, Debt - Rep.Amount, settings), false),
-				_ => (this, true)
-			};
-		}
+			Commands.Borrow Loan when Loan.Player == Debtor => (new Loan(Debtor, Debt + Loan.Amount, settings), false),
+			Commands.Repay Rep when Rep.Debtor == Debtor => (Rep.Amount >= Debt ? null : new Loan(Debtor, Debt - Rep.Amount, settings), false),
+			_ => (this, true)
+		};
 		public byte Priority => 130;
 	}
 }

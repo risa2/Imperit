@@ -1,9 +1,9 @@
 ﻿namespace Imperit.State
 {
-    public interface IAppearance : IEnumerableImpl<Point>
-    {
-        Color Fill => new Color();
-        Color Stroke => new Color();
-        int StrokeWidth => 0;
-    }
+	public interface IAppearance : IEnumerableImpl<Point>
+	{
+		Color Fill => new Color();
+		Color Stroke => new Color();
+		int StrokeWidth => 0;
+	}
 }

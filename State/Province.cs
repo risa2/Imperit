@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Imperit.State
 {
@@ -21,23 +20,19 @@ namespace Imperit.State
 			Earnings = earnings;
 			settings = set;
 		}
-		protected abstract Province WithArmy(Army army);
-		public (Province, Dynamics.IAction[]) GiveUpTo(Army his_army)
-		{
-			return (WithArmy(his_army), new[] { Army.Lose(this), his_army.Gain(this) }.NotNull().ToArray());
-		}
-		public (Province, Dynamics.IAction[]) GiveUpTo(Player p) => GiveUpTo(new Army(new Soldiers(), p));
-		public (Province, Dynamics.IAction[]) Revolt() => GiveUpTo(DefaultArmy);
-		public virtual Province StartMove(Province dest, Army army) => WithArmy(Army.Subtract(army));
-		public (Province, Dynamics.IAction[]) AttackedBy(Army another) => GiveUpTo(Army.AttackedBy(another));
-		public Province ReinforcedBy(Army another) => WithArmy(Army.Join(another));
+		public abstract Province GiveUpTo(Army army);
+		public Province GiveUpTo(Player p) => GiveUpTo(new Army(new Soldiers(), p));
+		public Province Revolt() => GiveUpTo(DefaultArmy);
+		public virtual Province StartMove(Province dest, Army army) => GiveUpTo(Army.Subtract(army));
+		public Province AttackedBy(Army another) => GiveUpTo(Army.AttackedBy(another));
+		public Province ReinforcedBy(Army another) => GiveUpTo(Army.Join(another));
 		public bool IsControlledBy(int p) => Army.IsControlledBy(p);
 		public bool IsAllyOf(Army army) => Army.IsAllyOf(army);
-		public bool IsAllyOf(Province prov) => Army.IsAllyOf(prov.Army);
+		public bool IsAllyOf(Province prov) => IsAllyOf(prov.Army);
 		public Soldiers Soldiers => Army.Soldiers;
 		public Soldiers DefaultSoldiers => DefaultArmy.Soldiers;
 		public IEnumerable<SoldierType> SoldierTypes => Soldiers.Types;
-		public bool Occupied => Army.PlayerType != typeof(Savage);
+		public bool Occupied => !Army.IsControlledBySavage;
 		public bool CanSoldiersSurvive => Soldiers.CanSurviveIn(this);
 		public virtual Color Fill => new Color();
 		public virtual Color Stroke => new Color();

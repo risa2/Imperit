@@ -6,8 +6,8 @@ Tento soubor je používán procesem publikování nebo balení webového projek
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhJchaSp3PEWJevQpPj+V9wAAAAACAAAAAAAQZgAAAAEAACAAAABIZUaOnHJR/DvH1zFccTuu8lu3gSkhJqXwNP9TmsW6FAAAAAAOgAAAAAIAACAAAAAjlx/TigtsHd6SKH7aMrLuCzKIdMD57H/RbhHrlt2eNyAAAAARqr9d47EoLxJdhl/S5zBjrzi0SH0hEsMkOUPwyVx4y0AAAADGDpZ7M8wTYj52uRe6cmunZzv7hiVQmMJabU9WsWhs6gHbNGPxQ03b0ijpomIcAnJ65Odbjz7nqikyGlcfrII7</EncryptedPassword>
-    <_PublishTargetUrl>ftp://free.aspify.com</_PublishTargetUrl>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhJchaSp3PEWJevQpPj+V9wAAAAACAAAAAAAQZgAAAAEAACAAAACxKbrl/c/PegTXGn9IQ3gtJZnJtEEhtaz0wlnHNlaiZgAAAAAOgAAAAAIAACAAAAApST7urIbEX0ONf+c8KImVuNXOJvLqL3Mnv0EnW6vnHSAAAADf4OM/QQJ0wY3rEuMIhddzKYgN3SU+I4c6hkbH2n9/4kAAAAD9HD7Y9IUBj+sxyomq/NJ2tMmChZkerBE/Ic65iH8eM6+hP9SgrxK2eYsx+qE+hqi92i1kbyNxgrE+IgygWTdG</EncryptedPassword>
+    <_PublishTargetUrl>ftp://free.aspify.com/www</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -44,31 +44,31 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>07/31/2020 21:34:03</publishTime>
     </File>
     <File Include="Imperit.deps.json">
-      <publishTime>10/01/2020 20:53:22</publishTime>
+      <publishTime>10/01/2020 21:21:19</publishTime>
     </File>
     <File Include="Imperit.dll">
-      <publishTime>10/01/2020 20:53:20</publishTime>
+      <publishTime>10/01/2020 21:21:14</publishTime>
     </File>
     <File Include="Imperit.exe">
-      <publishTime>10/01/2020 20:53:20</publishTime>
+      <publishTime>10/01/2020 21:21:14</publishTime>
     </File>
     <File Include="Imperit.pdb">
-      <publishTime>10/01/2020 20:53:20</publishTime>
+      <publishTime>10/01/2020 21:21:14</publishTime>
     </File>
     <File Include="Imperit.runtimeconfig.json">
       <publishTime>10/01/2020 20:43:33</publishTime>
     </File>
     <File Include="Imperit.Views.dll">
-      <publishTime>10/01/2020 20:53:21</publishTime>
+      <publishTime>10/01/2020 21:21:15</publishTime>
     </File>
     <File Include="Imperit.Views.pdb">
-      <publishTime>10/01/2020 20:53:21</publishTime>
+      <publishTime>10/01/2020 21:21:15</publishTime>
     </File>
     <File Include="System.IO.Packaging.dll">
       <publishTime>11/15/2019 08:37:18</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>10/01/2020 20:53:22</publishTime>
+      <publishTime>10/01/2020 21:21:19</publishTime>
     </File>
     <File Include="wwwroot/css/site.css">
       <publishTime>09/30/2020 20:20:50</publishTime>

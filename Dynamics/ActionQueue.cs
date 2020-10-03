@@ -58,14 +58,14 @@ namespace Imperit.Dynamics
 		{
 			return DoActions(players, provinces, active, actions);
 		}
-		(ActionSeq, bool) Interactions(ICommand command, IReadOnlyList<State.Player> players, State.IProvinces provinces)
+		(ActionSeq, bool) Interactions(ICommand command)
 		{
 			bool allowed = true;
 			var new_actions = NoActions;
 			int i;
 			for (i = 0; i < actions.Count && allowed; ++i)
 			{
-				var (new_action, ok) = actions[i].Interact(command, players, provinces);
+				var (new_action, ok) = actions[i].Interact(command);
 				new_actions = new_action != null ? new_actions.Add(new_action) : new_actions;
 				allowed = allowed && ok;
 			}
@@ -81,7 +81,7 @@ namespace Imperit.Dynamics
 			{
 				var (actions1, new_players) = players.Select(player => command.Perform(player, provinces)).Unzip();
 				var (actions2, new_provinces) = provinces.Select(province => command.Perform(province)).Unzip();
-				var (new_actions, interacted) = Interactions(command, players, provinces);
+				var (new_actions, interacted) = Interactions(command);
 				return (new ActionQueue(interacted ? new_actions.AddRange(actions1.Flatten()).AddRange(actions2.Flatten()) : new_actions), new_players.ToArray(), new_provinces.ToArray(), true);
 			}
 			return (this, players.ToArray(), provinces.ToArray(), false);

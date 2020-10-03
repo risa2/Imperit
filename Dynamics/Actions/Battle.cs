@@ -1,30 +1,21 @@
-using System.Collections.Generic;
+using System;
 
 namespace Imperit.Dynamics.Actions
 {
-    public class Battle : ArmyAction
-    {
-        public Battle(int province, State.Army army) : base(province, army) { }
-        public override (IAction[], State.Province) Perform(State.Province province, State.Player active)
-        {
-            if (Province == province.Id)
-            {
-                var (attacked, actions) = province.AttackedBy(Army);
-                return (actions, attacked);
-            }
-            return (new[] { this }, province);
-        }
-        public override (IAction, bool) Interact(ICommand another, IReadOnlyList<State.Player> players, State.IProvinces provinces)
-        {
-            if (another is Commands.Attack attack && Army.IsControlledBy(attack.Player) && attack.To.Id == Province)
-            {
-                return (new Battle(Province, Army.Join(attack.Army)), false);
-            }
-            if (another is Commands.Purchase purchase && Army.IsControlledBy(purchase.Player.Id) && purchase.Land == Province)
-            {
-                return (new Reinforcement(Province, Army), true);
-            }
-            return (this, true);
-        }
-    }
+	public class Battle : ArmyAction
+	{
+		public Battle(int province, State.Army army) : base(province, army) { }
+		public override (IAction[], State.Province) Perform(State.Province province, State.Player active)
+		{
+			return Province == province.Id ? (Array.Empty<IAction>(), province.AttackedBy(Army)) : (new[] { this }, province);
+		}
+		public override (IAction, bool) Interact(ICommand another) => another switch
+		{
+			Commands.Attack attack when Army.IsControlledBy(attack.Player) && attack.To.Id == Province
+				=> (new Battle(Province, Army.Join(attack.Army)), false),
+			Commands.Purchase purchase when Army.IsControlledBy(purchase.Player.Id) && purchase.Land == Province
+				=> (new Reinforcement(Province, Army), true),
+			_ => (this, true)
+		};
+	}
 }

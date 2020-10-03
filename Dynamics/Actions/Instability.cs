@@ -7,8 +7,7 @@
 		{
 			if (province.Occupied && province is State.Land Land && Land.IsControlledBy(active.Id) && rand.NextDouble() < Land.Instability)
 			{
-				var (land, actions) = Land.Revolt();
-				return (actions.Concat(this), land);
+				return (new[] { this }, Land.Revolt());
 			}
 			return (new[] { this }, province);
 		}

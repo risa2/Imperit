@@ -16,7 +16,7 @@ namespace Imperit.Dynamics.Commands
 			Army = army;
 		}
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
-			=> provinces[From].IsControlledBy(Player) && Army.Soldiers.CanMove(provinces, From, To.Id);
+			=> provinces[From].IsControlledBy(Player) && Army.CanMove(provinces, From, To.Id);
 		protected abstract Actions.ArmyAction GetMove();
 		public (IAction[], Province) Perform(Province province)
 		{

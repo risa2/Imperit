@@ -11,9 +11,16 @@ namespace Imperit
 		public static CultureInfo Culture { get; } = CultureInfo.InvariantCulture;
 		public static IEnumerable<T> NotNull<T>(this IEnumerable<T?> e) where T : class => e.Where(it => it != null)!;
 		public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
-		public static IEnumerable<(int, T)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
+		public static IEnumerable<(int i, T v)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
 		public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
 		public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+		public static IEnumerable<T> Infinity<T>(this T value)
+		{
+			while (true)
+			{
+				yield return value;
+			}
+		}
 		public static int Find<T>(this IList<T> ts, Func<T, bool> cond)
 		{
 			int i = 0;

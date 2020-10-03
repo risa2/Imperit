@@ -19,7 +19,7 @@ namespace Imperit.Dynamics.Commands
 		}
 		public (IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces)
 		{
-			return player.Id == Player ? (new[] { new Actions.Loan(Player, Amount, settings) }, player.GainMoney(Amount)) : (System.Array.Empty<IAction>(), player);
+			return player.Id == Player ? (new[] { new Actions.Loan(Player, Amount, settings) }, player.ChangeMoney(Amount)) : (System.Array.Empty<IAction>(), player);
 		}
 	}
 }

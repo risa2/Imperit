@@ -13,11 +13,11 @@ namespace Imperit.Dynamics.Actions
 		{
 			if (province is Sea Sea && Sea.Occupied && !Sea.Soldiers.Any)
 			{
-				return (new[] { this }, Sea.Revolt().Item1);
+				return (new[] { this }, Sea.Revolt());
 			}
 			if (!province.CanSoldiersSurvive)
 			{
-				return (new[] { this }, province.Revolt().Item1);
+				return (new[] { this }, province.Revolt());
 			}
 			return (new[] { this }, province);
 		}

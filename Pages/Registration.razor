@@ -31,7 +31,7 @@
     }
     void OnSubmit()
     {
-        if (Username != "" && Password != "" && Selected != null)
+        if (Username != "" && Password != "" && Selected is Land)
         {
             newgame.Registration(Username, new Password(Password), Color, Selected);
             GoTo(Mode.Login);

@@ -32,7 +32,7 @@ namespace Imperit.Services
 		}
 		static Province CreateProvince(Province province, Player savage)
 		{
-			return province.GiveUpTo(new Army(province.DefaultSoldiers, savage)).Item1;
+			return province.GiveUpTo(new Army(province.DefaultSoldiers, savage));
 		}
 		public void New(Settings settings)
 		{
@@ -55,12 +55,12 @@ namespace Imperit.Services
 			var colors = rand.NextColors(count);
 			for (int i = 0; i < count; ++i)
 			{
-				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true, start_lands[i].Earnings, sl.Settings.DefaultSoldierTypes));
+				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true, sl.Settings.DefaultSoldierTypes));
 			}
 			provinces.Reset(sl.Settings, players);
 			for (int i = 0; i < count; ++i)
 			{
-				(provinces[start_lands[i].Id], _) = start_lands[i].GiveUpTo(new Army(start_lands[i].Soldiers, players[previous + i]));
+				provinces[start_lands[i].Id] = start_lands[i].GiveUpTo(new Army(start_lands[i].Soldiers, players[previous + i]));
 			}
 			provinces.Save();
 		}
@@ -74,10 +74,10 @@ namespace Imperit.Services
 		}
 		public void Registration(string name, Password password, Color color, Land land)
 		{
-			var player = new Player(players.Count, name, color, password, sl.Settings.DefaultMoney, true, land.Earnings, sl.Settings.DefaultSoldierTypes);
+			var player = new Player(players.Count, name, color, password, sl.Settings.DefaultMoney, true, sl.Settings.DefaultSoldierTypes);
 			players.Add(player);
 			provinces.Reset(sl.Settings, players);
-			(provinces[land.Id], _) = land.GiveUpTo(new Army(land.Soldiers, player));
+			provinces[land.Id] = land.GiveUpTo(new Army(land.Soldiers, player));
 			provinces.Save();
 		}
 	}

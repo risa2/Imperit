@@ -13,6 +13,7 @@ namespace Imperit.State
 		int NeighborCount(int prov);
 		IEnumerable<Province> NeighborsOf(int prov);
 		Provinces With(Province[] provinces);
+		IEnumerable<Province> ControlledBy(int id) => this.Where(p => p.IsControlledBy(id));
 	}
 	public class Provinces : IProvinces
 	{

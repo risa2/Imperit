@@ -17,12 +17,12 @@ namespace Imperit.Dynamics.Commands
 		public (IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces)
 		{
 			return player.Id == Player
-				? (new[] { new Actions.Reinforcement(Land, Army) }, player.Pay(Army.Soldiers.Price))
+				? (new[] { new Actions.Reinforcement(Land, Army) }, player.ChangeMoney(-Army.Price))
 				: (System.Array.Empty<IAction>(), player);
 		}
 		public bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces)
 		{
-			return provinces[Land].IsControlledBy(Player) && players[Player].Money >= Army.Soldiers.Price && Army.Soldiers.Any;
+			return provinces[Land].IsControlledBy(Player) && players[Player].Money >= Army.Price && Army.AnySoldiers;
 		}
 	}
 }
