@@ -1,15 +1,16 @@
 @inject Services.IPlayersLoader players;
 @inject Services.ISettingsLoader sl;
+@inject Services.ILoginSession login;
 
 @code{
-	[Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
 	LoginModel model = new LoginModel();
 	bool Wrong = false;
 	void LoginAction()
 	{
 		if (players[model.Id].Password.IsCorrect(model.Password))
 		{
-			LogIn(model.Id);
+			Navigate(login.Add(model.Id));
 		}
 		else
 		{

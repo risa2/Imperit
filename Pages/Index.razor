@@ -1,18 +1,19 @@
 ﻿@page "/"
+@page "/{loginid}"
+
+@inject Services.ILoginSession login;
+@inject NavigationManager nav;
 
 @code{
-	int? LoggedIn = null;
-	void LogIn(int? player)
-	{
-		LoggedIn = player;
-		this.StateHasChanged();
-	}
+	[Parameter] public string? LoginId { get; set; }
+	void Navigate(string loginId) => nav.NavigateTo("/" + loginId);
+	int? LoggedIn => LoginId is string ? login.Get(LoginId) : null;
 }
-@if (LoggedIn is int loggedIn)
+@if (!string.IsNullOrWhiteSpace(LoginId) && LoggedIn is int loggedIn)
 {
-	<GameSwitch LoggedIn="@loggedIn" LogIn="LogIn"/>
+	<GameSwitch LoggedIn="@loggedIn" Navigate="Navigate" LoginId="@LoginId"/>
 }
 else
 {
-	<StartSwitch LogIn="LogIn"/>
+	<StartSwitch Navigate="Navigate"/>
 }

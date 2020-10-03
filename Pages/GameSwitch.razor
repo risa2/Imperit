@@ -5,10 +5,12 @@
 @inject Services.IActivePlayer active;
 @inject Services.IPowersLoader powers;
 @inject Services.IEndOfTurn end;
+@inject Services.ILoginSession login;
 
 @code{
 	[Parameter] public int LoggedIn { get; set; }
-	[Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+	[Parameter] public string LoginId { get; set; } = "";
+	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
 	public enum Mode { Map, CmdMove, CmdPurchase, CmdRecruit, CmdRepay, CmdDonation, Players, Powers, Preview}
 	Mode Current;
 	Province? From = null, To = null;
@@ -21,6 +23,11 @@
 		SelectedPlayer = player;
 		this.StateHasChanged();
 	}
+	void LogOut()
+	{
+		login.Remove(LoginId);
+		Navigate("");
+	}
 	void NextTurn()
 	{
 		if (LoggedIn == active.Id)
@@ -29,7 +36,7 @@
 			int next = active.Id;
 			if (sl.Settings.SingleClient || !players[next].Alive)
 			{
-				LogIn(next);
+				login.Update(LoginId, next);
 			}
 			Switch(Mode.Map);
 		}
@@ -47,11 +54,11 @@
 
 @if (Current == Mode.Map)
 {
-	<GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="false" LoggedIn="@LoggedIn" LogOut="@(() => LogIn(null))" NextTurn="NextTurn"/>
+	<GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="false" LoggedIn="@LoggedIn" LogOut="LogOut" NextTurn="NextTurn"/>
 }
 else if (Current == Mode.Preview)
 {
-	<GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="true" LoggedIn="@LoggedIn" LogOut="@(() => LogIn(null))" NextTurn="NextTurn"/>
+	<GameMap Player="@players[LoggedIn]" IsActive="@(LoggedIn == active.Id)" Switch="Switch" Preview="true" LoggedIn="@LoggedIn" LogOut="LogOut" NextTurn="NextTurn"/>
 }
 else if (Current == Mode.Powers)
 {

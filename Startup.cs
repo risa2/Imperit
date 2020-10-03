@@ -15,7 +15,8 @@ namespace Imperit
 			_ = services.AddRazorPages();
 			_ = services.AddServerSideBlazor();
 
-			_ = services.AddSingleton<Services.IServiceIO>(s => new Services.ServiceIO(new Load.File("./Files/Settings.json"), new Load.File("./Files/Players.json"), new Load.File("./Files/Provinces.json"), new Load.File("./Files/Actions.json"), new Load.File("./Files/Events.json"), new Load.File("./Files/Active.json"), new Load.File("./Files/Password.txt"), new Load.File("./Files/Graph.json"), new Load.File("./Files/Mountains.json"), new Load.File("./Files/Shapes.json"), new Load.File("Files/Powers.json")))
+			_ = services.AddSingleton<Services.ILoginSession, Services.LoginSession>()
+					.AddSingleton<Services.IServiceIO>(s => new Services.ServiceIO(new Load.File("./Files/Settings.json"), new Load.File("./Files/Players.json"), new Load.File("./Files/Provinces.json"), new Load.File("./Files/Actions.json"), new Load.File("./Files/Events.json"), new Load.File("./Files/Active.json"), new Load.File("./Files/Password.txt"), new Load.File("./Files/Graph.json"), new Load.File("./Files/Mountains.json"), new Load.File("./Files/Shapes.json"), new Load.File("Files/Powers.json")))
 					.AddSingleton<Services.IActionLoader, Services.ActionLoader>()
 					.AddSingleton<Services.ISettingsLoader, Services.SettingsLoader>()
 					.AddSingleton<Services.IPlayersLoader, Services.PlayersLoader>()

@@ -140,6 +140,12 @@ namespace Imperit
 			}
 			return colors;
 		}
+		public static string NextId(this Random rand, int length)
+		{
+			var buf = new byte[length];
+			rand.NextBytes(buf);
+			return Convert.ToBase64String(buf).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+		}
 		public static ImmutableSortedSet<T> AddRange<T>(this ImmutableSortedSet<T> set, IEnumerable<T> items)
 		{
 			ImmutableSortedSet<T>.Builder builder = set.ToBuilder();

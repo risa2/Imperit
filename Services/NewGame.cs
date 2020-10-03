@@ -21,7 +21,8 @@ namespace Imperit.Services
 		readonly IActionLoader actions;
 		readonly IActivePlayer active;
 		readonly IPowersLoader powers;
-		public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
+		readonly ILoginSession login;
+		public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IActionLoader actions, IActivePlayer active, IPowersLoader powers, ILoginSession login)
 		{
 			this.sl = sl;
 			this.players = players;
@@ -29,6 +30,7 @@ namespace Imperit.Services
 			this.actions = actions;
 			this.active = active;
 			this.powers = powers;
+			this.login = login;
 		}
 		static Province CreateProvince(Province province, Player savage)
 		{
@@ -40,6 +42,7 @@ namespace Imperit.Services
 			players.Clear();
 			powers.Clear();
 			actions.Clear();
+			login.Clear();
 
 			players.Add(new Savage(0, settings.DefaultSoldierTypes));
 			provinces.Reset(sl.Settings, players);

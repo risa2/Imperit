@@ -1,7 +1,7 @@
 ﻿@inject Services.IPlayersLoader players;
 
 @code{
-	[Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
 	public enum Mode { Login, Registration, StartGame, NewGame }
 	Mode Current;
 	protected override void OnInitialized()
@@ -19,7 +19,7 @@
 <main>
 	@if (Current == Mode.Login)
 	{
-		<Login LogIn="LogIn"/>
+		<Login Navigate="Navigate"/>
 	}
 	else if (Current == Mode.Registration)
 	{
