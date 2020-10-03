@@ -32,7 +32,7 @@ namespace Imperit.State
 			{
 				return provinces.Aggregate((0L, 0L), (pair, prov) => (pair.Item1 + prov.Soldiers.Price, pair.Item2 + prov.Earnings));
 			}
-			var pairs = players.Select(player => SoldiersIncome(provinces.Where(prov => prov.IsControlledBy(player.Id)))).ToArray();
+			var pairs = players.Select(player => SoldiersIncome(provinces.Where(prov => prov.IsAllyOf(player.Id)))).ToArray();
 			var totals = players.Zip(pairs, (p, pair) => pair.Soldiers + p.Money + (pair.Income * 5)).ToArray();
 			var changes = last is null ? 0.0.Infinity() : players.Select((p, i) => Div(totals[i], last[i].Total) - 1);
 			var sum_sm = players.Enumerate().Where(x => !(x.v is Savage)).Sum(x => pairs[x.i].Soldiers + x.v.Money);

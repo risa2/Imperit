@@ -21,7 +21,7 @@
 		{
 			return null;
 		}
-		if (from is null && provinces[clicked].IsControlledBy(Player!.Id))
+		if (from is null && provinces[clicked].IsAllyOf(Player!.Id))
 		{
 			return provinces[clicked];
 		}

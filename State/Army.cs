@@ -12,10 +12,10 @@ namespace Imperit.State
 			Soldiers = soldiers;
 			player = plr;
 		}
-		public Army Join(Army another) => new Army(Soldiers.Add(another.Soldiers), player);
-		public Army Subtract(Army another) => new Army(Soldiers.Subtract(another.Soldiers), player);
-		public bool IsControlledBy(int player) => PlayerId == player;
-		public bool IsAllyOf(Army another) => another.IsControlledBy(PlayerId);
+		public Army Join(Soldiers another) => new Army(Soldiers.Add(another), player);
+		public Army Subtract(Soldiers another) => new Army(Soldiers.Subtract(another), player);
+		public bool IsAllyOf(int player) => PlayerId == player;
+		public bool IsAllyOf(Army another) => another.IsAllyOf(PlayerId);
 		public int AttackPower => Soldiers.AttackPower;
 		public int DefensePower => Soldiers.DefensePower;
 		public int Price => Soldiers.Price;

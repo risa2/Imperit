@@ -29,9 +29,9 @@ namespace Imperit.State
 		//}
 		//static int Min(int a, int b) => a > b ? b : a;
 		//static int Max(int a, int b) => a > b ? a : b;
-		//IEnumerable<Province> NeighborEnemies(IProvinces provinces, Province prov) => provinces.NeighborsOf(prov.Id).Where(neighbor => !neighbor.IsControlledBy(Id) && neighbor.Occupied);
+		//IEnumerable<Province> NeighborEnemies(IProvinces provinces, Province prov) => provinces.NeighborsOf(prov.Id).Where(neighbor => !neighbor.IsAllyOf(Id) && neighbor.Occupied);
 		//int EnemiesCount(IProvinces provinces, Province prov) => NeighborEnemies(provinces, prov).Sum(neighbor => neighbor.Soldiers);
-		//Relation GetRelationTo(Province prov) => prov.IsControlledBy(Id) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
+		//Relation GetRelationTo(Province prov) => prov.IsAllyOf(Id) ? Relation.Ally : prov.Occupied ? Relation.Enemy : Relation.Empty;
 		//void Recruit(List<Dynamics.ICommand> result, ref int spent, Land land, PInfo[] info, int count)
 		//{
 		//    info[land.Id].Coming += count;
@@ -85,7 +85,7 @@ namespace Imperit.State
 		//    info[from].Soldiers -= count;
 		//    if (provinces[from].Occupied && count >= provinces[to].Soldiers)
 		//    {
-		//        foreach (var neighbor in provinces.NeighborsOf(to).Where(n => n.IsControlledBy(Id)))
+		//        foreach (var neighbor in provinces.NeighborsOf(to).Where(n => n.IsAllyOf(Id)))
 		//        {
 		//            info[neighbor.Id].Enemies -= provinces[to].Soldiers;
 		//        }
@@ -104,9 +104,9 @@ namespace Imperit.State
 		//static int MultiAttackSoldiers(IProvinces provinces, PInfo[] info, int from, int to) => Min(info[from].Bilance + provinces[to].Soldiers, info[from].Soldiers);
 		//void MultiAttacks(List<Dynamics.ICommand> result, IProvinces provinces, PInfo[] info, int[] my)
 		//{
-		//    foreach (int to in my.SelectMany(i => provinces.NeighborsOf(i).Where(p => p.Occupied && !p.IsControlledBy(Id)).Select(p => p.Id)).Distinct())
+		//    foreach (int to in my.SelectMany(i => provinces.NeighborsOf(i).Where(p => p.Occupied && !p.IsAllyOf(Id)).Select(p => p.Id)).Distinct())
 		//    {
-		//        var starts = provinces.NeighborsOf(to).Where(n => n.IsControlledBy(Id) && info[n.Id].Bilance + provinces[to].Soldiers > 0);
+		//        var starts = provinces.NeighborsOf(to).Where(n => n.IsAllyOf(Id) && info[n.Id].Bilance + provinces[to].Soldiers > 0);
 		//        int bilance = starts.Sum(n => MultiAttackSoldiers(provinces, info, n.Id, to));
 		//        if (bilance > info[to].Soldiers + (starts.All(n => RevengeDoesNotMatter(provinces, n.Id, to)) ? 0 : info[to].Enemies))
 		//        {
@@ -127,7 +127,7 @@ namespace Imperit.State
 		//{
 		//    foreach (int from in my)
 		//    {
-		//        foreach (var dest in provinces.NeighborsOf(from).Where(n => n.IsControlledBy(Id)).OrderBy(n => info[n.Id].Bilance))
+		//        foreach (var dest in provinces.NeighborsOf(from).Where(n => n.IsAllyOf(Id)).OrderBy(n => info[n.Id].Bilance))
 		//        {
 		//            if (info[from].Enemies <= 0 && info[dest.Id].Enemies > 0)
 		//            {
@@ -146,7 +146,7 @@ namespace Imperit.State
 		//}
 		public List<Dynamics.ICommand> Think(IProvinces provinces)
 		{
-			//var my = provinces.Where(p => p.IsControlledBy(Id)).Select(p => p.Id).ToArray();
+			//var my = provinces.Where(p => p.IsAllyOf(Id)).Select(p => p.Id).ToArray();
 			//var info = provinces.Select(prov => new PInfo(prov.Soldiers, EnemiesCount(provinces, prov), 0, GetRelationTo(prov))).ToArray();
 
 			//var result = new List<Dynamics.ICommand>();

@@ -22,7 +22,8 @@ namespace Imperit.Dynamics.Commands
 		}
 		public bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces)
 		{
-			return provinces[Land].IsControlledBy(Player) && players[Player].Money >= Army.Price && Army.AnySoldiers;
+			return provinces[Land].IsAllyOf(Player) && players[Player].Money >= Army.Price && Army.AnySoldiers;
 		}
+		public State.Soldiers Soldiers => Army.Soldiers;
 	}
 }

@@ -23,10 +23,10 @@ namespace Imperit.State
 		public abstract Province GiveUpTo(Army army);
 		public Province GiveUpTo(Player p) => GiveUpTo(new Army(new Soldiers(), p));
 		public Province Revolt() => GiveUpTo(DefaultArmy);
-		public virtual Province StartMove(Province dest, Army army) => GiveUpTo(Army.Subtract(army));
+		public virtual Province StartMove(Province dest, Soldiers army) => GiveUpTo(Army.Subtract(army));
 		public Province AttackedBy(Army another) => GiveUpTo(Army.AttackedBy(another));
-		public Province ReinforcedBy(Army another) => GiveUpTo(Army.Join(another));
-		public bool IsControlledBy(int p) => Army.IsControlledBy(p);
+		public Province ReinforcedBy(Soldiers another) => GiveUpTo(Army.Join(another));
+		public bool IsAllyOf(int p) => Army.IsAllyOf(p);
 		public bool IsAllyOf(Army army) => Army.IsAllyOf(army);
 		public bool IsAllyOf(Province prov) => IsAllyOf(prov.Army);
 		public Soldiers Soldiers => Army.Soldiers;

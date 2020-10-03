@@ -23,7 +23,6 @@ namespace Imperit.Load
 				"Instability" => new Instability(),
 				"Loan" => new Loan(Player.Must(), Debt ?? 0, settings),
 				"Mortality" => new Mortality(),
-				"Seizure" => new Seizure(Player.Must(), Debt ?? 0),
 				_ => throw new System.Exception("Unknown type of Action: " + Type)
 			};
 
@@ -38,7 +37,6 @@ namespace Imperit.Load
 				Instability _ => new JsonAction() { Type = "Instability" },
 				Loan Loan => new JsonAction() { Type = "Loan", Player = Loan.Debtor, Debt = Loan.Debt },
 				Mortality _ => new JsonAction() { Type = "Mortality" },
-				Seizure Seizure => new JsonAction { Type = "Seizure", Player = Seizure.Player, Debt = Seizure.Amount },
 				_ => throw new System.Exception("Unknown type of Action: " + action.GetType())
 			};
 		}

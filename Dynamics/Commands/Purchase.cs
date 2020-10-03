@@ -16,7 +16,7 @@ namespace Imperit.Dynamics.Commands
 			Price = price;
 		}
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
-			=> players[Player.Id].Money >= Price && provinces.NeighborsOf(Land).Any(prov => prov is Land land && land.IsControlledBy(Player.Id));
+			=> players[Player.Id].Money >= Price && provinces.NeighborsOf(Land).Any(prov => prov is Land land && land.IsAllyOf(Player.Id));
 
 		public (IAction[], Province) Perform(Province province)
 		{

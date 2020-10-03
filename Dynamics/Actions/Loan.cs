@@ -27,7 +27,7 @@ namespace Imperit.Dynamics.Actions
 		}
 		public (IAction[], State.Province) Perform(State.Province province, State.Player active)
 		{
-			if (active.Id == Debtor && province is State.Land land && land.IsControlledBy(Debtor) && Debt > settings.DebtLimit + active.Money)
+			if (active.Id == Debtor && province is State.Land land && land.IsAllyOf(Debtor) && Debt > settings.DebtLimit + active.Money)
 			{
 				return (land.Price > Debt ? Array.Empty<IAction>() : new[] { new Loan(Debtor, Debt - land.Price, settings) }, land.Revolt());
 			}

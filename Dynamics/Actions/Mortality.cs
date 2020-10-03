@@ -7,7 +7,7 @@ namespace Imperit.Dynamics.Actions
 	{
 		public (IAction[], Player) Perform(Player player, Player active, IProvinces provinces)
 		{
-			return (new[] { this }, provinces.Any(prov => prov.IsControlledBy(player.Id)) ? player : player.Die());
+			return (new[] { this }, provinces.Any(prov => prov.IsAllyOf(player.Id)) ? player : player.Die());
 		}
 		public (IAction[], Province) Perform(Province province, Player active)
 		{

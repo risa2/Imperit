@@ -11,9 +11,9 @@ namespace Imperit.Dynamics.Actions
 		}
 		public override (IAction, bool) Interact(ICommand another) => another switch
 		{
-			Commands.Attack attack when Army.IsControlledBy(attack.Player) && attack.To.Id == Province
-				=> (new Battle(Province, Army.Join(attack.Army)), false),
-			Commands.Purchase purchase when Army.IsControlledBy(purchase.Player.Id) && purchase.Land == Province
+			Commands.Attack attack when Army.IsAllyOf(attack.Player) && attack.To.Id == Province
+				=> (new Battle(Province, Army.Join(attack.Soldiers)), false),
+			Commands.Purchase purchase when Army.IsAllyOf(purchase.Player.Id) && purchase.Land == Province
 				=> (new Reinforcement(Province, Army), true),
 			_ => (this, true)
 		};
