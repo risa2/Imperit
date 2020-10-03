@@ -13,10 +13,11 @@ namespace Imperit.State
 		static byte Supl(byte x, byte y) => (byte)(255 - ((255 - x) * (255 - y) / 255));
 		public Color Mix(Color color) => new Color(Mix(r, color.r, a, color.a), Mix(g, color.g, a, color.a), Mix(b, color.b, a, color.a), Supl(a, color.a));
 		public Color Over(Color color) => new Color(Mix(r, color.r, 255, 255 - a), Mix(g, color.g, 255, 255 - a), Mix(b, color.b, 255, 255 - a), Supl(a, color.a));
-		public bool Equals(Color other) => r == other.r && g == other.g && b == other.b;
+		public bool Equals(Color c2) => (r, g, b, a) == (c2.r, c2.g, c2.b, c2.a);
 		public override bool Equals(object? obj) => obj is Color col && Equals(col);
-		public override int GetHashCode() => System.HashCode.Combine(r, g, b);
+		public override int GetHashCode() => (r, g, b, a).GetHashCode();
 		public static bool operator ==(Color left, Color right) => left.Equals(right);
 		public static bool operator !=(Color left, Color right) => !left.Equals(right);
+		public Color WithAlpha(byte alpha) => new Color(r, g, b, alpha);
 	}
 }

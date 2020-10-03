@@ -4,19 +4,19 @@
 @using Mode = StartSwitch.Mode;
 
 @code{
-    [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
-    StartGameModel model = new StartGameModel();
-    void Start()
-    {
-        if (sl.Settings.Password.IsCorrect(model.Password))
-        {
-            new_game.Start();
-            GoTo(Mode.Login);
-        }
-    }
+	[Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
+	StartGameModel model = new StartGameModel();
+	void Start()
+	{
+		if (sl.Settings.Password.IsCorrect(model.Password))
+		{
+			new_game.Start();
+			GoTo(Mode.Login);
+		}
+	}
 }
 <EditForm Model="@model" OnSubmit="Start">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
-    <button type="submit">Zahájit</button>
+	<DataAnnotationsValidator/><ValidationSummary/>
+	<label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
+	<button type="submit">Zahájit</button>
 </EditForm>

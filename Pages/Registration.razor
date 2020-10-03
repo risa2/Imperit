@@ -10,31 +10,31 @@
 <label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
 <Map Width="1000" Height="1000" Provinces="@provinces" SelectedColor="@Color" OnClick="OnClick"
-     FontSize="9" Name="@(p => (p is State.Land L && L.IsStart ? Sym.Flag : "") + p.Name)"/>
+	 FontSize="9" Name="@(p => (p is State.Land L && L.IsStart ? Sym.Flag : "") + p.Name)"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{
-    [Parameter] public Action<Mode> GoTo { get; set; } = (m => { });
-    string Username { get; set; } = "";
-    string Password { get; set; } = "";
-    string ColorStr { get; set; } = "#0000FF";
-    Color Color => State.Color.Parse(ColorStr);
-    Land? Selected = null;
-    static bool IsValidLand(Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
-    Province? OnClick(int i, Province? from)
-    {
-        if (IsValidLand(provinces[i]))
-        {
-            Selected = provinces[i] as State.Land;
-        }
-        return Selected;
-    }
-    void OnSubmit()
-    {
-        if (Username != "" && Password != "" && Selected is Land)
-        {
-            newgame.Registration(Username, new Password(Password), Color, Selected);
-            GoTo(Mode.Login);
-        }
-    }
+	[Parameter] public Action<Mode> GoTo { get; set; } = (m => { });
+	string Username { get; set; } = "";
+	string Password { get; set; } = "";
+	string ColorStr { get; set; } = "#0000FF";
+	Color Color => State.Color.Parse(ColorStr);
+	Land? Selected = null;
+	static bool IsValidLand(Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
+	Province? OnClick(int i, Province? from)
+	{
+		if (IsValidLand(provinces[i]))
+		{
+			Selected = provinces[i] as State.Land;
+		}
+		return Selected;
+	}
+	void OnSubmit()
+	{
+		if (Username != "" && Password != "" && Selected is Land)
+		{
+			newgame.Registration(Username, new Password(Password), Color, Selected);
+			GoTo(Mode.Login);
+		}
+	}
 }

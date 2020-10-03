@@ -1,32 +1,32 @@
 @code{
-    [Parameter] public int Width { get; set; }
-    [Parameter] public int Height { get; set; }
-    [Parameter] public int FontSize { get; set; }
-    [Parameter] public Action OnClick { get; set; } = (() => { });
-    [Parameter] public Province? This { get; set; }
-    [Parameter] public Func<Province, string> Name { get; set; } = (p => p.Name);
-    double X => This!.Center.x * Width;
-    double Y => This!.Center.y * Height;
+	[Parameter] public int Width { get; set; }
+	[Parameter] public int Height { get; set; }
+	[Parameter] public int FontSize { get; set; }
+	[Parameter] public Action OnClick { get; set; } = (() => { });
+	[Parameter] public Province? This { get; set; }
+	[Parameter] public Func<Province, string> Name { get; set; } = (p => p.Name);
+	double X => This!.Center.x * Width;
+	double Y => This!.Center.y * Height;
 }
 
 @if (!(This is Mountains))
 {
-    <text>
-        <text x="@X" y="@Y" @onclick="OnClick" fill="#fff" dominant-baseline="middle" text-anchor="middle">
-            <tspan x="@X" dy="@(-FontSize)">
-                @Name(This!)
-                @if (This is Port Port)
-                {
-                    @Sym.Anchor
-                }
-            </tspan>
-            @if (This is Land Land)
-            {
-                <tspan x="@X" dy="@(+FontSize)">
-                    +@(Land.Earnings)@Sym.Money
-                </tspan>
-            }
-            <tspan x="@X" dy="@(+FontSize)"><SoldiersByType Soldiers="@This!.Soldiers" /></tspan>
-        </text>
-    </text>
+	<text>
+		<text x="@X" y="@Y" @onclick="OnClick" fill="#fff" dominant-baseline="middle" text-anchor="middle">
+			<tspan x="@X" dy="@(-FontSize)">
+				@Name(This!)
+				@if (This is Port Port)
+				{
+					@Sym.Anchor
+				}
+			</tspan>
+			@if (This is Land Land)
+			{
+				<tspan x="@X" dy="@(+FontSize)">
+					+@(Land.Earnings)@Sym.Money
+				</tspan>
+			}
+			<tspan x="@X" dy="@(+FontSize)"><SoldiersByType Soldiers="@This!.Soldiers" /></tspan>
+		</text>
+	</text>
 }

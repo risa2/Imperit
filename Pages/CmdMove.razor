@@ -4,77 +4,81 @@
 @inject Services.IPlayersLoader players;
 
 @code{
-    [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public Province? From { get; set; }
-    [Parameter] public Province? To { get; set; }
-    [Parameter] public Player? Player { get; set; }
-    MoveModel model = new MoveModel();
-    Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
-    Army MovingArmy => new Army(MovingSoldiers, Player!);
-    public bool CanAnyMove => MovingSoldiers.Any(p => p.Type.CanMoveAlone(provinces, From!.Id, To!.Id));
-    public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
-    protected override void OnInitialized()
-    {
-        model.SoldierTypes = From!.SoldierTypes.ToArray();
-        model.Soldiers = new IntModel[model.SoldierTypes.Length];
-        for (int i = 0; i < model.Soldiers.Length; ++i)
-        {
-            model.Soldiers[i] = new IntModel() { Value = From!.Soldiers[i].Count };
-        }
-        model.IsAttack = !From!.IsAllyOf(To!);
-        if (!CanAnyMove)
-        {
-            Return();
-        }
-    }
-    void DoMove()
-    {
-        var move = model.IsAttack
-            ? new Attack(Player!.Id, From!.Id, To!, MovingArmy) as Move
-            : new Reinforce(Player!.Id, From!.Id, To!, MovingArmy);
-        if (actions.Add(move))
-        {
-            Return();
-        }
-    }
-    string SubmitText => model.IsAttack ? "Zaútočit" : "Podpořit";
+	[Parameter] public Action Return { get; set; } = (() => { });
+	[Parameter] public Province? From { get; set; }
+	[Parameter] public Province? To { get; set; }
+	[Parameter] public Player? Player { get; set; }
+	MoveModel model = new MoveModel();
+	Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
+	Army MovingArmy => new Army(MovingSoldiers, Player!);
+	public bool CanAnyMove => MovingSoldiers.Any(p => p.Type.CanMoveAlone(provinces, From!.Id, To!.Id));
+	public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
+	protected override void OnInitialized()
+	{
+		model.SoldierTypes = From!.SoldierTypes.ToArray();
+		model.Soldiers = new IntModel[model.SoldierTypes.Length];
+		for (int i = 0; i < model.Soldiers.Length; ++i)
+		{
+			model.Soldiers[i] = new IntModel() { Value = From!.Soldiers[i].Count };
+		}
+		model.IsAttack = !From!.IsAllyOf(To!);
+		if (!CanAnyMove)
+		{
+			Return();
+		}
+	}
+	void DoMove()
+	{
+		var move = model.IsAttack
+			? new Attack(Player!.Id, From!.Id, To!, MovingArmy) as Move
+			: new Reinforce(Player!.Id, From!.Id, To!, MovingArmy);
+		if (actions.Add(move))
+		{
+			Return();
+		}
+	}
+	string SubmitText => model.IsAttack ? "Zaútočit" : "Podpořit";
 }
-
-@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
-{
-    @if (count < model.Soldiers[i].Value)
-    {
-        <p>Nemůžeš přesunout @(model.Soldiers[i].Value)@type.Symbol, máš jen @count</p>
-    }
-}
-
-@if (!CanMove)
-{
-    <p>Vojsko nemůže přesun provést</p>
-}
-<EditForm Model="@model" OnValidSubmit="DoMove">
-    <DataAnnotationsValidator /><ValidationSummary />
-    <p>Kolik vojáků kterého typu chceš přesunout?</p>
-    <table>
-        @foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
-        {
-            <tr>
-                <td>@(type.Name) (máš @count)</td>
-                <td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
-            </tr>
-        }
-        @if (!From!.IsAllyOf(To!))
-        {
-            <tr>
-                <td>Typ přesunu</td>
-                <td colspan="2">
-                    <InputSelect @bind-Value="model.MoveType">
-                        <option value="@MoveModel.Type.Attack">Útok</option>
-                        <option value="@MoveModel.Type.Reinforcement">Podpora</option>
-                    </InputSelect>
-                </td>
-            </tr>
-        }
-        <tr><td></td><td><button type="submit">@SubmitText</button></td></tr>
-    </table>
-</EditForm>
+<nav>
+	<a @onclick="Return">Zrušit</a>
+	<a class="this">Přesun</a>
+</nav>
+<main>
+	@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
+	{
+		@if (count < model.Soldiers[i].Value)
+		{
+			<p>Nemůžeš přesunout @(model.Soldiers[i].Value)@type.Symbol, máš jen @count</p>
+		}
+	}
+	@if (!CanMove)
+	{
+		<p>Vojsko nemůže přesun provést</p>
+	}
+	<EditForm Model="@model" OnValidSubmit="DoMove">
+		<DataAnnotationsValidator /><ValidationSummary />
+		<p>Kolik vojáků kterého typu chceš přesunout?</p>
+		<table>
+			@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
+			{
+				<tr>
+					<td>@(type.Name) (máš @count)</td>
+					<td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
+				</tr>
+			}
+			@if (!From!.IsAllyOf(To!))
+			{
+				<tr>
+					<td>Typ přesunu</td>
+					<td colspan="2">
+						<InputSelect @bind-Value="model.MoveType">
+							<option value="@MoveModel.Type.Attack">Útok</option>
+							<option value="@MoveModel.Type.Reinforcement">Podpora</option>
+						</InputSelect>
+					</td>
+				</tr>
+			}
+			<tr><td></td><td><button type="submit">@SubmitText</button></td></tr>
+		</table>
+	</EditForm>
+</main>

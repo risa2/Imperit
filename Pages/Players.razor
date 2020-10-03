@@ -6,59 +6,62 @@
 @using Mode = GameSwitch.Mode;
 
 @code{
-    [Parameter] public Player? LoggedIn { get; set; }
-    [Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
-    void Donate(Player player) => Switch(Mode.CmdDonation, null, null, player);
+	[Parameter] public Player? LoggedIn { get; set; }
+	[Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
+	void Donate(Player player) => Switch(Mode.CmdDonation, null, null, player);
 }
-<p>Přihlášen: <Name Who="@LoggedIn"/></p>
-<br/>
-
-<table class="players">
-    @foreach (var player in players.Where(player => !(player is Savage)))
-    {
-        <tr>
-            @if (player.Alive)
-            {
-                <td><Name Who="@player"/></td>
-                <td>@(player.Money)@Sym.Money</td>
-                <td>(+@provinces.ControlledBy(player.Id).Sum(p => p.Earnings)@Sym.Money)</td>
-                @if (player != LoggedIn)
-                {
-                    <td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>
-                }
-                else
-                {
-                    <td>Hraje</td>
-                }
-            }
-            else
-            {
-                <td><Name Who="@player"/></td>
-                <td colspan="3">není</td>
-            }
-        </tr>
-    }
-</table>
-<br/>
-@foreach (var loan in actions.Actions.OfType<Loan>())
-{
-    <p>
-        <Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money
-        @if (LoggedIn!.Id == loan.Debtor)
-        {
-            <span class="link-like" @onclick="@(() => Switch(Mode.CmdRepay, null, null, null))">Splatit</span>
-        }
-    </p>
-}
-@foreach (var battle in actions.Actions.Select(a => a as Battle).NotNull())
-{
-    <p><Name Who="@players[battle.Army.PlayerId]"/> pochoduje s <SoldiersByType Soldiers="@battle.Soldiers" /> vojáky směr <Name What="provinces[battle.Province]"/> s úmyslem zaútočit</p>
-}
-@foreach (var add in actions.Actions.Select(a => a as Reinforcement).NotNull())
-{
-    <p>Do provincie <Name What="provinces[add.Province]"/> dorazí na pomoc <SoldiersByType Soldiers="@add.Soldiers"/></p>
-}
-@foreach (var land in provinces.OfType<Land>().Where(l => l.Occupied && l.Instability >= 0.0).OrderBy(l => -l.Instability))
-{
-    <p>Riziko odtržení země <Name What="land"/>: @(land.Instability.ProbabilityToString(prec: 1))</p>
-}
+<nav>
+	<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zpět</a>
+	<a class="this">@(LoggedIn!.Money)@Sym.Money</a>
+</nav>
+<main>
+	<p>Přihlášen: <Name Who="@LoggedIn"/></p><br/>
+	<table class="players">
+		@foreach (var player in players.Where(player => !(player is Savage)))
+		{
+			<tr>
+				@if (player.Alive)
+				{
+					<td><Name Who="@player"/></td>
+					<td>@(player.Money)@Sym.Money</td>
+					<td>(+@provinces.ControlledBy(player.Id).Sum(p => p.Earnings)@Sym.Money)</td>
+					@if (player != LoggedIn)
+					{
+						<td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>
+					}
+					else
+					{
+						<td>Hraje</td>
+					}
+				}
+				else
+				{
+					<td><Name Who="@player"/></td>
+					<td colspan="3">není</td>
+				}
+			</tr>
+		}
+	</table><br/>
+	@foreach (var loan in actions.Actions.OfType<Loan>())
+	{
+		<p>
+			<Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money
+			@if (LoggedIn!.Id == loan.Debtor)
+			{
+				<span class="link-like" @onclick="@(() => Switch(Mode.CmdRepay, null, null, null))">Splatit</span>
+			}
+		</p>
+	}
+	@foreach (var battle in actions.Actions.Select(a => a as Battle).NotNull())
+	{
+		<p><Name Who="@players[battle.Army.PlayerId]"/> pochoduje s <SoldiersByType Soldiers="@battle.Soldiers" /> vojáky směr <Name What="provinces[battle.Province]"/> s úmyslem zaútočit</p>
+	}
+	@foreach (var add in actions.Actions.Select(a => a as Reinforcement).NotNull())
+	{
+		<p>Do provincie <Name What="provinces[add.Province]"/> dorazí na pomoc <SoldiersByType Soldiers="@add.Soldiers"/></p>
+	}
+	@foreach (var land in provinces.OfType<Land>().Where(l => l.Occupied && l.Instability >= 0.0).OrderBy(l => -l.Instability))
+	{
+		<p>Riziko odtržení země <Name What="land"/>: @(land.Instability.ProbabilityToString(prec: 1))</p>
+	}
+</main>

@@ -2,33 +2,33 @@
 @inject Services.ISettingsLoader sl;
 
 @code{
-    [Parameter] public Action<int?> LogIn { get; set; } = (x => { });
-    LoginModel model = new LoginModel();
-    bool Wrong = false;
-    void LoginAction()
-    {
-        if (players[model.Id].Password.IsCorrect(model.Password))
-        {
-            LogIn(model.Id);
-        }
-        else
-        {
-            Wrong = true;
-            model.Password = "";
-        }
-    }
+	[Parameter] public Action<int?> LogIn { get; set; } = (x => { });
+	LoginModel model = new LoginModel();
+	bool Wrong = false;
+	void LoginAction()
+	{
+		if (players[model.Id].Password.IsCorrect(model.Password))
+		{
+			LogIn(model.Id);
+		}
+		else
+		{
+			Wrong = true;
+			model.Password = "";
+		}
+	}
 }
 
 @if (Wrong)
 {
-    <p>Zadané heslo není správné. Zkus to ještě jednou!</p>
+	<p>Zadané heslo není správné. Zkus to ještě jednou!</p>
 }
 <EditForm Model="@model" OnSubmit="LoginAction">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>
-        Hráč:<br/>
-        <IntSelect @bind-Value="model.Id" Options="@players.Where(p => p.GetType() == typeof(Player))" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
-    </label>
-    <label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
-    <button type="submit">Přihlásit se</button>
+	<DataAnnotationsValidator/><ValidationSummary/>
+	<label>
+		Hráč:<br/>
+		<IntSelect @bind-Value="model.Id" Options="@players.Where(p => p.GetType() == typeof(Player))" Id="@(p => p.Id)" Text="p => p.Name"/><br/>
+	</label>
+	<label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
+	<button type="submit">Přihlásit se</button>
 </EditForm>

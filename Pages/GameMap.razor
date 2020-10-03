@@ -2,48 +2,73 @@
 @inject Services.IProvincesLoader provinces;
 @inject Services.IActionLoader actions;
 @inject Services.IActivePlayer active;
+@inject Services.ISettingsLoader sl;
+@inject Services.IPowersLoader powers;
 
 @using Mode = GameSwitch.Mode;
 
 @code{
-    [Parameter] public Player? Player { get; set; }
-    [Parameter] public bool IsActive { get; set; }
-    [Parameter] public Action<Mode, Province?, Province?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
-    [Parameter] public bool Preview { get; set; }
-    Province? OnClick(int clicked, Province? from)
-    {
-        if (!IsActive || from is State.Mountains)
-        {
-            return null;
-        }
-        if (from is null && provinces[clicked].IsControlledBy(Player!.Id))
-        {
-            return provinces[clicked];
-        }
-        if (from is null && provinces[clicked] is Land L1 && !L1.Occupied)
-        {
-            Switch(Mode.CmdPurchase, L1, L1, null);
-            return null;
-        }
-        if (from?.Id == clicked)
-        {
-            Switch(Mode.CmdRecruit, from, from, null);
-            return null;
-        }
-        if (from is Province)
-        {
-            Switch(Mode.CmdMove, from, provinces[clicked], null);
-            return null;
-        }
-        return from;
-    }
+	[Parameter] public Player? Player { get; set; }
+	[Parameter] public bool IsActive { get; set; }
+	[Parameter] public int LoggedIn { get; set; }
+	[Parameter] public Action LogOut { get; set; } = (() => { });
+	[Parameter] public Action<Mode, Province?, Province?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
+	[Parameter] public bool Preview { get; set; }
+	[Parameter] public Action NextTurn { get; set; } = (() => { });
+	Province? OnClick(int clicked, Province? from)
+	{
+		if (!IsActive || from is State.Mountains)
+		{
+			return null;
+		}
+		if (from is null && provinces[clicked].IsControlledBy(Player!.Id))
+		{
+			return provinces[clicked];
+		}
+		if (from is null && provinces[clicked] is Land L1 && !L1.Occupied)
+		{
+			Switch(Mode.CmdPurchase, L1, L1, null);
+			return null;
+		}
+		if (from?.Id == clicked)
+		{
+			Switch(Mode.CmdRecruit, from, from, null);
+			return null;
+		}
+		if (from is Province)
+		{
+			Switch(Mode.CmdMove, from, provinces[clicked], null);
+			return null;
+		}
+		return from;
+	}
+	IProvinces ProvincesPreview => actions.Where(x => x is ArmyAction).EndOfTurn(players, provinces, active.Id).Item3;
 }
-@{ 
-    IProvinces prov = provinces;
-    if (Preview)
-    {
-        var queue = actions.Where(x => x is ArmyAction);
-        prov = queue.EndOfTurn(players, provinces, active.Id).Item3;
-    }
-}
-<Map Width="1000" Height="1000" Provinces="@prov" OnClick="OnClick" FontSize="9" SelectedColor="@(new Color(0, 0, 0, 100))"/>
+<nav>
+	@if (Preview)
+	{
+		<a>Zpět</a>
+		<a class="this" @onclick="@(() => Switch(Mode.Map, null, null, null))">Náhled</a>
+	}
+	else
+	{
+		@if (LoggedIn == active.Id && sl.Settings.Started)
+		{
+			<a @onclick="NextTurn">Konec</a>
+		}
+		else
+		{
+			<a @onclick="LogOut">Odhlášení</a>
+		}
+		<a class="this">Imperit</a>
+		<a @onclick="@(() => Switch(Mode.Players, null, null, null))">@(players[LoggedIn].Money)@Sym.Money</a>
+		<a @onclick="@(() => Switch(Mode.Preview, null, null, null))">Náhled</a>
+		@if (powers.Count > 2)
+		{
+			<a @onclick="@(() => Switch(Mode.Powers, null, null, null))">Historie</a>
+		}
+	}
+</nav>
+<main>
+	<Map Width="1000" Height="1000" Provinces="@(Preview ? ProvincesPreview : provinces)" OnClick="OnClick" FontSize="9" SelectedColor="@(new Color(0, 0, 0, 100))" />
+</main>

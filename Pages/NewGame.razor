@@ -4,39 +4,39 @@
 @using Mode = StartSwitch.Mode;
 
 @code{
-    [Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
-    NewGameModel model = new NewGameModel();
-    protected override void OnInitialized() => model.Init(sl.Settings);
-    bool Validate()
-    {
-        bool success = !string.IsNullOrWhiteSpace(model.OldPassword) && !string.IsNullOrWhiteSpace(model.NewPassword);
-        success = success && !string.IsNullOrWhiteSpace(model.RobotNames) && sl.Settings.Password.IsCorrect(model.OldPassword);
-        return success;
-    }
-    void New()
-    {
-        if (Validate())
-        {
-            new_game.New(model.GetSettings(sl.Settings));
-            GoTo(Mode.Registration);
-        }
-        else
-        {
-            model.OldPassword = model.NewPassword = "";
-        }
-    }
+	[Parameter] public Action<Mode> GoTo { get; set; } = (s => { });
+	NewGameModel model = new NewGameModel();
+	protected override void OnInitialized() => model.Init(sl.Settings);
+	bool Validate()
+	{
+		bool success = !string.IsNullOrWhiteSpace(model.OldPassword) && !string.IsNullOrWhiteSpace(model.NewPassword);
+		success = success && !string.IsNullOrWhiteSpace(model.RobotNames) && sl.Settings.Password.IsCorrect(model.OldPassword);
+		return success;
+	}
+	void New()
+	{
+		if (Validate())
+		{
+			new_game.New(model.GetSettings(sl.Settings));
+			GoTo(Mode.Registration);
+		}
+		else
+		{
+			model.OldPassword = model.NewPassword = "";
+		}
+	}
 }
 
 <EditForm Model="@model" OnValidSubmit="New">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>Úroková míra:<br/><InputNumber @bind-Value="model.Interest"/><br/></label>
-    <label>Nestabilita prázdné provincie:<br/><InputNumber @bind-Value="model.DefaultInstability"/><br/></label>
-    <label>Výchozí peníze:<br/><InputNumber @bind-Value="model.DefaultMoney"/><br/></label>
-    <label>Omezení dluhu:<br/><InputNumber @bind-Value="model.DebtLimit"/><br/></label>
-    <label>Hra u jednoho zařízení:<InputCheckbox @bind-Value="model.SingleClient"/><br/></label>
-    <label>Jména robotů:<br/><InputText @bind-Value="model.RobotNames"/><br/></label>
-    <label>Maximální počet robotů:<br/><InputNumber @bind-Value="model.MaxRobotCount"/><br/></label>
-    <label>Staré heslo:<br/><InputText type="password" @bind-Value="model.OldPassword"/><br/></label>
-    <label>Nové heslo:<br/><InputText type="password" @bind-Value="model.NewPassword"/><br/></label>
-    <button type="submit">Vytvořit</button>
+	<DataAnnotationsValidator/><ValidationSummary/>
+	<label>Úroková míra:<br/><InputNumber @bind-Value="model.Interest"/><br/></label>
+	<label>Nestabilita prázdné provincie:<br/><InputNumber @bind-Value="model.DefaultInstability"/><br/></label>
+	<label>Výchozí peníze:<br/><InputNumber @bind-Value="model.DefaultMoney"/><br/></label>
+	<label>Omezení dluhu:<br/><InputNumber @bind-Value="model.DebtLimit"/><br/></label>
+	<label>Hra u jednoho zařízení:<InputCheckbox @bind-Value="model.SingleClient"/><br/></label>
+	<label>Jména robotů:<br/><InputText @bind-Value="model.RobotNames"/><br/></label>
+	<label>Maximální počet robotů:<br/><InputNumber @bind-Value="model.MaxRobotCount"/><br/></label>
+	<label>Staré heslo:<br/><InputText type="password" @bind-Value="model.OldPassword"/><br/></label>
+	<label>Nové heslo:<br/><InputText type="password" @bind-Value="model.NewPassword"/><br/></label>
+	<button type="submit">Vytvořit</button>
 </EditForm>

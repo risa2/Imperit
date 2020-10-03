@@ -4,39 +4,45 @@
 @inject Services.IProvincesLoader provinces;
 
 @code{
-    [Parameter] public Action Return { get; set; } = (() => { });
-    [Parameter] public Player? Player { get; set; }
-    [Parameter] public Land? Land { get; set; }
-    Purchase purchase => new Purchase(Player!, Land!.Id, Land!.Price);
-    Purchase purchase_without_money => new Purchase(Player!, Land!.Id, 0);
-    void DoPurchase()
-    {
-        actions.Add(purchase!);
-        Return();
-    }
-    void DoBorrowPurchase()
-    {
-        if (actions.Add(new Borrow(Player!.Id, purchase.Price - Player!.Money, sl.Settings)))
-        {
-            DoPurchase();
-        }
-    }
+	[Parameter] public Action Return { get; set; } = (() => { });
+	[Parameter] public Player? Player { get; set; }
+	[Parameter] public Land? Land { get; set; }
+	Purchase purchase => new Purchase(Player!, Land!.Id, Land!.Price);
+	Purchase purchase_without_money => new Purchase(Player!, Land!.Id, 0);
+	void DoPurchase()
+	{
+		actions.Add(purchase!);
+		Return();
+	}
+	void DoBorrowPurchase()
+	{
+		if (actions.Add(new Borrow(Player!.Id, purchase.Price - Player!.Money, sl.Settings)))
+		{
+			DoPurchase();
+		}
+	}
 }
-@if (!purchase_without_money.Allowed(players, provinces))
-{
-    Return();
-}
-else if (purchase.Price > Player!.Money)
-{
-    <p>@Land!.Name stojí @(Land!.Price)@Sym.Money Chceš si půjčit @(purchase.Price - Player!.Money)@Sym.Money a koupit? </p>
-    <button @onclick="DoBorrowPurchase">Koupit na dluh</button>
-}
-else if (!purchase.Allowed(players, provinces))
-{
-    Return();
-}
-else
-{
-    <p>@Land!.Name stojí @(Land!.Price)@Sym.Money</p>
-    <button @onclick="DoPurchase">Koupit</button>
-}
+<nav>
+	<a @onclick="Return">Zrušit</a>
+	<a class="this">Koupě</a>
+</nav>
+<main>
+	@if (!purchase_without_money.Allowed(players, provinces))
+	{
+		Return();
+	}
+	else if (purchase.Price > Player!.Money)
+	{
+		<p>@Land!.Name stojí @(Land!.Price)@Sym.Money Chceš si půjčit @(purchase.Price - Player!.Money)@Sym.Money a koupit? </p>
+		<button @onclick="DoBorrowPurchase">Koupit na dluh</button>
+	}
+	else if (!purchase.Allowed(players, provinces))
+	{
+		Return();
+	}
+	else
+	{
+		<p>@Land!.Name stojí @(Land!.Price)@Sym.Money</p>
+		<button @onclick="DoPurchase">Koupit</button>
+	}
+</main>

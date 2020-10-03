@@ -1,34 +1,40 @@
 ﻿@inject Services.IActionLoader actions;
 
 @code {
-    [Parameter] public Player? LoggedIn { get; set; }
-    [Parameter] public Action Return { get; set; } = (() => { });
-    int Debt;
-    protected override void OnInitialized()
-    {
-        Debt = actions.Actions.OfType<Loan>().FirstOrDefault()?.Debt ?? 0;
-    }
-    RepayModel model = new RepayModel();
-    void DoRepay()
-    {
-        if (actions.Add(new Repay(LoggedIn!.Id, Math.Min(model.Amount, Debt))))
-        {
-            Return();
-        }
-    }
+	[Parameter] public Player? LoggedIn { get; set; }
+	[Parameter] public Action Return { get; set; } = (() => { });
+	int Debt;
+	protected override void OnInitialized()
+	{
+		Debt = actions.Actions.OfType<Loan>().FirstOrDefault()?.Debt ?? 0;
+	}
+	IntModel model = new IntModel();
+	void DoRepay()
+	{
+		if (actions.Add(new Repay(LoggedIn!.Id, Math.Min(model.Value, Debt))))
+		{
+			Return();
+		}
+	}
 }
-@if (model.Amount > Debt)
-{
-    <p>Dlužíš jen @(Debt)@Sym.Money, proč splácíš @(model.Amount)@Sym.Money</p>
-}
-else if (model.Amount > LoggedIn!.Money)
-{
-    <p>Máš jen @(LoggedIn!.Money)@Sym.Money, nemůžeš splatit @(model.Amount)@Sym.Money</p>
-}
-<EditForm Model="@model" OnValidSubmit="DoRepay">
-    <label>
-        Dlužíš @(Debt)@Sym.Money, splátka:<br/>
-        <InputNumber @bind-Value="model.Amount" min="1" autofocus/><br/>
-    </label>
-    <button type="submit">Splatit</button>
-</EditForm>
+<nav>
+	<a @onclick="Return">Zrušit</a>
+	<a class="this">Splácení</a>
+</nav>
+<main>
+	@if (model.Value > Debt)
+	{
+		<p>Dlužíš jen @(Debt)@Sym.Money, proč splácíš @(model.Value)@Sym.Money</p>
+	}
+	else if (model.Value > LoggedIn!.Money)
+	{
+		<p>Máš jen @(LoggedIn!.Money)@Sym.Money, nemůžeš splatit @(model.Value)@Sym.Money</p>
+	}
+	<EditForm Model="@model" OnValidSubmit="DoRepay">
+		<label>
+			Dlužíš @(Debt)@Sym.Money, splátka:<br/>
+			<InputNumber @bind-Value="model.Value" min="1" autofocus/><br/>
+		</label>
+		<button type="submit">Splatit</button>
+	</EditForm>
+</main>

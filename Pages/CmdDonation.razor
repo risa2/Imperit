@@ -1,28 +1,34 @@
 @inject Services.IActionLoader actions;
 
 @code{
-    [Parameter] public Player? Player { get; set; }
-    [Parameter] public Player? Associate { get; set; }
-    [Parameter] public Action Return { get; set; } = (() => { });
-    DonationModel model = new DonationModel();
-    void DoDonate()
-    {
-        if (actions.Add(new Donate(Player!.Id, Associate!.Id, model.Amount)))
-        {
-            Return();
-        }
-    }
+	[Parameter] public Player? Player { get; set; }
+	[Parameter] public Player? Associate { get; set; }
+	[Parameter] public Action Return { get; set; } = (() => { });
+	IntModel model = new IntModel();
+	void DoDonate()
+	{
+		if (actions.Add(new Donate(Player!.Id, Associate!.Id, model.Value)))
+		{
+			Return();
+		}
+	}
 }
-@if (model.Amount > Player!.Money)
-{
-    <p>Máš jen @(Player!.Money)@Sym.Money</p>
-}
-<EditForm Model="@model" OnValidSubmit="DoDonate">
-    <DataAnnotationsValidator/><ValidationSummary/>
-    <label>
-        Darovaná částka:<br/>
-        <InputNumber @bind-Value="model.Amount" min="1" autofocus/><br/>
-    </label>
-    <label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
-    <button type="submit">Věnovat</button>
-</EditForm>
+<nav>
+	<a @onclick="Return">Zrušit</a>
+	<a class="this">Věnování</a>
+</nav>
+<main>
+	@if (model.Value > Player!.Money)
+	{
+		<p>Máš jen @(Player!.Money)@Sym.Money</p>
+	}
+	<EditForm Model="@model" OnValidSubmit="DoDonate">
+		<DataAnnotationsValidator/><ValidationSummary/>
+		<label>
+			Darovaná částka:<br/>
+			<InputNumber @bind-Value="model.Value" min="1" autofocus/><br/>
+		</label>
+		<label>Příjemce:<br/><input type="text" value="@Associate!.Name" disabled="disabled"/><br/></label>
+		<button type="submit">Věnovat</button>
+	</EditForm>
+</main>

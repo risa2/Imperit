@@ -1,18 +1,18 @@
 ﻿@page "/"
 
 @code{
-    int? LoggedIn = null;
-    void LogIn(int? player)
-    {
-        LoggedIn = player;
-        this.StateHasChanged();
-    }
+	int? LoggedIn = null;
+	void LogIn(int? player)
+	{
+		LoggedIn = player;
+		this.StateHasChanged();
+	}
 }
 @if (LoggedIn is int loggedIn)
 {
-    <GameSwitch LoggedIn="@loggedIn" LogIn="LogIn"/>
+	<GameSwitch LoggedIn="@loggedIn" LogIn="LogIn"/>
 }
 else
 {
-    <StartSwitch LogIn="LogIn"/>
+	<StartSwitch LogIn="LogIn"/>
 }

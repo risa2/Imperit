@@ -1,7 +1,8 @@
 {"Name":"","Color":"#00000000","Type":"S","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":true,"SoldierTypes":[0,1]}
-{"Name":"Had","Color":"#0000ffff","Type":"P","Password":"BDpxh3TFcr2KJa2\u002Bsb/NXAJWrhHOz5\u002BcP5JdDlK\u002Br4k=","Money":18747,"Alive":true,"SoldierTypes":[0,1]}
-{"Name":"Parmenid\u00E9s","Color":"#f51727ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":false,"SoldierTypes":[]}
-{"Name":"S\u00F3krat\u00E9s","Color":"#13d83eff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":false,"SoldierTypes":[]}
-{"Name":"Plat\u00F3n","Color":"#8029d4ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":false,"SoldierTypes":[]}
-{"Name":"Aristotel\u00E9s","Color":"#edc215ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":false,"SoldierTypes":[]}
-{"Name":"Locke","Color":"#0ec1d3ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":0,"Alive":false,"SoldierTypes":[]}
+{"Name":"Had","Color":"#00f500ff","Type":"P","Password":"BDpxh3TFcr2KJa2\u002Bsb/NXAJWrhHOz5\u002BcP5JdDlK\u002Br4k=","Money":24,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"Thal\u00E9s","Color":"#86f90dff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":123,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"Parmenid\u00E9s","Color":"#1347fdff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":125,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"S\u00F3krat\u00E9s","Color":"#fb2111ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":125,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"Plat\u00F3n","Color":"#01e152ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":117,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"Aristotel\u00E9s","Color":"#ab1df6ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":125,"Alive":true,"SoldierTypes":[0,1]}
+{"Name":"Locke","Color":"#ded311ff","Type":"R","Password":"47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=","Money":118,"Alive":true,"SoldierTypes":[0,1]}
