@@ -1,0 +1,17 @@
+﻿@code {
+	[Parameter] public RenderFragment? ChildContent { get; set; }
+	[Parameter] public bool Show { get; set; } = true;
+	[Parameter] public Action OnClose { get; set; } = () => { };
+	void OnClick()
+	{
+		OnClose();
+		this.StateHasChanged();
+	}
+}
+@if (Show)
+{
+	<div class="popup-box">
+		<span class="popup-close" @onclick="OnClose">&times;</span>
+		<p>@ChildContent</p>
+	</div>
+}

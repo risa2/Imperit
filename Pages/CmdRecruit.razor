@@ -1,14 +1,16 @@
 @inject Services.IActionLoader actions;
 @inject Services.ISettingsLoader sl;
 
+@using Mode = GameSwitch.Mode;
+
 @code{
-	[Parameter] public Action Return { get; set; } = (() => { });
+	[Parameter] public Action<Mode, Province?, Province?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
 	[Parameter] public Land? Land { get; set; }
 	[Parameter] public Player? Player { get; set; }
 	RecruitModel model = new RecruitModel();
 	protected override void OnInitialized()
 	{
-		model.SoldierTypes = Player!.SoldierTypes.Where(type => type.IsRecruitable(Land!)).ToArray();
+		model.SoldierTypes = sl.Settings.SoldierTypes.Where(type => type.IsRecruitable(Land!)).ToArray();
 		model.Soldiers = new IntModel[model.SoldierTypes.Length];
 		for (int i = 0; i < model.Soldiers.Length; ++i)
 		{
@@ -26,15 +28,20 @@
 		}
 		if (actions.Add(new Recruit(Player!.Id, Land!.Id, new Army(RecruitedSoldiers, Player!))))
 		{
-			Return();
+			Switch(Mode.Map, null, null, null);
 		}
 	}
+	int? Infobox = null;
 }
 <nav>
-	<a @onclick="Return">Zrušit</a>
+	<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zrušit</a>
 	<a class="this">Verbování</a>
+	<a @onclick="@(() => Switch(Mode.Players, null, null, null))">@(Player!.Money)@Sym.Money</a>
 </nav>
 <main>
+	<PopupBox Show="@(Infobox is int)" OnClose="@(() => Infobox = null)">
+		@model.SoldierTypes[Infobox ?? 0].Name (@model.SoldierTypes[Infobox ?? 0].Symbol) &ndash; @(new MarkupString(model.SoldierTypes[Infobox ?? 0].Text))
+	</PopupBox>
 	<EditForm Model="@model" OnValidSubmit="DoRecruit">
 		<DataAnnotationsValidator /><ValidationSummary />
 		<p>
@@ -52,16 +59,15 @@
 			@foreach (var (i, type) in model.SoldierTypes.Enumerate())
 			{
 				<tr>
-					<td>@type.Name (@(type.Price)@(Sym.Money)/@type.Symbol)</td>
+					<td>@type.Name @(type.Price)@(Sym.Money)<sup @onclick="@(() => Infobox = i)">?</sup></td>
 					<td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
 				</tr>
 			}
 			@if (Missing > 0)
 			{
-				<tr><td colspan="2">Chybí ti @(Missing)@Sym.Money</td></tr>
 				<tr>
-					<td>Verbovat na dluh</td>
-					<td><InputCheckbox @bind-Value="model.Borrow" /></td>
+					<td>Chybí ti @(Missing)@Sym.Money</td>
+					<td>Půjčit si: <InputCheckbox @bind-Value="model.Borrow" /></td>
 				</tr>
 			}
 			else

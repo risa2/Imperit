@@ -47,8 +47,8 @@
 <nav>
 	@if (Preview)
 	{
-		<a>Zpět</a>
-		<a class="this" @onclick="@(() => Switch(Mode.Map, null, null, null))">Náhled</a>
+		<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zpět</a>
+		<a class="this">Náhled</a>
 	}
 	else
 	{

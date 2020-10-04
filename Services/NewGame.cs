@@ -44,7 +44,7 @@ namespace Imperit.Services
 			actions.Clear();
 			login.Clear();
 
-			players.Add(new Savage(0, settings.DefaultSoldierTypes));
+			players.Add(new Savage(0));
 			provinces.Reset(sl.Settings, players);
 			provinces.Set(provinces.Select(prov => CreateProvince(prov, players[0])).ToArray());
 			provinces.Save();
@@ -58,7 +58,7 @@ namespace Imperit.Services
 			var colors = rand.NextColors(count);
 			for (int i = 0; i < count; ++i)
 			{
-				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true, sl.Settings.DefaultSoldierTypes));
+				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true));
 			}
 			provinces.Reset(sl.Settings, players);
 			for (int i = 0; i < count; ++i)
@@ -77,7 +77,7 @@ namespace Imperit.Services
 		}
 		public void Registration(string name, Password password, Color color, Land land)
 		{
-			var player = new Player(players.Count, name, color, password, sl.Settings.DefaultMoney, true, sl.Settings.DefaultSoldierTypes);
+			var player = new Player(players.Count, name, color, password, sl.Settings.DefaultMoney, true);
 			players.Add(player);
 			provinces.Reset(sl.Settings, players);
 			provinces[land.Id] = land.GiveUpTo(new Army(land.Soldiers, player));

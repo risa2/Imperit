@@ -86,7 +86,7 @@
 {"Type":"L","Name":"Basilicata","Army":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":95}]},"Player":0},"Earnings":19,"IsStart":false}
 {"Type":"S","Name":"J\u00F3nsk\u00E9 mo\u0159e","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"L","Name":"Kal\u00E1brie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":110}]},"Player":0},"Earnings":22,"IsStart":true}
-{"Type":"P","Name":"Kla\u010D","Army":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"Earnings":50,"IsStart":false}
+{"Type":"P","Name":"Kart\u00E1go","Army":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":200}]},"Player":0},"Earnings":50,"IsStart":false}
 {"Type":"P","Name":"Sic\u00EDlie","Army":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":150}]},"Player":0},"Earnings":35,"IsStart":false}
 {"Type":"L","Name":"Litva","Army":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[{"Type":0,"Count":115}]},"Player":0},"Earnings":23,"IsStart":true}
 {"Type":"S","Name":"Baltsk\u00E9 mo\u0159e","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
@@ -106,11 +106,21 @@
 {"Type":"M","Name":"Westerwald","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"M","Name":"Krkono\uFFFDe","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"M","Name":"Tatry","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"Z\uFFFDpadn\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"St\uFFFDedn\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"Ji\uFFFDn\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"Pyreneje","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"Balk\uFFFDnsk\uFFFD poho\uFFFD\uFFFD","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Provensalsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"\u0160v\u00FDcarsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Dinarsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Okcit\uFFFDnsk\uFFFD Pyreneje","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"\u010Cernohorsk\uFFFD poho\uFFFD\uFFFD","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"M","Name":"Din\uFFFDrsk\uFFFD hory","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
-{"Type":"M","Name":"Dolomity","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Ji\u017En\uFFFD Dolomity","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
 {"Type":"M","Name":"Massif Central","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Jihosavojsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Rakousk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Alb\uFFFDnsk\uFFFD poho\uFFFD\uFFFD","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Severn\uFFFD Dolomity","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Severosavojsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Trentinsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Alsask\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Lombardsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Aostsk\uFFFD Alpy","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}
+{"Type":"M","Name":"Bordeauxsk\uFFFD Pyreneje","Army":{"Soldiers":{"Items":[]},"Player":0},"DefaultArmy":{"Soldiers":{"Items":[]},"Player":0}}

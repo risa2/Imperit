@@ -148,3 +148,21 @@ input[type=number] {
 input::-ms-clear, input::-ms-reveal {
 	display: none;
 }
+
+.popup-box {
+	margin: auto;
+	padding: 20px;
+	background-color: #222;
+	width: 60%;
+}
+.popup-box p {
+	background-color: #222;
+}
+.popup-close {
+	color: #fff;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+}

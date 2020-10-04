@@ -17,8 +17,8 @@ namespace Imperit.Load
 			var (settings, players) = arg;
 			return Type switch
 			{
-				"Reinforcement" => new Reinforcement(Province.Must(), Army!.Convert(i, players)),
-				"Battle" => new Battle(Province.Must(), Army!.Convert(i, players)),
+				"Reinforcement" => new Reinforcement(Province.Must(), Army!.Convert(i, (players, settings.SoldierTypes))),
+				"Battle" => new Battle(Province.Must(), Army!.Convert(i, (players, settings.SoldierTypes))),
 				"Earnings" => new Earnings(),
 				"Instability" => new Instability(),
 				"Loan" => new Loan(Player.Must(), Debt ?? 0, settings),

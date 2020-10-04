@@ -1,3 +1,4 @@
+using Imperit.State;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Imperit.Pages
 		public string RobotNames { get; set; } = "";
 		[Range(0, int.MaxValue, ErrorMessage = "Záporný poèet robotù není možný")]
 		public int MaxRobotCount { get; set; }
-		public void Init(State.Settings old)
+		public void Init(Settings old)
 		{
 			Interest = old.Interest;
 			DefaultInstability = old.DefaultInstability;
@@ -32,9 +33,9 @@ namespace Imperit.Pages
 			RobotNames = string.Join(", ", old.RobotNames);
 			MaxRobotCount = old.MaxRobotCount;
 		}
-		public State.Settings GetSettings(State.Settings old)
+		public Settings GetSettings(Settings old)
 		{
-			return new State.Settings(false, SingleClient, Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), MaxRobotCount, old.SeaColor, old.LandColor, old.MountainsColor, old.MountainsWidth, old.SoldierTypes, old.DefaultSoldierTypes, new State.Password(NewPassword));
+			return new Settings(false, SingleClient, Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames.Split(',').Select(name => name.Trim()).ToImmutableArray(), MaxRobotCount, old.SeaColor, old.LandColor, old.MountainsColor, old.MountainsWidth, old.SoldierTypes, new Password(NewPassword));
 		}
 	}
 }

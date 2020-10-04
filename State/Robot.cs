@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 //using System.Linq;
 //using Imperit.Dynamics.Commands;
 
@@ -7,11 +6,10 @@ namespace Imperit.State
 {
 	public class Robot : Player
 	{
-		public Robot(int id, string name, Color color, Password password, int money, bool alive, ImmutableArray<SoldierType> types)
-			: base(id, name, color, password, money, alive, types) { }
-		public override Player ChangeMoney(int amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive, SoldierTypes);
-		public override Player Die() => new Robot(Id, Name, Color, Password, 0, false, ImmutableArray<SoldierType>.Empty);
-		public override Player AddSoldierTypes(params SoldierType[] types) => new Robot(Id, Name, Color, Password, Money, Alive, SoldierTypes.AddRange(types));
+		public Robot(int id, string name, Color color, Password password, int money, bool alive)
+			: base(id, name, color, password, money, alive) { }
+		public override Player ChangeMoney(int amount) => new Robot(Id, Name, Color, Password, Money + amount, Alive);
+		public override Player Die() => new Robot(Id, Name, Color, Password, 0, false);
 		//enum Relation { Enemy, Ally, Empty }
 		//class PInfo
 		//{

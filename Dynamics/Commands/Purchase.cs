@@ -1,6 +1,6 @@
-using System.Linq;
-using System.Collections.Generic;
 using Imperit.State;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Imperit.Dynamics.Commands
 {

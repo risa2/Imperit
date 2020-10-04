@@ -57,6 +57,10 @@ namespace Imperit.State
 					remaining[i] = soldiers[i].Count - (soldiers[i].Count * enemy / me);
 					died += (soldiers[i].Count - remaining[i]) * powerof(soldiers[i].Type);
 				}
+				else
+				{
+					remaining[i] = soldiers[i].Count;
+				}
 			}
 			for (int i = 0; died < enemy && i < remaining.Length; ++i)
 			{

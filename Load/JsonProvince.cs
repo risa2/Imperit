@@ -16,10 +16,10 @@ namespace Imperit.Load
 			var (settings, players, shapes) = arg;
 			return Type switch
 			{
-				"S" => new Sea(i, Name, shapes[i], Army.Convert(i, players), DefaultArmy.Convert(i, players), settings),
-				"L" => new Land(i, Name, shapes[i], Army.Convert(i, players), DefaultArmy.Convert(i, players), IsStart ?? false, Earnings ?? 0, settings),
-				"P" => new Port(i, Name, shapes[i], Army.Convert(i, players), DefaultArmy.Convert(i, players), IsStart ?? false, Earnings ?? 0, settings),
-				"M" => new Mountains(i, Name, shapes[i], Army.Convert(i, players), DefaultArmy.Convert(i, players), settings),
+				"S" => new Sea(i, Name, shapes[i], Army.Convert(i, (players, settings.SoldierTypes)), DefaultArmy.Convert(i, (players, settings.SoldierTypes)), settings),
+				"L" => new Land(i, Name, shapes[i], Army.Convert(i, (players, settings.SoldierTypes)), DefaultArmy.Convert(i, (players, settings.SoldierTypes)), IsStart ?? false, Earnings ?? 0, settings),
+				"P" => new Port(i, Name, shapes[i], Army.Convert(i, (players, settings.SoldierTypes)), DefaultArmy.Convert(i, (players, settings.SoldierTypes)), IsStart ?? false, Earnings ?? 0, settings),
+				"M" => new Mountains(i, Name, shapes[i], Army.Convert(i, (players, settings.SoldierTypes)), DefaultArmy.Convert(i, (players, settings.SoldierTypes)), settings),
 				_ => throw new System.Exception("Unknown State.Province type: " + Type)
 			};
 		}

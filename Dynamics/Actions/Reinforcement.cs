@@ -1,5 +1,5 @@
-using Imperit.State;
 using Imperit.Dynamics.Commands;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {

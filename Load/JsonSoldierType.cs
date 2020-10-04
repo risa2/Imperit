@@ -1,5 +1,7 @@
 ﻿using Imperit.State;
 using Imperit.State.SoldierTypes;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Imperit.Load
 {
@@ -12,16 +14,20 @@ namespace Imperit.Load
 		public int Weight { get; set; }
 		public int Price { get; set; }
 		public int? Capacity { get; set; }
+		public int? Speed { get; set; }
+		public IEnumerable<int>? RecruitPlaces { get; set; }
 		public SoldierType Convert(int i, bool _b) => Type switch
 		{
 			"P" => new Pedestrian(i, Description.Convert(), AttackPower, DefensePower, Weight, Price),
 			"S" => new Ship(i, Description.Convert(), AttackPower, DefensePower, Weight, Price, Capacity.Must()),
+			"E" => new Elephant(i, Description.Convert(), AttackPower, DefensePower, Weight, Price, Capacity.Must(), Speed.Must(), RecruitPlaces!.ToImmutableArray()),
 			_ => throw new System.Exception("Unknown State.SoldierType type: " + Type)
 		};
 		public static JsonSoldierType From(SoldierType type) => type switch
 		{
-			Pedestrian P => new JsonSoldierType() { Type = "P", Description = JsonDescription.From(P.Description), AttackPower = P.AttackPower, DefensePower = P.DefensePower, Weight = P.Weight, Price = P.Price },
-			Ship S => new JsonSoldierType() { Type = "S", Description = JsonDescription.From(S.Description), AttackPower = S.AttackPower, DefensePower = S.DefensePower, Weight = S.Weight, Price = S.Price, Capacity = S.Capacity },
+			Pedestrian P => new JsonSoldierType { Type = "P", Description = JsonDescription.From(P.Description), AttackPower = P.AttackPower, DefensePower = P.DefensePower, Weight = P.Weight, Price = P.Price },
+			Ship S => new JsonSoldierType { Type = "S", Description = JsonDescription.From(S.Description), AttackPower = S.AttackPower, DefensePower = S.DefensePower, Weight = S.Weight, Price = S.Price, Capacity = S.Capacity },
+			Elephant E => new JsonSoldierType { Type = "E", Description = JsonDescription.From(E.Description), AttackPower = E.AttackPower, DefensePower = E.DefensePower, Weight = E.Weight, Price = E.Price, Capacity = E.Capacity, Speed = E.Speed, RecruitPlaces = E.RecruitPlaces },
 			_ => throw new System.Exception("Unknown State.SoldierType type: " + type.GetType())
 		};
 	}

@@ -74,7 +74,7 @@ else if (Current == Mode.CmdPurchase && To is State.Land L2)
 }
 else if (Current == Mode.CmdRecruit && To is State.Land L1)
 {
-	<CmdRecruit Player="@players[LoggedIn]" Land="@L1" Return="@(() => Switch())"/>
+	<CmdRecruit Player="@players[LoggedIn]" Land="@L1" Switch="Switch"/>
 }
 else if (Current == Mode.CmdRepay)
 {

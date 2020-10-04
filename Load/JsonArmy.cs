@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace Imperit.Load
 {
-	public class JsonArmy : IConvertibleToWith<Army, IReadOnlyList<Player>>
+	public class JsonArmy : IConvertibleToWith<Army, (IReadOnlyList<Player>, IReadOnlyList<SoldierType>)>
 	{
 		public JsonSoldiers Soldiers { get; set; } = new JsonSoldiers();
 		public int Player { get; set; }
-		public Army Convert(int i, IReadOnlyList<Player> players)
+		public Army Convert(int i, (IReadOnlyList<Player>, IReadOnlyList<SoldierType>) arg)
 		{
-			return new Army(Soldiers.Convert(i, players[Player].SoldierTypes), players[Player]);
+			var (players, types) = arg;
+			return new Army(Soldiers.Convert(i, types), players[Player]);
 		}
 		public static JsonArmy From(Army army)
 		{
