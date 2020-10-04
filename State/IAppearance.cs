@@ -1,6 +1,8 @@
-﻿namespace Imperit.State
+﻿using System.Collections.Generic;
+
+namespace Imperit.State
 {
-	public interface IAppearance : IEnumerableImpl<Point>
+	public interface IAppearance : IEnumerable<Point>
 	{
 		Color Fill => new Color();
 		Color Stroke => new Color();

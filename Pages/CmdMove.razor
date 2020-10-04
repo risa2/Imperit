@@ -11,11 +11,11 @@
 	MoveModel model = new MoveModel();
 	Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
 	Army MovingArmy => new Army(MovingSoldiers, Player!);
-	public bool CanAnyMove => MovingSoldiers.Any(p => p.Type.CanMoveAlone(provinces, From!.Id, To!.Id));
+	public bool CanAnyMove => model.SoldierTypes.Any();
 	public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
 	protected override void OnInitialized()
 	{
-		model.SoldierTypes = From!.SoldierTypes.ToArray();
+		model.SoldierTypes = From!.SoldierTypes.Where(type => type.CanMoveAlone(provinces, From!.Id, To!.Id)).ToArray();
 		model.Soldiers = new IntModel[model.SoldierTypes.Length];
 		for (int i = 0; i < model.Soldiers.Length; ++i)
 		{
@@ -38,12 +38,14 @@
 		}
 	}
 	string SubmitText => model.IsAttack ? "Zaútočit" : "Podpořit";
+	SoldierTypeInfobox? infobox;
 }
 <nav>
 	<a @onclick="Return">Zrušit</a>
 	<a class="this">Přesun</a>
 </nav>
 <main>
+	<SoldierTypeInfobox @ref="infobox" />
 	@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
 	{
 		@if (count < model.Soldiers[i].Value)
@@ -57,16 +59,16 @@
 	}
 	<EditForm Model="@model" OnValidSubmit="DoMove">
 		<DataAnnotationsValidator /><ValidationSummary />
-		<p>Kolik vojáků kterého typu chceš přesunout?</p>
+		<p>Máš <SoldiersByType Soldiers="@From!.Soldiers" /><br/> Kolik chceš přesunout?</p>
 		<table>
 			@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
 			{
 				<tr>
-					<td>@(type.Name) (máš @count)</td>
+					<td>@(type.Name)<sup @onclick="@(() => infobox?.Open(model.SoldierTypes[i]))">?</sup></td>
 					<td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
 				</tr>
 			}
-			@if (!From!.IsAllyOf(To!))
+			@if (!From!.IsAllyOf(To!) && To!.Occupied)
 			{
 				<tr>
 					<td>Typ přesunu</td>

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Imperit.State
@@ -38,6 +39,7 @@ namespace Imperit.State
 		public virtual Color Stroke => new Color();
 		public virtual int StrokeWidth => 0;
 		public IEnumerator<Point> GetEnumerator() => Shape.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		public Point Center => Shape.Center;
 
 		public override bool Equals(object? obj) => obj != null && obj is Province p && p.Id == Id;

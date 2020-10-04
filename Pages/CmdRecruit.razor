@@ -31,7 +31,7 @@
 			Switch(Mode.Map, null, null, null);
 		}
 	}
-	int? Infobox = null;
+	SoldierTypeInfobox? infobox;
 }
 <nav>
 	<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zrušit</a>
@@ -39,9 +39,7 @@
 	<a @onclick="@(() => Switch(Mode.Players, null, null, null))">@(Player!.Money)@Sym.Money</a>
 </nav>
 <main>
-	<PopupBox Show="@(Infobox is int)" OnClose="@(() => Infobox = null)">
-		@model.SoldierTypes[Infobox ?? 0].Name (@model.SoldierTypes[Infobox ?? 0].Symbol) &ndash; @(new MarkupString(model.SoldierTypes[Infobox ?? 0].Text))
-	</PopupBox>
+	<SoldierTypeInfobox @ref="infobox" />
 	<EditForm Model="@model" OnValidSubmit="DoRecruit">
 		<DataAnnotationsValidator /><ValidationSummary />
 		<p>
@@ -59,7 +57,7 @@
 			@foreach (var (i, type) in model.SoldierTypes.Enumerate())
 			{
 				<tr>
-					<td>@type.Name @(type.Price)@(Sym.Money)<sup @onclick="@(() => Infobox = i)">?</sup></td>
+					<td>@type.Name @(type.Price)@(Sym.Money)<sup @onclick="@(() => infobox?.Open(model.SoldierTypes[i]))">?</sup></td>
 					<td><InputNumber @bind-Value="model.Soldiers[i].Value" autofocus /></td>
 				</tr>
 			}

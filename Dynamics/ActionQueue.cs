@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using ActionSeq = System.Collections.Immutable.ImmutableSortedSet<Imperit.Dynamics.IAction>;
 
 namespace Imperit.Dynamics
 {
-	public class ActionQueue : IEnumerableImpl<IAction>
+	public class ActionQueue : IEnumerable<IAction>
 	{
 		static readonly IComparer<IAction> cmp = new FnComparer<IAction, byte>(a => a.Priority, allowDuplicates: true);
 		static readonly ActionSeq NoActions = ImmutableSortedSet.Create(cmp);
 		readonly ActionSeq actions;
 		public ActionQueue() => actions = NoActions;
 		public ActionQueue(ActionSeq actions) => this.actions = actions;
-		public ActionQueue(IEnumerable<IAction> actions) => this.actions = ImmutableSortedSet.CreateRange(cmp, actions);
-		public IEnumerator<IAction> GetEnumerator() => actions!.GetEnumerator();
+		public ActionQueue(IEnumerable<IAction> actions) => this.actions = actions.ToImmutableSortedSet(cmp);
+		public IEnumerator<IAction> GetEnumerator() => actions.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		static (ActionSeq, State.Province) ApplyAll(IReadOnlyList<IAction> actions, State.Province province, State.Player active)
 		{
 			return actions.Aggregate((actions: NoActions, province), (acc, action) =>

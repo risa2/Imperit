@@ -69,7 +69,7 @@ table {
 	margin-right: auto;
 	border-spacing: 0;
 }
-tr input {
+tr input, tr button, tr select, tr option {
 		margin: 1px 0;
 }
 table.players td:not(:first-child) {

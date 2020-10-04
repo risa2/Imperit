@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Imperit.State
 {
-	public class Shape : IEnumerableImpl<Point>
+	public class Shape : IEnumerable<Point>
 	{
 		readonly Point[] border;
 		public readonly Point Center;
@@ -12,5 +13,6 @@ namespace Imperit.State
 			Center = center;
 		}
 		public IEnumerator<Point> GetEnumerator() => (border as IEnumerable<Point>).GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

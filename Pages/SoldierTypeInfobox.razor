@@ -1,0 +1,12 @@
+﻿@code {
+	SoldierType? type = null;
+	public void Open(SoldierType new_type)
+	{
+		type = new_type;
+		this.StateHasChanged();
+	}
+}
+
+<PopupBox Show="@(type is SoldierType)" OnClose="@(() => type = null)">
+	@type?.Name (@type?.Symbol) &ndash; @(new MarkupString(type?.Text))
+</PopupBox>

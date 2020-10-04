@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BC64538-4E2D-48D3-895D-E9F6B4C44918}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Pages\MainLayout.razor = Pages\MainLayout.razor
 	EndProjectSection
 EndProject
 Global
