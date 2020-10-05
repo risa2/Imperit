@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Imperit.Dynamics;
+﻿using Imperit.Dynamics;
 using Imperit.Dynamics.Commands;
+using System.Collections.Generic;
+using System.Linq;
 using static System.Math;
 
 namespace Imperit.State

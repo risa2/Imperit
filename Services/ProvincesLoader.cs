@@ -14,12 +14,12 @@ namespace Imperit.Services
 	public class ProvincesLoader : IProvincesLoader
 	{
 		readonly IServiceIO io;
-		Load.ProvincesLoader loader;
+		Load.ProvincesJsonLoader loader;
 		Provinces provinces;
 		public ProvincesLoader(IServiceIO io, ISettingsLoader settings, IPlayersLoader players)
 		{
 			this.io = io;
-			loader = new Load.ProvincesLoader(io.Provinces, io.Graph, io.Shapes, settings.Settings, players);
+			loader = new Load.ProvincesJsonLoader(io.Provinces, io.Graph, io.Shapes, settings.Settings, players);
 			provinces = loader.Load();
 		}
 		public IEnumerator<Province> GetEnumerator() => provinces.GetEnumerator();
@@ -37,6 +37,6 @@ namespace Imperit.Services
 		public void Save() => loader.Save(provinces);
 		public Provinces With(Province[] new_provinces) => provinces.With(new_provinces);
 		public void Set(IEnumerable<Province> new_provinces) => provinces = With(new_provinces.ToArray());
-		public void Reset(Settings settings, IReadOnlyList<Player> players) => loader = new Load.ProvincesLoader(io.Provinces, io.Graph, io.Shapes, settings, players);
+		public void Reset(Settings settings, IReadOnlyList<Player> players) => loader = new Load.ProvincesJsonLoader(io.Provinces, io.Graph, io.Shapes, settings, players);
 	}
 }

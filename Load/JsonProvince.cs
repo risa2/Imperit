@@ -27,10 +27,10 @@ namespace Imperit.Load
 		{
 			return prov switch
 			{
-				Port Port => new JsonProvince() { Type = "P", Name = Port.Name, Army = JsonArmy.From(Port.Army), DefaultArmy = JsonArmy.From(Port.DefaultArmy), IsStart = Port.IsStart, Earnings = Port.Earnings },
-				Land Land => new JsonProvince() { Type = "L", Name = Land.Name, Army = JsonArmy.From(Land.Army), DefaultArmy = JsonArmy.From(Land.DefaultArmy), IsStart = Land.IsStart, Earnings = Land.Earnings },
-				Sea Sea => new JsonProvince() { Type = "S", Name = Sea.Name, Army = JsonArmy.From(Sea.Army), DefaultArmy = JsonArmy.From(Sea.DefaultArmy) },
-				Mountains Mountains => new JsonProvince() { Type = "M", Name = Mountains.Name, Army = JsonArmy.From(Mountains.Army), DefaultArmy = JsonArmy.From(Mountains.DefaultArmy) },
+				Port Port => new JsonProvince { Type = "P", Name = Port.Name, Army = JsonArmy.From(Port.Army), DefaultArmy = JsonArmy.From(Port.DefaultArmy), IsStart = Port.IsStart, Earnings = Port.Earnings },
+				Land Land => new JsonProvince { Type = "L", Name = Land.Name, Army = JsonArmy.From(Land.Army), DefaultArmy = JsonArmy.From(Land.DefaultArmy), IsStart = Land.IsStart, Earnings = Land.Earnings },
+				Sea Sea => new JsonProvince { Type = "S", Name = Sea.Name, Army = JsonArmy.From(Sea.Army), DefaultArmy = JsonArmy.From(Sea.DefaultArmy) },
+				Mountains Mountains => new JsonProvince { Type = "M", Name = Mountains.Name, Army = JsonArmy.From(Mountains.Army), DefaultArmy = JsonArmy.From(Mountains.DefaultArmy) },
 				_ => throw new System.Exception("Unknown State.Province type: " + prov.GetType())
 			};
 		}

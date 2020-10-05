@@ -31,12 +31,12 @@ namespace Imperit.Load
 		{
 			return action switch
 			{
-				Reinforcement Add => new JsonAction() { Type = "Reinforcement", Province = Add.Province, Army = JsonArmy.From(Add.Army) },
-				Battle Attack => new JsonAction() { Type = "Battle", Province = Attack.Province, Army = JsonArmy.From(Attack.Army) },
-				Earnings _ => new JsonAction() { Type = "Earnings" },
-				Instability _ => new JsonAction() { Type = "Instability" },
-				Loan Loan => new JsonAction() { Type = "Loan", Player = Loan.Debtor, Debt = Loan.Debt },
-				Mortality _ => new JsonAction() { Type = "Mortality" },
+				Reinforcement Add => new JsonAction { Type = "Reinforcement", Province = Add.Province, Army = JsonArmy.From(Add.Army) },
+				Battle Attack => new JsonAction { Type = "Battle", Province = Attack.Province, Army = JsonArmy.From(Attack.Army) },
+				Earnings _ => new JsonAction { Type = "Earnings" },
+				Instability _ => new JsonAction { Type = "Instability" },
+				Loan Loan => new JsonAction { Type = "Loan", Player = Loan.Debtor, Debt = Loan.Debt },
+				Mortality _ => new JsonAction { Type = "Mortality" },
 				_ => throw new System.Exception("Unknown type of Action: " + action.GetType())
 			};
 		}

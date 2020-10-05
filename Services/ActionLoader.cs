@@ -1,40 +1,39 @@
+using Imperit.Dynamics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Imperit.Services
 {
-	public interface IActionLoader
+	public interface IActionLoader : IEnumerable<IAction>
 	{
-		bool Add(IEnumerable<Dynamics.ICommand> commands);
-		bool Add(Dynamics.ICommand command) => Add(new[] { command });
-		Dynamics.ActionQueue Where(Func<Dynamics.IAction, bool> cond);
+		bool Add(IEnumerable<ICommand> commands);
+		bool Add(ICommand command) => Add(new[] { command });
 		void EndOfTurn(int active);
-		void Clear();
 		void Save();
-		void Save(Dynamics.ActionQueue Actions);
-		Dynamics.ActionQueue Actions { get; }
+		void Save(ActionQueue Actions);
 	}
 	public class ActionLoader : IActionLoader
 	{
 		readonly IPlayersLoader players;
 		readonly IProvincesLoader provinces;
-		readonly Load.JsonWriter<Load.JsonAction, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)> loader;
-		public Dynamics.ActionQueue Actions { get; private set; }
+		readonly Load.JsonWriter<Load.JsonAction, IAction, (State.Settings, IReadOnlyList<State.Player>)> loader;
+		ActionQueue actions;
 		public ActionLoader(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IServiceIO io)
 		{
 			this.players = players;
 			this.provinces = provinces;
-			loader = new Load.JsonWriter<Load.JsonAction, Dynamics.IAction, (State.Settings, IReadOnlyList<State.Player>)>(io.Actions, (sl.Settings, players), Load.JsonAction.From);
-			Actions = new Dynamics.ActionQueue(loader.Load());
+			loader = new Load.JsonWriter<Load.JsonAction, IAction, (State.Settings, IReadOnlyList<State.Player>)>(io.Actions, (sl.Settings, players), Load.JsonAction.From);
+			actions = new ActionQueue(loader.Load());
 		}
-		public bool Add(IEnumerable<Dynamics.ICommand> commands)
+		public bool Add(IEnumerable<ICommand> commands)
 		{
 			bool changed = false;
 			foreach (var command in commands)
 			{
-				var (queue, new_players, new_provinces, ch) = Actions.Add(command, players, provinces);
-				Actions = queue;
+				var (queue, new_players, new_provinces, ch) = actions.Add(command, players, provinces);
+				actions = queue;
 				if (ch)
 				{
 					provinces.Set(new_provinces);
@@ -44,16 +43,18 @@ namespace Imperit.Services
 			}
 			return changed;
 		}
-		public void Save(Dynamics.ActionQueue queue) => loader.Save(Actions = queue);
-		public Dynamics.ActionQueue Where(Func<Dynamics.IAction, bool> cond) => new Dynamics.ActionQueue(Actions.Where(cond));
+		public void Save(ActionQueue queue) => loader.Save(actions = queue);
+		public ActionQueue Where(Func<IAction, bool> cond) => new ActionQueue(actions.Where(cond));
 		public void EndOfTurn(int active)
 		{
-			var (queue, new_players, new_provinces) = Actions.EndOfTurn(players, provinces, active);
-			Actions = queue;
+			var (queue, new_players, new_provinces) = actions.EndOfTurn(players, provinces, active);
+			actions = queue;
 			provinces.Set(new_provinces.ToArray());
 			players.Set(new_players);
 		}
-		public void Clear() => Save(new Dynamics.ActionQueue());
-		public void Save() => Save(Actions);
+		public void Save() => Save(actions);
+
+		public IEnumerator<IAction> GetEnumerator() => actions.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Imperit.State;
+﻿using Imperit.State;
+using System.Collections.Generic;
 
 namespace Imperit.Dynamics
 {

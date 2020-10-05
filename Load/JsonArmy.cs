@@ -14,7 +14,7 @@ namespace Imperit.Load
 		}
 		public static JsonArmy From(Army army)
 		{
-			return new JsonArmy() { Soldiers = JsonSoldiers.From(army.Soldiers), Player = army.PlayerId };
+			return new JsonArmy { Soldiers = JsonSoldiers.From(army.Soldiers), Player = army.PlayerId };
 		}
 	}
 }

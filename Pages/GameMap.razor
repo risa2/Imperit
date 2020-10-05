@@ -4,6 +4,7 @@
 @inject Services.IActivePlayer active;
 @inject Services.ISettingsLoader sl;
 @inject Services.IPowersLoader powers;
+@inject Services.IGameLoader game;
 
 @using Mode = GameSwitch.Mode;
 
@@ -42,7 +43,7 @@
 		}
 		return from;
 	}
-	IProvinces ProvincesPreview => actions.Where(x => x is ArmyAction).EndOfTurn(players, provinces, active.Id).Item3;
+	IProvinces ProvincesPreview => new ActionQueue(actions.OfType<ArmyAction>()).EndOfTurn(players, provinces, active.Id).Item3;
 }
 <nav>
 	@if (Preview)
@@ -52,7 +53,7 @@
 	}
 	else
 	{
-		@if (LoggedIn == active.Id && sl.Settings.Started)
+		@if (LoggedIn == active.Id && game.Started)
 		{
 			<a @onclick="NextTurn">Konec</a>
 		}

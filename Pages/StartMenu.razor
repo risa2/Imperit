@@ -1,5 +1,6 @@
 ﻿@inject Services.ISettingsLoader sl;
 @inject Services.IPlayersLoader players;
+@inject Services.IGameLoader game;
 
 @using Mode = StartSwitch.Mode;
 
@@ -25,7 +26,7 @@
 	{
 		<a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
 	}
-	@if (!sl.Settings.Started)
+	@if (!game.Started)
 	{
 		<a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
 		@if (players.Count >= 2)

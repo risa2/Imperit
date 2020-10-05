@@ -1,3 +1,5 @@
+using Imperit.Load;
+using Imperit.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,16 +17,12 @@ namespace Imperit
 			_ = services.AddRazorPages();
 			_ = services.AddServerSideBlazor();
 
-			_ = services.AddSingleton<Services.ILoginSession, Services.LoginSession>()
-					.AddSingleton<Services.IServiceIO>(s => new Services.ServiceIO(new Load.File("./Files/Settings.json"), new Load.File("./Files/Players.json"), new Load.File("./Files/Provinces.json"), new Load.File("./Files/Actions.json"), new Load.File("./Files/Events.json"), new Load.File("./Files/Active.json"), new Load.File("./Files/Password.txt"), new Load.File("./Files/Graph.json"), new Load.File("./Files/Mountains.json"), new Load.File("./Files/Shapes.json"), new Load.File("Files/Powers.json")))
-					.AddSingleton<Services.IActionLoader, Services.ActionLoader>()
-					.AddSingleton<Services.ISettingsLoader, Services.SettingsLoader>()
-					.AddSingleton<Services.IPlayersLoader, Services.PlayersLoader>()
-					.AddSingleton<Services.IProvincesLoader, Services.ProvincesLoader>()
-					.AddSingleton<Services.IPowersLoader, Services.PowersLoader>()
-					.AddTransient<Services.IActivePlayer, Services.ActivePlayer>()
-					.AddTransient<Services.INewGame, Services.NewGame>()
-					.AddTransient<Services.IEndOfTurn, Services.EndOfTurn>();
+			_ = services.AddSingleton<IServiceIO>(s => new ServiceIO(new File("./Files/Settings.json"), new File("./Files/Players.json"), new File("./Files/Provinces.json"), new File("./Files/Actions.json"), new File("./Files/Events.json"), new File("./Files/Active.json"), new File("./Files/Password.txt"), new File("./Files/Graph.json"), new File("./Files/Mountains.json"), new File("./Files/Shapes.json"), new File("Files/Powers.json"), new File("Files/Game.json")))
+					.AddSingleton<ILoginSession, LoginSession>().AddSingleton<IActionLoader, ActionLoader>()
+					.AddSingleton<ISettingsLoader, SettingsLoader>().AddSingleton<IPlayersLoader, PlayersLoader>()
+					.AddSingleton<IProvincesLoader, ProvincesLoader>().AddSingleton<IPowersLoader, PowersLoader>()
+					.AddSingleton<IGameLoader, GameLoader>().AddTransient<IActivePlayer, ActivePlayer>()
+					.AddTransient<INewGame, NewGame>().AddTransient<IEndOfTurn, EndOfTurn>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

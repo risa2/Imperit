@@ -42,15 +42,15 @@
 			</tr>
 		}
 	</table><br/>
-	@foreach (var loan in actions.Actions.OfType<Loan>())
+	@foreach (var loan in actions.OfType<Loan>())
 	{
 		<p><Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money</p>
 	}
-	@foreach (var battle in actions.Actions.OfType<Battle>())
+	@foreach (var battle in actions.OfType<Battle>())
 	{
 		<p><Name Who="@players[battle.Army.PlayerId]"/> pochoduje s <SoldiersByType Soldiers="@battle.Soldiers" /> vojáky směr <Name What="provinces[battle.Province]"/> s úmyslem zaútočit</p>
 	}
-	@foreach (var add in actions.Actions.OfType<Reinforcement>())
+	@foreach (var add in actions.OfType<Reinforcement>())
 	{
 		<p>Do provincie <Name What="provinces[add.Province]"/> dorazí na pomoc <SoldiersByType Soldiers="@add.Soldiers"/></p>
 	}

@@ -34,7 +34,7 @@
 		{
 			end.NextTurn();
 			int next = active.Id;
-			if (sl.Settings.SingleClient || !players[next].Alive)
+			if (!players[next].Alive)
 			{
 				login.Update(LoginId, next);
 			}

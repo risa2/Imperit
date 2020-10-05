@@ -17,6 +17,6 @@ namespace Imperit.Load
 			"S" => new Savage(i),
 			_ => throw new System.Exception("Unknown Player type: " + Type)
 		};
-		public static JsonPlayer From(Player p) => new JsonPlayer() { Name = p.Name, Color = p.Color.ToString(), Type = p is Robot ? "R" : p is Savage ? "S" : "P", Password = p.Password.ToString(), Money = p.Money, Alive = p.Alive };
+		public static JsonPlayer From(Player p) => new JsonPlayer { Name = p.Name, Color = p.Color.ToString(), Type = p is Robot ? "R" : p is Savage ? "S" : "P", Password = p.Password.ToString(), Money = p.Money, Alive = p.Alive };
 	}
 }

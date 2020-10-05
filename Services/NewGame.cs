@@ -23,7 +23,8 @@ namespace Imperit.Services
 		readonly IActivePlayer active;
 		readonly IPowersLoader powers;
 		readonly ILoginSession login;
-		public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IActionLoader actions, IActivePlayer active, IPowersLoader powers, ILoginSession login)
+		readonly IGameLoader game;
+		public NewGame(ISettingsLoader sl, IPlayersLoader players, IProvincesLoader provinces, IActionLoader actions, IActivePlayer active, IPowersLoader powers, ILoginSession login, IGameLoader game)
 		{
 			this.sl = sl;
 			this.players = players;
@@ -32,22 +33,20 @@ namespace Imperit.Services
 			this.active = active;
 			this.powers = powers;
 			this.login = login;
-		}
-		static Province CreateProvince(Province province, Player savage)
-		{
-			return province.GiveUpTo(new Army(province.DefaultSoldiers, savage));
+			this.game = game;
 		}
 		public void New(Settings settings)
 		{
 			sl.Settings = settings;
 			players.Clear();
 			powers.Clear();
-			actions.Clear();
+			actions.Save(new ActionQueue(new[] { new Instability() as IAction, new Earnings(), new Mortality() }));
 			login.Clear();
+			game.Started = false;
 
 			players.Add(new Savage(0));
 			provinces.Reset(sl.Settings, players);
-			provinces.Set(provinces.Select(prov => CreateProvince(prov, players[0])).ToArray());
+			provinces.Set(provinces.Select(prov => prov.Revolt()).ToArray());
 			provinces.Save();
 		}
 		public Color NextColor => new Color(120.0 + (137.507764050037854 * (players.Count - 1)), 1.0, 1.0);
@@ -56,24 +55,19 @@ namespace Imperit.Services
 		{
 			var start_lands = UnoccupiedStartLands();
 			rand.Shuffle(start_lands);
-			int count = Math.Min(start_lands.Length, sl.Settings.MaxRobotCount), previous = players.Count;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0; i < start_lands.Length && i < sl.Settings.RobotNames.Length; ++i)
 			{
-				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), NextColor, new Password(""), sl.Settings.DefaultMoney, true, sl.Settings));
+				players.Add(new Robot(players.Count, sl.Settings.RobotNames[i], NextColor, new Password(""), sl.Settings.DefaultMoney, true, sl.Settings));
+				provinces[start_lands[i].Id] = start_lands[i].GiveUpTo(new Army(start_lands[i].Soldiers, players[^1]));
 			}
 			provinces.Reset(sl.Settings, players);
-			for (int i = 0; i < count; ++i)
-			{
-				provinces[start_lands[i].Id] = start_lands[i].GiveUpTo(new Army(start_lands[i].Soldiers, players[previous + i]));
-			}
 			provinces.Save();
 		}
 		public void Start()
 		{
 			AddRobots();
-			actions.Save(new ActionQueue(new[] { new Instability() as IAction, new Earnings(), new Mortality() }));
 			active.Reset(players);
-			sl.Settings = sl.Settings.Start();
+			game.Started = true;
 			powers.Add(players);
 		}
 		public void Registration(string name, Password password, Land land)
