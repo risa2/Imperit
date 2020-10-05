@@ -13,7 +13,7 @@ namespace Imperit.State
 		public Soldiers(ImmutableArray<(SoldierType, int)> list) => soldiers = list;
 		public Soldiers(IEnumerable<(SoldierType, int)> list) => soldiers = list.ToImmutableArray();
 		public Soldiers(params (SoldierType, int)[] list) => soldiers = list.ToImmutableArray();
-		public Soldiers(SoldierType type, int count) : this((type, count)) { }
+		public Soldiers(SoldierType type, int count) => soldiers = ImmutableArray.Create((type, count));
 		public Soldiers Add(Soldiers s)
 		{
 			var res = soldiers.ToBuilder();

@@ -15,11 +15,9 @@ namespace Imperit.Dynamics.Commands
 			Army = army;
 		}
 
-		public (IAction[], Player) Perform(Player player, IProvinces provinces)
+		public (IAction?, Player) Perform(Player player, IProvinces provinces)
 		{
-			return player.Id == Player
-				? (new[] { new Actions.Reinforcement(Land, Army) }, player.ChangeMoney(-Army.Price))
-				: (System.Array.Empty<IAction>(), player);
+			return player.Id == Player ? (new Actions.Reinforcement(Land, Army), player.ChangeMoney(-Army.Price)) : (null, player);
 		}
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
 		{

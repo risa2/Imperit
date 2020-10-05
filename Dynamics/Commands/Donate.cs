@@ -14,9 +14,9 @@ namespace Imperit.Dynamics.Commands
 			Amount = amount;
 		}
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces) => players[Player].Money >= Amount && Amount > 0;
-		public (IAction[], Player) Perform(Player player, IProvinces provinces)
+		public (IAction?, Player) Perform(Player player, IProvinces provinces)
 		{
-			return (System.Array.Empty<IAction>(), player.Id == Player ? player.ChangeMoney(-Amount) : player.Id == Recipient ? player.ChangeMoney(Amount) : player);
+			return (null, player.Id == Player ? player.ChangeMoney(-Amount) : player.Id == Recipient ? player.ChangeMoney(Amount) : player);
 		}
 	}
 }

@@ -11,11 +11,11 @@
 	MoveModel model = new MoveModel();
 	Soldiers MovingSoldiers => new Soldiers(model.Soldiers.Select((count, i) => (model.SoldierTypes[i], count.Value)));
 	Army MovingArmy => new Army(MovingSoldiers, Player!);
-	public bool CanAnyMove => model.SoldierTypes.Any();
+	public bool CanAnyMove => From!.SoldierTypes.Any(type => type.CanMoveAlone(provinces, From!.Id, To!.Id));
 	public bool CanMove => MovingSoldiers.CanMove(provinces, From!.Id, To!.Id);
 	protected override void OnInitialized()
 	{
-		model.SoldierTypes = From!.SoldierTypes.Where(type => type.CanMoveAlone(provinces, From!.Id, To!.Id)).ToArray();
+		model.SoldierTypes = From!.SoldierTypes.ToArray();
 		model.Soldiers = new IntModel[model.SoldierTypes.Length];
 		for (int i = 0; i < model.Soldiers.Length; ++i)
 		{
@@ -46,11 +46,11 @@
 </nav>
 <main>
 	<SoldierTypeInfobox @ref="infobox" />
-	@foreach (var (i, (type, count)) in From!.Soldiers.Index())
+	@foreach (var ((type, count), moving) in From!.Soldiers.Zip(model.Soldiers))
 	{
-		@if (count < model.Soldiers[i].Value)
+		@if (moving.Value > count)
 		{
-			<p>Nemůžeš přesunout @(model.Soldiers[i].Value)@type.Symbol, máš jen @count</p>
+			<p>Nemůžeš přesunout @(moving.Value)@type.Symbol, máš jen @count</p>
 		}
 	}
 	@if (!CanMove)

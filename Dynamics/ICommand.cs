@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Imperit.State;
 
 namespace Imperit.Dynamics
 {
 	public interface ICommand
 	{
-		(IAction[], State.Province) Perform(State.Province province) => (System.Array.Empty<IAction>(), province);
-		(IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces) => (System.Array.Empty<IAction>(), player);
-		bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces);
+		(IAction?, Province) Perform(Province province) => (null, province);
+		(IAction?, Player) Perform(Player player, IProvinces provinces) => (null, player);
+		bool Allowed(IReadOnlyList<Player> players, IProvinces provinces);
 	}
 }

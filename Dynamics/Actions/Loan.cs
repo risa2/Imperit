@@ -14,26 +14,26 @@ namespace Imperit.Dynamics.Actions
 			Debt = debt;
 			settings = set;
 		}
-		public (IAction[], Player) Perform(Player player, Player active, IProvinces provinces)
+		public (IAction?, Player) Perform(Player player, Player active, IProvinces provinces)
 		{
 			if (player == active && player.Id == Debtor)
 			{
 				int next_debt = Debt + (int)Math.Ceiling(Debt * settings.Interest);
 				if (next_debt <= player.Money)
 				{
-					return (Array.Empty<IAction>(), player.ChangeMoney(-next_debt));
+					return (null, player.ChangeMoney(-next_debt));
 				}
-				return (new[] { new Loan(Debtor, next_debt - player.Money, settings) }, player.ChangeMoney(-player.Money));
+				return (new Loan(Debtor, next_debt - player.Money, settings), player.ChangeMoney(-player.Money));
 			}
-			return (new[] { this }, player);
+			return (this, player);
 		}
-		public (IAction[], Province) Perform(Province province, Player active)
+		public (IAction?, Province) Perform(Province province, Player active)
 		{
 			if (active.Id == Debtor && province is Land land && land.IsAllyOf(Debtor) && Debt > settings.DebtLimit + active.Money)
 			{
-				return (land.Price > Debt ? Array.Empty<IAction>() : new[] { new Loan(Debtor, Debt - land.Price, settings) }, land.Revolt());
+				return (land.Price > Debt ? null : new Loan(Debtor, Debt - land.Price, settings), land.Revolt());
 			}
-			return (new[] { this }, province);
+			return (this, province);
 		}
 		public (IAction?, bool) Interact(ICommand another) => another switch
 		{

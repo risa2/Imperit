@@ -7,9 +7,8 @@
 
 <label>Jméno:<br/><input type="text" @bind-value="@Username"/></label><br/>
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
-<label>Barva:<br/><input type="color" @bind-value="@ColorStr" @bind-value:event="oninput"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
-<Map Width="1000" Height="1000" Provinces="@provinces" SelectedColor="@Color" OnClick="OnClick"
+<Map Width="1000" Height="1000" Provinces="@provinces" SelectedColor="@newgame.NextColor" OnClick="OnClick"
 	 FontSize="9" Name="@(p => (p is State.Land L && L.IsStart ? Sym.Flag : "") + p.Name)"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
@@ -17,8 +16,6 @@
 	[Parameter] public Action<Mode> GoTo { get; set; } = (m => { });
 	string Username { get; set; } = "";
 	string Password { get; set; } = "";
-	string ColorStr { get; set; } = "#0000FF";
-	Color Color => State.Color.Parse(ColorStr);
 	Land? Selected = null;
 	static bool IsValidLand(Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
 	Province? OnClick(int i, Province? from)
@@ -33,7 +30,7 @@
 	{
 		if (Username != "" && Password != "" && Selected is Land)
 		{
-			newgame.Registration(Username, new Password(Password), Color, Selected);
+			newgame.Registration(Username, new Password(Password), Selected);
 			GoTo(Mode.Login);
 		}
 	}

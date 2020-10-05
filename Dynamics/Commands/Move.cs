@@ -17,10 +17,10 @@ namespace Imperit.Dynamics.Commands
 		}
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
 			=> provinces[From].IsAllyOf(Player) && Army.CanMove(provinces, From, To.Id);
-		protected abstract Actions.ArmyAction GetMove();
-		public (IAction[], Province) Perform(Province province)
+		protected abstract Actions.ArmyAction Action { get; }
+		public (IAction?, Province) Perform(Province province)
 		{
-			return province.Id == From ? (new[] { GetMove() }, province.StartMove(To, Army.Soldiers)) : (System.Array.Empty<IAction>(), province);
+			return province.Id == From ? (Action, province.StartMove(To, Army.Soldiers)) : (null, province);
 		}
 		public Soldiers Soldiers => Army.Soldiers;
 	}

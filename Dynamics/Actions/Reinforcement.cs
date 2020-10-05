@@ -1,4 +1,3 @@
-using System;
 using Imperit.Dynamics.Commands;
 using Imperit.State;
 
@@ -7,9 +6,9 @@ namespace Imperit.Dynamics.Actions
 	public class Reinforcement : ArmyAction
 	{
 		public Reinforcement(int province, Army army) : base(province, army) { }
-		public override (IAction[], Province) Perform(Province province, Player active)
+		public override (IAction?, Province) Perform(Province province, Player active)
 		{
-			return Province == province.Id ? (Array.Empty<IAction>(), province.ReinforcedBy(Soldiers)) : (new[] { this }, province);
+			return Province == province.Id ? (null, province.ReinforcedBy(Soldiers)) : (this, province);
 		}
 		public override (IAction, bool) Interact(ICommand another) => another switch
 		{

@@ -20,16 +20,16 @@ namespace Imperit.Dynamics
 		{
 			return actions.Aggregate((actions: NoActions, province), (acc, action) =>
 			{
-				var (added_actions, new_province) = action.Perform(acc.province, active);
-				return (acc.actions.AddRange(added_actions), new_province);
+				var (new_action, new_province) = action.Perform(acc.province, active);
+				return (new_action is IAction ? acc.actions.Add(new_action) : acc.actions, new_province);
 			});
 		}
 		static (ActionSeq, State.Player) ApplyAll(IReadOnlyList<IAction> actions, State.Player player, State.Player active, State.IProvinces provinces)
 		{
 			return actions.Aggregate((actions: NoActions, player), (acc, action) =>
 			{
-				var (added_actions, new_player) = action.Perform(acc.player, active, provinces);
-				return (acc.actions.AddRange(added_actions), new_player);
+				var (new_action, new_player) = action.Perform(acc.player, active, provinces);
+				return (new_action is IAction ? acc.actions.Add(new_action) : acc.actions, new_player);
 			});
 		}
 		static (IReadOnlyList<IAction>, State.Provinces) ApplyAllToAll(State.IProvinces provinces, State.Player active, IReadOnlyList<IAction> actions)
@@ -84,7 +84,7 @@ namespace Imperit.Dynamics
 				var (actions1, new_players) = players.Select(player => command.Perform(player, provinces)).Unzip();
 				var (actions2, new_provinces) = provinces.Select(province => command.Perform(province)).Unzip();
 				var (new_actions, interacted) = Interactions(command);
-				return (new ActionQueue(interacted ? new_actions.AddRange(actions1.Flatten()).AddRange(actions2.Flatten()) : new_actions), new_players.ToArray(), new_provinces.ToArray(), true);
+				return (new ActionQueue(interacted ? new_actions.AddRange(actions1.Must()).AddRange(actions2.Must()) : new_actions), new_players.ToArray(), new_provinces.ToArray(), true);
 			}
 			return (this, players.ToArray(), provinces.ToArray(), false);
 		}

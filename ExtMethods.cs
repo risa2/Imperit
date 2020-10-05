@@ -13,6 +13,7 @@ namespace Imperit
 		public static IEnumerable<(int i, T v)> Index<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
 		public static T? MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector, T? v = default) where T : class => e.OrderBy(selector).FirstOr(v);
 		public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+		public static IEnumerable<T> Must<T>(this IEnumerable<T?> e) where T : class => e.Where(x => x is T)!;
 		public static int DivUp(this int a, int b) => (a / b) + (a % b > 0 ? 1 : 0);
 		public static IEnumerable<T> Infinity<T>(this T value)
 		{
@@ -45,7 +46,6 @@ namespace Imperit
 				}
 			}
 		}
-		public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> e) => e.SelectMany(x => x);
 		public static string ProbabilityToString(this double prob, int prec = 0)
 		{
 			int percents = (int)(prob * 100);
@@ -53,19 +53,6 @@ namespace Imperit
 			return Math.Max(0, Math.Min(100, percents)).ToString(Culture) + "." + frac.ToString(Culture).PadRight(prec, '0') + " %";
 		}
 		public static string ToHexString(this byte num) => num.ToString("x2", Culture);
-		public static double NextDouble(this Random rand, double min, double max) => (rand.NextDouble() * (max - min)) + min;
-		public static State.Color[] NextColors(this Random rand, int count)
-		{
-			const double step = 137.50776;
-			double hue = rand.NextDouble() * 360.0;
-			var colors = new State.Color[count];
-			for (int i = 0; i < count; ++i)
-			{
-				colors[i] = new State.Color(hue, rand.NextDouble(0.8, 1.0), rand.NextDouble(0.8, 1.0));
-				hue = hue > 360.0 - step ? hue + step - 360.0 : hue + step;
-			}
-			return colors;
-		}
 		public static string NextId(this Random rand, int length)
 		{
 			var buf = new byte[length];

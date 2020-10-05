@@ -18,9 +18,9 @@ namespace Imperit.Dynamics.Commands
 		{
 			return Amount <= settings.DebtLimit && Amount > 0;
 		}
-		public (IAction[], Player) Perform(Player player, IProvinces provinces)
+		public (IAction?, Player) Perform(Player player, IProvinces provinces)
 		{
-			return player.Id == Player ? (new[] { new Actions.Loan(Player, Amount, settings) }, player.ChangeMoney(Amount)) : (System.Array.Empty<IAction>(), player);
+			return player.Id == Player ? (new Actions.Loan(Player, Amount, settings), player.ChangeMoney(Amount)) : (null, player);
 		}
 	}
 }

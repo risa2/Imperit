@@ -18,13 +18,13 @@ namespace Imperit.Dynamics.Commands
 		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
 			=> players[Player.Id].Money >= Price && provinces.NeighborsOf(Land).Any(prov => prov is Land land && land.IsAllyOf(Player.Id));
 
-		public (IAction[], Province) Perform(Province province)
+		public (IAction?, Province) Perform(Province province)
 		{
-			return (System.Array.Empty<IAction>(), province.Id == Land ? province.GiveUpTo(Player) : province);
+			return (null, province.Id == Land ? province.GiveUpTo(Player) : province);
 		}
-		public (IAction[], Player) Perform(Player player, IProvinces provinces)
+		public (IAction?, Player) Perform(Player player, IProvinces provinces)
 		{
-			return (System.Array.Empty<IAction>(), Player == player ? player.ChangeMoney(-Price) : player);
+			return (null, Player == player ? player.ChangeMoney(-Price) : player);
 		}
 	}
 }
