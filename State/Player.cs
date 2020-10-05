@@ -18,7 +18,6 @@ namespace Imperit.State
 			Alive = alive;
 		}
 		public virtual Player ChangeMoney(int amount) => new Player(Id, Name, Color, Password, Money + amount, Alive);
-		public virtual Player ChangeIncome(int change) => new Player(Id, Name, Color, Password, Money, Alive);
 		public virtual Player Die() => new Player(Id, Name, Color, Password, 0, false);
 		public override bool Equals(object? obj) => obj is Player p && p.Id == Id;
 		public override int GetHashCode() => Id.GetHashCode();

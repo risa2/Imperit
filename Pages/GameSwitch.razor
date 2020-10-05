@@ -11,7 +11,7 @@
 	[Parameter] public int LoggedIn { get; set; }
 	[Parameter] public string LoginId { get; set; } = "";
 	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
-	public enum Mode { Map, CmdMove, CmdPurchase, CmdRecruit, CmdRepay, CmdDonation, Players, Powers, Preview}
+	public enum Mode { Map, CmdMove, CmdPurchase, CmdRecruit, CmdDonation, Players, Powers, Preview}
 	Mode Current;
 	Province? From = null, To = null;
 	Player? SelectedPlayer = null;
@@ -75,10 +75,6 @@ else if (Current == Mode.CmdPurchase && To is State.Land L2)
 else if (Current == Mode.CmdRecruit && To is State.Land L1)
 {
 	<CmdRecruit Player="@players[LoggedIn]" Land="@L1" Switch="Switch"/>
-}
-else if (Current == Mode.CmdRepay)
-{
-	<CmdRepay LoggedIn="@players[LoggedIn]" Return="@(() => Switch())"/>
 }
 else if (Current == Mode.CmdDonation)
 {

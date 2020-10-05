@@ -44,19 +44,13 @@
 	</table><br/>
 	@foreach (var loan in actions.Actions.OfType<Loan>())
 	{
-		<p>
-			<Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money
-			@if (LoggedIn!.Id == loan.Debtor)
-			{
-				<span class="link-like" @onclick="@(() => Switch(Mode.CmdRepay, null, null, null))">Splatit</span>
-			}
-		</p>
+		<p><Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money</p>
 	}
-	@foreach (var battle in actions.Actions.Select(a => a as Battle).NotNull())
+	@foreach (var battle in actions.Actions.OfType<Battle>())
 	{
 		<p><Name Who="@players[battle.Army.PlayerId]"/> pochoduje s <SoldiersByType Soldiers="@battle.Soldiers" /> vojáky směr <Name What="provinces[battle.Province]"/> s úmyslem zaútočit</p>
 	}
-	@foreach (var add in actions.Actions.Select(a => a as Reinforcement).NotNull())
+	@foreach (var add in actions.Actions.OfType<Reinforcement>())
 	{
 		<p>Do provincie <Name What="provinces[add.Province]"/> dorazí na pomoc <SoldiersByType Soldiers="@add.Soldiers"/></p>
 	}

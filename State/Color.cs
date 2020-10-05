@@ -1,8 +1,9 @@
+using System;
 using System.Globalization;
 
 namespace Imperit.State
 {
-	public readonly struct Color : System.IEquatable<Color>
+	public readonly struct Color : IEquatable<Color>
 	{
 		static byte FromHex(string s) => byte.Parse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 		public readonly byte r, g, b, a;
@@ -19,5 +20,75 @@ namespace Imperit.State
 		public static bool operator ==(Color left, Color right) => left.Equals(right);
 		public static bool operator !=(Color left, Color right) => !left.Equals(right);
 		public Color WithAlpha(byte alpha) => new Color(r, g, b, alpha);
+		public Color(double H, double S, double V)
+		{
+			while (H < 0) { H += 360; }
+			while (H >= 360) { H -= 360; }
+			double R, G, B;
+			if (V <= 0)
+			{
+				R = G = B = 0;
+			}
+			else if (S <= 0)
+			{
+				R = G = B = V;
+			}
+			else
+			{
+				double hf = H / 60.0;
+				int i = (int)Math.Floor(hf);
+				double f = hf - i;
+				double pv = V * (1 - S);
+				double qv = V * (1 - (S * f));
+				double tv = V * (1 - (S * (1 - f)));
+				switch (i)
+				{
+					// Red is the dominant color
+					case -1:
+					case 5:
+						R = V;
+						G = pv;
+						B = qv;
+						break;
+					case 6:
+					case 0:
+						R = V;
+						G = tv;
+						B = pv;
+						break;
+					// Green is the dominant color
+					case 1:
+						R = qv;
+						G = V;
+						B = pv;
+						break;
+					case 2:
+						R = pv;
+						G = V;
+						B = tv;
+						break;
+					// Blue is the dominant color
+					case 3:
+						R = pv;
+						G = qv;
+						B = V;
+						break;
+					case 4:
+						R = tv;
+						G = pv;
+						B = V;
+						break;
+					// The color is not defined, we should throw an error
+					default:
+						R = G = B = V; // Just pretend its black/white
+						break;
+				}
+			}
+			static byte clamp(int i) => i < 0 ? (byte)0 : i > 255 ? (byte)255 : (byte)i;
+			r = clamp((int)(R * 255.0));
+			g = clamp((int)(G * 255.0));
+			b = clamp((int)(B * 255.0));
+			a = 255;
+		}
 	}
 }

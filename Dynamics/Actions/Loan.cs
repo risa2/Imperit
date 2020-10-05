@@ -17,11 +17,12 @@ namespace Imperit.Dynamics.Actions
 		{
 			if (player == active && player.Id == Debtor)
 			{
-				if (Debt > settings.DebtLimit)
+				int next_debt = Debt + (int)Math.Ceiling(Debt * settings.Interest);
+				if (next_debt <= player.Money)
 				{
-					return (Array.Empty<IAction>(), player.ChangeMoney(-player.Money));
+					return (Array.Empty<IAction>(), player.ChangeMoney(-next_debt));
 				}
-				return (new[] { new Loan(Debtor, (int)Math.Ceiling(Debt * (1 + settings.Interest)), settings) }, player);
+				return (new[] { new Loan(Debtor, next_debt - player.Money, settings) }, player.ChangeMoney(-player.Money));
 			}
 			return (new[] { this }, player);
 		}
@@ -36,7 +37,6 @@ namespace Imperit.Dynamics.Actions
 		public (IAction?, bool) Interact(ICommand another) => another switch
 		{
 			Commands.Borrow Loan when Loan.Player == Debtor => (new Loan(Debtor, Debt + Loan.Amount, settings), false),
-			Commands.Repay Rep when Rep.Debtor == Debtor => (Rep.Amount >= Debt ? null : new Loan(Debtor, Debt - Rep.Amount, settings), false),
 			_ => (this, true)
 		};
 		public byte Priority => 130;
