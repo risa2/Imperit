@@ -13,7 +13,7 @@ namespace Imperit.Load
 		public Player Convert(int i, Settings settings) => Type switch
 		{
 			"P" => new Player(i, Name, State.Color.Parse(Color), State.Password.Parse(Password), Money, Alive),
-			"R" => new Robot(i, Name, State.Color.Parse(Color), State.Password.Parse(Password), Money, Alive),
+			"R" => new Robot(i, Name, State.Color.Parse(Color), State.Password.Parse(Password), Money, Alive, settings),
 			"S" => new Savage(i),
 			_ => throw new System.Exception("Unknown Player type: " + Type)
 		};

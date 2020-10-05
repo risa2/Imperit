@@ -31,7 +31,7 @@ namespace Imperit.State
 			Password = password;
 		}
 		public Settings Start() => new Settings(true, SingleClient, Interest, DefaultInstability, DefaultMoney, DebtLimit, RobotNames, MaxRobotCount, SeaColor, LandColor, MountainsColor, MountainsWidth, SoldierTypes, Password);
-		public double Instability(Soldiers now, Soldiers start) => DefaultInstability * Math.Max(start.Count - now.Count - 1, -1) / start.Count;
+		public double Instability(Soldiers now, Soldiers start) => DefaultInstability * Math.Max(start.DefensePower - now.DefensePower - 1, -1) / start.DefensePower;
 		public string RobotName(int i) => i < RobotNames.Length ? RobotNames[i] : "AI " + i;
 	}
 }

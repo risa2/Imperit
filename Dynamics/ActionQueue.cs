@@ -35,7 +35,7 @@ namespace Imperit.Dynamics
 		static (IReadOnlyList<IAction>, State.Provinces) ApplyAllToAll(State.IProvinces provinces, State.Player active, IReadOnlyList<IAction> actions)
 		{
 			var new_provinces = new State.Province[provinces.Count];
-			foreach (var (i, province) in provinces.Enumerate())
+			foreach (var (i, province) in provinces.Index())
 			{
 				(actions, new_provinces[i]) = ApplyAll(actions, province, active);
 			}
@@ -44,7 +44,7 @@ namespace Imperit.Dynamics
 		static (IReadOnlyList<IAction>, State.Player[]) ApplyAllToAll(IReadOnlyList<State.Player> players, State.Player active, State.IProvinces provinces, IReadOnlyList<IAction> actions)
 		{
 			var new_players = new State.Player[players.Count];
-			foreach (var (i, player) in players.Enumerate())
+			foreach (var (i, player) in players.Index())
 			{
 				(actions, new_players[i]) = ApplyAll(actions, player, active, provinces);
 			}

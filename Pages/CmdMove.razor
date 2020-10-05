@@ -46,7 +46,7 @@
 </nav>
 <main>
 	<SoldierTypeInfobox @ref="infobox" />
-	@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
+	@foreach (var (i, (type, count)) in From!.Soldiers.Index())
 	{
 		@if (count < model.Soldiers[i].Value)
 		{
@@ -61,7 +61,7 @@
 		<DataAnnotationsValidator /><ValidationSummary />
 		<p>Máš <SoldiersByType Soldiers="@From!.Soldiers" /><br/> Kolik chceš přesunout?</p>
 		<table>
-			@foreach (var (i, (type, count)) in From!.Soldiers.Enumerate())
+			@foreach (var (i, (type, count)) in From!.Soldiers.Index())
 			{
 				<tr>
 					<td>@(type.Name)<sup @onclick="@(() => infobox?.Open(model.SoldierTypes[i]))">?</sup></td>

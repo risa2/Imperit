@@ -1,19 +1,20 @@
 using System;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {
 	public class Loan : IAction
 	{
-		readonly State.Settings settings;
+		readonly Settings settings;
 		public readonly int Debtor;
 		public readonly int Debt;
-		public Loan(int debtor, int debt, State.Settings set)
+		public Loan(int debtor, int debt, Settings set)
 		{
 			Debtor = debtor;
 			Debt = debt;
 			settings = set;
 		}
-		public (IAction[], State.Player) Perform(State.Player player, State.Player active, State.IProvinces provinces)
+		public (IAction[], Player) Perform(Player player, Player active, IProvinces provinces)
 		{
 			if (player == active && player.Id == Debtor)
 			{
@@ -26,9 +27,9 @@ namespace Imperit.Dynamics.Actions
 			}
 			return (new[] { this }, player);
 		}
-		public (IAction[], State.Province) Perform(State.Province province, State.Player active)
+		public (IAction[], Province) Perform(Province province, Player active)
 		{
-			if (active.Id == Debtor && province is State.Land land && land.IsAllyOf(Debtor) && Debt > settings.DebtLimit + active.Money)
+			if (active.Id == Debtor && province is Land land && land.IsAllyOf(Debtor) && Debt > settings.DebtLimit + active.Money)
 			{
 				return (land.Price > Debt ? Array.Empty<IAction>() : new[] { new Loan(Debtor, Debt - land.Price, settings) }, land.Revolt());
 			}

@@ -6,7 +6,11 @@
 
 @code{
 	[Parameter] public string? LoginId { get; set; }
-	void Navigate(string loginId) => nav.NavigateTo("/" + loginId);
+	void Navigate(string loginId)
+	{
+		nav.NavigateTo("/" + loginId);
+		this.StateHasChanged();
+	}
 	int? LoggedIn => LoginId is string ? login.Get(LoginId) : null;
 }
 @if (!string.IsNullOrWhiteSpace(LoginId) && LoggedIn is int loggedIn)

@@ -1,5 +1,5 @@
-﻿using Imperit.State;
-using System.Linq;
+﻿using System.Linq;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {

@@ -58,7 +58,7 @@ namespace Imperit.Services
 			var colors = rand.NextColors(count);
 			for (int i = 0; i < count; ++i)
 			{
-				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true));
+				players.Add(new Robot(players.Count, sl.Settings.RobotName(i), colors[i], new Password(""), sl.Settings.DefaultMoney, true, sl.Settings));
 			}
 			provinces.Reset(sl.Settings, players);
 			for (int i = 0; i < count; ++i)

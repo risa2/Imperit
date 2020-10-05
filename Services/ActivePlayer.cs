@@ -22,7 +22,7 @@ namespace Imperit.Services
 		public void Next(IReadOnlyList<Player> players)
 		{
 			int id = Id + 1;
-			int next = Enumerable.Range(0, players.Count).Select(i => (i + id) % players.Count).FirstOr(i => players[i].Alive && !(players[i] is Savage), -1);
+			int next = Enumerable.Range(0, players.Count).Select(i => (i + id) % players.Count).Where(i => players[i].Alive && !(players[i] is Savage)).FirstOr(-1);
 			Id = next == -1 ? Id : next;
 		}
 		public void Reset(IReadOnlyList<Player> players) => Id = players.First(p => !(p is Savage)).Id;

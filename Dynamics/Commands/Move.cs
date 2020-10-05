@@ -1,5 +1,5 @@
-using Imperit.State;
 using System.Collections.Generic;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Commands
 {

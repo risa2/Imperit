@@ -35,7 +35,7 @@ namespace Imperit.State
 			var pairs = players.Select(player => SoldiersIncome(provinces.Where(prov => prov.IsAllyOf(player.Id)))).ToArray();
 			var totals = players.Zip(pairs, (p, pair) => pair.Soldiers + p.Money + (pair.Income * 5)).ToArray();
 			var changes = last is null ? 0.0.Infinity() : players.Select((p, i) => Div(totals[i], last[i].Total) - 1);
-			var sum_sm = players.Enumerate().Where(x => !(x.v is Savage)).Sum(x => pairs[x.i].Soldiers + x.v.Money);
+			var sum_sm = players.Index().Where(x => !(x.v is Savage)).Sum(x => pairs[x.i].Soldiers + x.v.Money);
 			var ratios = players.Zip(pairs, (p, pair) => Div(pair.Soldiers + p.Money, sum_sm));
 			return totals.Zip(ratios.Zip(changes), (t, p) => new PlayerPower(t, p.Second, p.First)).ToImmutableArray();
 		}

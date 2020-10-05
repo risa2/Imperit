@@ -1,11 +1,12 @@
 using System;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {
 	public class Battle : ArmyAction
 	{
-		public Battle(int province, State.Army army) : base(province, army) { }
-		public override (IAction[], State.Province) Perform(State.Province province, State.Player active)
+		public Battle(int province, Army army) : base(province, army) { }
+		public override (IAction[], Province) Perform(Province province, Player active)
 		{
 			return Province == province.Id ? (Array.Empty<IAction>(), province.AttackedBy(Army)) : (new[] { this }, province);
 		}

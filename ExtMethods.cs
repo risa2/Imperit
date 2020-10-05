@@ -9,10 +9,11 @@ namespace Imperit
 	public static class ExtMethods
 	{
 		public static CultureInfo Culture { get; } = CultureInfo.InvariantCulture;
-		public static T FirstOr<T>(this IEnumerable<T> e, Func<T, bool> cond, T x) => e.Where(cond).DefaultIfEmpty(x).First();
-		public static IEnumerable<(int i, T v)> Enumerate<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
-		public static T MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector) => e.OrderBy(selector).First();
+		public static T FirstOr<T>(this IEnumerable<T> enu, T x) => enu.DefaultIfEmpty(x).First();
+		public static IEnumerable<(int i, T v)> Index<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
+		public static T? MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector, T? v = default) where T : class => e.OrderBy(selector).FirstOr(v);
 		public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();
+		public static int DivUp(this int a, int b) => (a / b) + (a % b > 0 ? 1 : 0);
 		public static IEnumerable<T> Infinity<T>(this T value)
 		{
 			while (true)

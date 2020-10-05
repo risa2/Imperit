@@ -54,7 +54,7 @@
 			}
 		</p>
 		<table>
-			@foreach (var (i, type) in model.SoldierTypes.Enumerate())
+			@foreach (var (i, type) in model.SoldierTypes.Index())
 			{
 				<tr>
 					<td>@type.Name @(type.Price)@(Sym.Money)<sup @onclick="@(() => infobox?.Open(model.SoldierTypes[i]))">?</sup></td>

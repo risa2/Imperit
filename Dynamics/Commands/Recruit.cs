@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Imperit.State;
 
 namespace Imperit.Dynamics.Commands
 {
@@ -6,24 +7,24 @@ namespace Imperit.Dynamics.Commands
 	{
 		public readonly int Player;
 		public readonly int Land;
-		public readonly State.Army Army;
-		public Recruit(int player, int land, State.Army army)
+		public readonly Army Army;
+		public Recruit(int player, int land, Army army)
 		{
 			Player = player;
 			Land = land;
 			Army = army;
 		}
 
-		public (IAction[], State.Player) Perform(State.Player player, State.IProvinces provinces)
+		public (IAction[], Player) Perform(Player player, IProvinces provinces)
 		{
 			return player.Id == Player
 				? (new[] { new Actions.Reinforcement(Land, Army) }, player.ChangeMoney(-Army.Price))
 				: (System.Array.Empty<IAction>(), player);
 		}
-		public bool Allowed(IReadOnlyList<State.Player> players, State.IProvinces provinces)
+		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
 		{
 			return provinces[Land].IsAllyOf(Player) && players[Player].Money >= Army.Price && Army.AnySoldiers;
 		}
-		public State.Soldiers Soldiers => Army.Soldiers;
+		public Soldiers Soldiers => Army.Soldiers;
 	}
 }
