@@ -4,15 +4,16 @@ namespace Imperit.State
 {
 	public class Game
 	{
-		public readonly bool IsActive;
-		public readonly DateTime LastRegistration;
-		public Game(bool isActive, DateTime lastRegistration)
+		public readonly bool IsActive, AnyRegistered;
+		public readonly DateTime FirstRegistration;
+		public Game(bool isActive, DateTime firstRegistration, bool anyRegistered)
 		{
 			IsActive = isActive;
-			LastRegistration = lastRegistration;
+			FirstRegistration = firstRegistration;
+			AnyRegistered = anyRegistered;
 		}
-		public Game Start() => new Game(true, LastRegistration);
-		public Game Finish() => new Game(false, LastRegistration);
-		public Game Register(DateTime when) => new Game(IsActive, when);
+		public static Game Start() => new Game(true, DateTime.MaxValue, false);
+		public static Game Finish() => new Game(false, DateTime.MaxValue, false);
+		public Game Register() => new Game(false, AnyRegistered ? FirstRegistration : DateTime.UtcNow, true);
 	}
 }

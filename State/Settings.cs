@@ -9,10 +9,9 @@ namespace Imperit.State
 		public readonly int DebtLimit, DefaultMoney;
 		public readonly int MountainsWidth;
 		public readonly Color LandColor, MountainsColor, SeaColor;
-		public readonly Password Password;
 		public readonly ImmutableArray<string> RobotNames;
 		public readonly ImmutableArray<SoldierType> SoldierTypes;
-		public Settings(int debtLimit, double defaultInstability, int defaultMoney, double interest, Color landColor, Color mountainsColor, int mountainsWidth, Password password, ImmutableArray<string> robotNames, Color seaColor, ImmutableArray<SoldierType> soldierTypes)
+		public Settings(int debtLimit, double defaultInstability, int defaultMoney, double interest, Color landColor, Color mountainsColor, int mountainsWidth, ImmutableArray<string> robotNames, Color seaColor, ImmutableArray<SoldierType> soldierTypes)
 		{
 			DebtLimit = debtLimit;
 			DefaultInstability = defaultInstability;
@@ -21,7 +20,6 @@ namespace Imperit.State
 			LandColor = landColor;
 			MountainsColor = mountainsColor;
 			MountainsWidth = mountainsWidth;
-			Password = password;
 			RobotNames = robotNames;
 			SeaColor = seaColor;
 			SoldierTypes = soldierTypes;

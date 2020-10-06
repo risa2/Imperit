@@ -74,9 +74,8 @@ tr input, tr button, tr select, tr option {
 }
 table.players td:not(:first-child) {
 	text-align: right;
-	padding: 5px 0;
+	padding: 5px 3px;
 }
-
 td:first-child {
 	text-align: left;
 }

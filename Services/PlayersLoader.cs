@@ -15,14 +15,13 @@ namespace Imperit.Services
 	public class PlayersLoader : IPlayersLoader
 	{
 		readonly Load.JsonWriter<Load.JsonPlayer, Player, Settings> loader;
-		readonly List<State.Player> players;
+		readonly List<Player> players;
 		public PlayersLoader(IServiceIO io, ISettingsLoader sl)
 		{
 			loader = new Load.JsonWriter<Load.JsonPlayer, Player, Settings>(io.Players, sl.Settings, Load.JsonPlayer.From);
 			players = loader.Load().ToList();
 		}
 		public int Count => players.Count;
-		public bool IsReadOnly => ((ICollection<Player>)players).IsReadOnly;
 		public Player this[int i] => players[i];
 		public void Save() => loader.Save(players);
 		public void Add(Player player)

@@ -25,6 +25,6 @@ namespace Imperit.Services
 			int next = Enumerable.Range(0, players.Count).Select(i => (i + id) % players.Count).Where(i => players[i].Alive && !(players[i] is Savage)).FirstOr(-1);
 			Id = next == -1 ? Id : next;
 		}
-		public void Reset(IReadOnlyList<Player> players) => Id = players.First(p => !(p is Savage)).Id;
+		public void Reset(IReadOnlyList<Player> players) => Id = players.Where(p => !(p is Savage)).FirstOr(new Savage(0)).Id;
 	}
 }

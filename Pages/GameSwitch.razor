@@ -33,12 +33,7 @@
 		if (LoggedIn == active.Id)
 		{
 			end.NextTurn();
-			int next = active.Id;
-			if (!players[next].Alive)
-			{
-				login.Update(LoginId, next);
-			}
-			Navigate(LoginId);
+			this.StateHasChanged();
 		}
 	}
 }
@@ -62,7 +57,7 @@ else if (Current == Mode.Preview)
 }
 else if (Current == Mode.Powers)
 {
-	<Powers Switch="Switch"/>
+	<Powers Return="@(() => Switch())"/>
 }
 else if (Current == Mode.CmdMove)
 {

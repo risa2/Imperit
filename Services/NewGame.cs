@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace Imperit.Services
 {
-	interface INewGame
+	public interface INewGame
 	{
-		void New(Settings settings);
+		void Finish();
+		void Start();
 		Color NextColor { get; }
 		void Registration(string name, Password password, Land land);
-		void Start();
 	}
 	public class NewGame : INewGame
 	{
@@ -35,16 +35,14 @@ namespace Imperit.Services
 			this.login = login;
 			this.game = game;
 		}
-		public void New(Settings settings)
+		public void Finish()
 		{
-			sl.Settings = settings;
-			players.Clear();
-			powers.Clear();
 			actions.Save(new ActionQueue(new[] { new Instability() as IAction, new Earnings(), new Mortality() }));
-			login.Clear();
-			game.Started = false;
-
+			players.Clear();
 			players.Add(new Savage(0));
+			login.Clear();
+			game.Finish();
+
 			provinces.Reset(sl.Settings, players);
 			provinces.Set(provinces.Select(prov => prov.Revolt()).ToArray());
 			provinces.Save();
@@ -66,17 +64,21 @@ namespace Imperit.Services
 		public void Start()
 		{
 			AddRobots();
+			powers.Clear();
+			game.Start();
+
 			active.Reset(players);
-			game.Started = true;
 			powers.Add(players);
 		}
 		public void Registration(string name, Password password, Land land)
 		{
-			var player = new Player(players.Count, name, NextColor, password, sl.Settings.DefaultMoney, true);
+			var player = new Player(players.Count, name, NextColor, password, sl.Settings.DefaultMoney - (land.Earnings * 2), true);
 			players.Add(player);
+
 			provinces.Reset(sl.Settings, players);
 			provinces[land.Id] = land.GiveUpTo(new Army(land.Soldiers, player));
 			provinces.Save();
+			game.Register();
 		}
 	}
 }

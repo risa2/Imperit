@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Imperit.Load
 {
-	public class JsonPlayersPower : IConvertibleToWith<ImmutableArray<PlayerPower>, bool>
+	public class JsonPlayersPower : IConvertibleToWith<PlayersPower, bool>
 	{
 		public IEnumerable<JsonPlayerPower>? Powers { get; set; }
-		public ImmutableArray<PlayerPower> Convert(int i, bool a) => Powers.Select(p => new PlayerPower(p.Total, p.Change, p.Ratio)).ToImmutableArray();
-		public static JsonPlayersPower From(ImmutableArray<PlayerPower> pp) => new JsonPlayersPower { Powers = pp.Select(p => new JsonPlayerPower { Total = p.Total, Change = p.Change, Ratio = p.Ratio }) };
+		public PlayersPower Convert(int i, bool a) => new PlayersPower(Powers.Select(p => new PlayerPower(p.Alive, p.Soldiers, p.Lands, p.Income, p.Money)).ToImmutableArray());
+		public static JsonPlayersPower From(PlayersPower pp) => new JsonPlayersPower { Powers = pp.Select(p => new JsonPlayerPower { Alive = p.Alive, Soldiers = p.Soldiers, Lands = p.Lands, Income = p.Income, Money = p.Money }) };
 	}
 }

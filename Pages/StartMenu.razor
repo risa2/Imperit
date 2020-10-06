@@ -22,17 +22,9 @@
 </style>
 
 <nav>
-	@if (players.Count >= 2)
-	{
-		<a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
-	}
-	@if (!game.Started)
+	<a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
+	@if (!game.IsActive)
 	{
 		<a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
-		@if (players.Count >= 2)
-		{
-			<a class="@ClassFor(Mode.StartGame)" @onclick="@(() => GoTo(Mode.StartGame))">Zahájit</a>
-		}
 	}
-	<a class="@ClassFor(Mode.NewGame)" @onclick="@(() => GoTo(Mode.NewGame))">Nová hra</a>
 </nav>

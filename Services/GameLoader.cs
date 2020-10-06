@@ -1,38 +1,44 @@
-﻿using Imperit.Load;
+﻿using System;
+using Imperit.Load;
 using Imperit.State;
-using System;
 
 namespace Imperit.Services
 {
 	public interface IGameLoader
 	{
 		void Register();
-		bool Started { get; set; }
-		TimeSpan TimeSinceLastRegistration { get; }
+		bool IsActive { get; }
+		void Start();
+		void Finish();
+		TimeSpan TimeSinceFirstRegistration { get; }
+		bool AnyRegistered { get; }
 	}
 	public class GameLoader : IGameLoader
 	{
-		readonly JsonWriter<JsonGame, Game, bool> writer;
+		readonly JsonWriter<JsonGame, Game, Settings> writer;
 		Game game;
-		public GameLoader(IServiceIO io)
+		public GameLoader(IServiceIO io, ISettingsLoader sl)
 		{
-			writer = new JsonWriter<JsonGame, Game, bool>(io.Game, false, JsonGame.From);
+			writer = new JsonWriter<JsonGame, Game, Settings>(io.Game, sl.Settings, JsonGame.From);
 			game = writer.LoadOne();
 		}
-		public bool Started
+		public bool IsActive => game.IsActive;
+		public void Start()
 		{
-			get => game.IsActive;
-			set
-			{
-				game = (value ? game.Start() : game.Finish()).Register(DateTime.MinValue);
-				writer.Save(game);
-			}
-		}
-		public TimeSpan TimeSinceLastRegistration => DateTime.UtcNow.Subtract(game.LastRegistration);
-		public void Register()
-		{
-			game = game.Register(DateTime.UtcNow);
+			game = Game.Start();
 			writer.Save(game);
 		}
+		public void Finish()
+		{
+			game = Game.Finish();
+			writer.Save(game);
+		}
+		public TimeSpan TimeSinceFirstRegistration => DateTime.UtcNow.Subtract(game.FirstRegistration);
+		public void Register()
+		{
+			game = game.Register();
+			writer.Save(game);
+		}
+		public bool AnyRegistered => game.AnyRegistered;
 	}
 }

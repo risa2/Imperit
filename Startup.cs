@@ -17,9 +17,10 @@ namespace Imperit
 			_ = services.AddRazorPages();
 			_ = services.AddServerSideBlazor();
 
-			_ = services.AddSingleton<IServiceIO>(s => new ServiceIO(new File("./Files/Settings.json"), new File("./Files/Players.json"), new File("./Files/Provinces.json"), new File("./Files/Actions.json"), new File("./Files/Events.json"), new File("./Files/Active.json"), new File("./Files/Password.txt"), new File("./Files/Graph.json"), new File("./Files/Mountains.json"), new File("./Files/Shapes.json"), new File("Files/Powers.json"), new File("Files/Game.json")))
+			_ = services.AddSingleton<IServiceIO>(s => new ServiceIO(new File("./Files/Settings.json"), new File("./Files/Players.json"), new File("./Files/Provinces.json"), new File("./Files/Actions.json"), new File("./Files/Events.json"), new File("./Files/Active.json"), new File("./Files/Password.txt"), new File("./Files/Graph.json"), new File("./Files/Mountains.json"), new File("./Files/Shapes.json"), new File("./Files/Powers.json"), new File("./Files/Game.json"), new File("./Files/FormerPlayers.json")))
 					.AddSingleton<ILoginSession, LoginSession>().AddSingleton<IActionLoader, ActionLoader>()
 					.AddSingleton<ISettingsLoader, SettingsLoader>().AddSingleton<IPlayersLoader, PlayersLoader>()
+					.AddSingleton<IFormerPlayersLoader, FormerPlayersLoader>()
 					.AddSingleton<IProvincesLoader, ProvincesLoader>().AddSingleton<IPowersLoader, PowersLoader>()
 					.AddSingleton<IGameLoader, GameLoader>().AddTransient<IActivePlayer, ActivePlayer>()
 					.AddTransient<INewGame, NewGame>().AddTransient<IEndOfTurn, EndOfTurn>();

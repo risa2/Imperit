@@ -1,43 +1,54 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
 namespace Imperit.State
 {
-	public readonly struct PlayerPower : System.IEquatable<PlayerPower>
+	public class PlayerPower
 	{
-		public readonly long Total;
-		public readonly double Change, Ratio;
-		public PlayerPower(long total, double change, double ratio)
+		public readonly bool Alive;
+		public readonly int Soldiers, Lands, Income, Money;
+		public PlayerPower(bool alive, int soldiers, int lands, int income, int money)
 		{
-			Total = total;
-			Change = change;
-			Ratio = ratio;
+			Alive = alive;
+			Soldiers = soldiers;
+			Lands = lands;
+			Income = income;
+			Money = money;
 		}
-		public override bool Equals(object? obj) => obj is PlayerPower pp && pp.Equals(this);
-		public override int GetHashCode() => (Total, Change, Ratio).GetHashCode();
-		public static bool operator ==(PlayerPower left, PlayerPower right) => left.Equals(right);
-		public static bool operator !=(PlayerPower left, PlayerPower right) => !left.Equals(right);
-		public bool Equals(PlayerPower other) => (Total, Change, Ratio) == (other.Total, other.Change, other.Ratio);
-		public static ImmutableArray<PlayerPower> Compute(IProvinces provinces, IReadOnlyCollection<Player> players, IReadOnlyList<PlayerPower>? last)
+
+		public int Total => Alive ? Soldiers + Money + (Income * 5) : 0;
+	}
+	public class PlayersPower : IReadOnlyList<PlayerPower>
+	{
+		readonly ImmutableArray<PlayerPower> pp;
+		public PlayersPower(ImmutableArray<PlayerPower> pp) => this.pp = pp;
+		public PlayerPower this[int index] => pp[index];
+		public int Count => pp.Length;
+		public IEnumerator<PlayerPower> GetEnumerator() => ((IEnumerable<PlayerPower>)pp).GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public ImmutableArray<double> GetRatios()
 		{
-			static double Div(double a, double b) => (a / b) switch
+			var sum = pp.Sum(p => p.Soldiers + p.Money);
+			return pp.Select(p => (double)(p.Soldiers + p.Money) / sum).ToImmutableArray();
+		}
+		public int SoldiersSum => pp.Sum(p => p.Soldiers);
+		public int LandsSum => pp.Sum(p => p.Lands);
+		public int IncomeSum => pp.Sum(p => p.Income);
+		public int MoneySum => pp.Sum(p => p.Money);
+		public int TotalSum => pp.Sum(p => p.Total);
+		public int TotalAvg => TotalSum / Count;
+		public int TotalMax => pp.Max(pp => pp.Total);
+		public bool MajorityReached => pp.Any(pp => pp.Soldiers * 2 > SoldiersSum && pp.Lands * 2 > LandsSum && pp.Income * 2 < IncomeSum && pp.Money * 2 < MoneySum);
+		public static PlayersPower Compute(IProvinces provinces, IReadOnlyCollection<Player> players)
+		{
+			static (int Soldiers, int Income, int Lands) SoldiersIncome(IEnumerable<Province> provinces)
 			{
-				double.NaN => 0.0,
-				double.PositiveInfinity => double.MaxValue,
-				double.NegativeInfinity => double.MinValue,
-				_ => a / b
-			};
-			static (long Soldiers, long Income) SoldiersIncome(IEnumerable<Province> provinces)
-			{
-				return provinces.Aggregate((0L, 0L), (pair, prov) => (pair.Item1 + prov.Soldiers.Price, pair.Item2 + prov.Earnings));
+				return provinces.Aggregate((0, 0, 0), (pair, prov) => (pair.Item1 + prov.Soldiers.Price, pair.Item2 + prov.Earnings, pair.Item3 + 1));
 			}
-			var pairs = players.Select(player => SoldiersIncome(provinces.Where(prov => prov.IsAllyOf(player.Id)))).ToArray();
-			var totals = players.Zip(pairs, (p, pair) => pair.Soldiers + p.Money + (pair.Income * 5)).ToArray();
-			var changes = last is null ? 0.0.Infinity() : players.Select((p, i) => Div(totals[i], last[i].Total) - 1);
-			var sum_sm = players.Index().Where(x => !(x.v is Savage)).Sum(x => pairs[x.i].Soldiers + x.v.Money);
-			var ratios = players.Zip(pairs, (p, pair) => Div(pair.Soldiers + p.Money, sum_sm));
-			return totals.Zip(ratios.Zip(changes), (t, p) => new PlayerPower(t, p.Second, p.First)).ToImmutableArray();
+			var pairs = players.Select(player => (SoldiersIncome(provinces.ControlledBy(player.Id)), player.Alive && !(player is Savage), player.Money));
+			return new PlayersPower(pairs.Select(it => it.Item2 ? new PlayerPower(true, it.Item1.Soldiers, it.Item1.Lands, it.Item1.Income, it.Money) : new PlayerPower(false, 0, 0, 0, 0)).ToImmutableArray());
 		}
 	}
 }

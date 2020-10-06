@@ -16,6 +16,7 @@ namespace Imperit.Services
 		IFile Shapes { get; }
 		IFile Powers { get; }
 		IFile Game { get; }
+		IFile FormerPlayers { get; }
 	}
 	public class ServiceIO : IServiceIO
 	{
@@ -31,7 +32,8 @@ namespace Imperit.Services
 		public IFile Shapes { get; }
 		public IFile Powers { get; }
 		public IFile Game { get; }
-		public ServiceIO(IFile settings, IFile players, IFile provinces, IFile actions, IFile events, IFile active, IFile password, IFile graph, IFile mountains, IFile shapes, IFile powers, IFile game)
+		public IFile FormerPlayers { get; }
+		public ServiceIO(IFile settings, IFile players, IFile provinces, IFile actions, IFile events, IFile active, IFile password, IFile graph, IFile mountains, IFile shapes, IFile powers, IFile game, IFile formerPlayers)
 		{
 			Settings = settings;
 			Players = players;
@@ -45,6 +47,7 @@ namespace Imperit.Services
 			Shapes = shapes;
 			Powers = powers;
 			Game = game;
+			FormerPlayers = formerPlayers;
 		}
 	}
 }

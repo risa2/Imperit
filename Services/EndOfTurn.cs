@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Imperit.State;
+using System.Linq;
 
 namespace Imperit.Services
 {
@@ -13,45 +14,42 @@ namespace Imperit.Services
 		readonly IActionLoader actions;
 		readonly IActivePlayer active;
 		readonly IPowersLoader powers;
-		public EndOfTurn(IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
+		readonly INewGame newgame;
+		public EndOfTurn(IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers, INewGame newgame)
 		{
 			this.players = players;
 			this.pr = pr;
 			this.actions = actions;
 			this.active = active;
 			this.powers = powers;
+			this.newgame = newgame;
 		}
-		bool AreHumansAlive => players.Any(player => !(player is State.Robot) && player.Alive);
+		int LivingHumans => players.Count(player => !(player is Robot) && !(player is Savage) && player.Alive);
 		void End()
 		{
 			actions.EndOfTurn(active.Id);
 			powers.Add(players);
 			active.Next(players);
 		}
-		void RobotThink(State.Robot robot) => _ = actions.Add(robot.Think(pr));
-		void AllRobotsactions()
+		void AllRobotsActions()
 		{
-			while (players[active.Id] is State.Robot robot && AreHumansAlive)
+			while (players[active.Id] is Robot robot && LivingHumans > 0)
 			{
-				RobotThink(robot);
+				_ = actions.Add(robot.Think(pr));
 				End();
-			}
-		}
-		void RobotThinkingIfRobotIsPlaying()
-		{
-			if (players[active.Id] is State.Robot robot)
-			{
-				RobotThink(robot);
 			}
 		}
 		public void NextTurn()
 		{
-			RobotThinkingIfRobotIsPlaying();
 			End();
-			AllRobotsactions();
+			AllRobotsActions();
 			players.Save();
 			pr.Save();
 			actions.Save();
+			if (LivingHumans < 1 || powers.Last.MajorityReached)
+			{
+				newgame.Finish();
+			}
 		}
 	}
 }

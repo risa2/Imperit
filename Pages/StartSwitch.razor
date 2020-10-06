@@ -1,8 +1,9 @@
 ﻿@inject Services.IPlayersLoader players;
+@inject Services.IGameLoader game;
 
 @code{
 	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
-	public enum Mode { Login, Registration, StartGame, NewGame }
+	public enum Mode { Login, Registration }
 	Mode Current;
 	protected override void OnInitialized()
 	{
@@ -21,16 +22,8 @@
 	{
 		<Login Navigate="Navigate"/>
 	}
-	else if (Current == Mode.Registration)
+	else
 	{
 		<Registration GoTo="GoTo"/>
-	}
-	else if (Current == Mode.StartGame)
-	{
-		<StartGame GoTo="GoTo"/>
-	}
-	else if (Current == Mode.NewGame)
-	{
-		<NewGame GoTo="GoTo"/>
 	}
 </main>

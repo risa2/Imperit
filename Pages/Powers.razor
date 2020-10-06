@@ -1,69 +1,12 @@
-@inject Services.IPowersLoader powers;
 @inject Services.IPlayersLoader players;
 
-@using Mode = GameSwitch.Mode;
-
 @code{
-	[Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
-	static string Polyline(IEnumerable<long> y_values, int count, long max_y, int x_offset, int y_offset, int width, int height)
-	{
-		return string.Join(' ', y_values.Select((y, i) => (i * width / count + x_offset) + "," + (height - y * height / max_y + y_offset)));
-	}
-	static string ToString(double num) => num.ToString(System.Globalization.CultureInfo.InvariantCulture);
+	[Parameter] public Action Return { get; set; } = (() => { });
 }
-
 <nav>
-	<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zpět</a>
-	<a class="this">Historie</a>
+	<a @onclick="Return">Zpět</a>
+	<a class="this">Výsledky</a>
 </nav>
 <main>
-	<p>Roků @powers.Count trvalo to,</p>
-	<p>lidé se dost vraždili,</p>
-	<p>a přitom šlo jenom o to,</p>
-	<p>vladnout aspoň na chvíli.</p>
-	<br />
-	<p>Chci, praví lví duch,</p>
-	<p>skoč na volný vzduch,</p>
-	<p>viz cenu, již mají tvé statky,</p>
-	<p>než dlouhý mír lepší je krátký.</p>
-	@{
-		var total_avg = powers.Select(p => p.Where((x, i) => !(players[i] is Savage)).Sum(x => x.Total) / players.Count);
-		var total_max = powers.Max(p => p.Where((x, i) => !(players[i] is Savage)).Max(x => x.Total));
-	}
-	<svg viewBox="-10 -10 1220 620" class="diagram">
-		@for (int i = 0; i < players.Count; ++i)
-		{
-			<polyline points="@Polyline(powers.Select(p => p[i].Total), powers.Count, total_max, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
-		}
-		<polyline points="@Polyline(total_avg, powers.Count, total_max, 0, 0, 1200, 600)" fill="none" stroke="#FFF" stroke-width="1"></polyline>
-	</svg>
-	@if (powers.Count > 5)
-	{
-		<p>Pohleď, jak nám vzrůstá jmění,</p>
-		<p>víc je víc, to se nemění,</p>
-		<p>mlať si, ale věz do koho,</p>
-		<p>věcí musíš minout mnoho.</p>
-		<svg viewBox="-10 -10 1220 620" class="diagram">
-			@for (int player_index = 0; player_index < players.Count; ++player_index)
-			{
-				@for (int i = 0; i < powers.Count - 1 && powers[i][player_index].Total != 0; ++i)
-				{
-					<line y1="@ToString(300 - (300 * powers[i + 1][player_index].Change))" y2="300"
-						  x1="@(1200*(2*i+1)/(2*powers.Count - 2))" x2="@(1200 * (2 * i + 1) / (2 * powers.Count - 2))"
-						  stroke="@players[player_index].Color" stroke-width="@ToString(1200.0 / (powers.Count - 1))"></line>
-				}
-			}
-		</svg>
-	}
-	<p>Vaše práce budiž bojem,</p>
-	<p>peníze, vojsko mít hleď,</p>
-	<p>co nosí, zvou stejnokrojem,</p>
-	<p>moudří, graf můj zřete teď.</p>
-	<svg viewBox="-10 -10 1220 620" class="diagram">
-		@for (int i = 0; i < players.Count; ++i)
-		{
-			<polyline points="@Polyline(powers.Select(p => (long)(p[i].Ratio * 2000)), powers.Count, 2000, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
-		}
-		<line x1="0" x2="1200" y1="300" y2="300" stroke="#FFFFFFFF" stroke-width="1"></line>
-	</svg>
+	<PowerGraphs players="@players"/>
 </main>
