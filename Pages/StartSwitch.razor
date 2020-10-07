@@ -4,26 +4,25 @@
 @code{
 	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
 	public enum Mode { Login, Registration }
-	Mode Current;
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		Current = players.Count >= 2 ? Mode.Login : Mode.Registration;
-	}
+	Mode Current = Mode.Login;
 	void GoTo(Mode mode)
 	{
 		Current = mode;
 		this.StateHasChanged();
 	}
 }
-<StartMenu GoTo="GoTo" This="@Current"/>
+<StartMenu GoTo="GoTo" This="Current"/>
 <main>
-	@if (Current == Mode.Login)
+	@if (Current == Mode.Registration)
+	{
+		<Registration Return="() => GoTo(Mode.Login)"/>
+	}
+	else if (game.IsActive)
 	{
 		<Login Navigate="Navigate"/>
 	}
 	else
 	{
-		<Registration GoTo="GoTo"/>
+		<Waiting/>
 	}
 </main>

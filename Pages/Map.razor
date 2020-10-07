@@ -17,11 +17,11 @@
 <svg viewBox="0 0 @Width @Height">
 	@foreach (var province in Provinces)
 	{
-		<Country This="@province" Width="@Width" Height="@Height" OnClick="@(() => ClickSelect(province.Id))" />
+		<Country This="province" Width="Width" Height="Height" OnClick="() => ClickSelect(province.Id)" />
 	}
-	<Country @ref="country" This="@selected" Width="@Width" Height="@Height" OnClick="@(() => ClickSelect(selected!.Id))" Fill="@SelectedColor" />
+	<Country @ref="country" This="@selected" Width="Width" Height="Height" OnClick="() => ClickSelect(selected!.Id)" Fill="SelectedColor" />
 	@foreach (var province in Provinces)
 	{
-		<ProvinceCaption This="@province" Width="@Width" Height="@Height" FontSize="@FontSize" OnClick="@(() => ClickSelect(province.Id))" Name="@Name" />
+		<ProvinceCaption This="province" Width="Width" Height="Height" FontSize="FontSize" OnClick="() => ClickSelect(province.Id)" Name="Name" />
 	}
 </svg>

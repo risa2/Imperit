@@ -48,7 +48,7 @@
 <nav>
 	@if (Preview)
 	{
-		<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zpět</a>
+		<a @onclick="() => Switch(Mode.Map, null, null, null)">Zpět</a>
 		<a class="this">Náhled</a>
 	}
 	else
@@ -62,14 +62,14 @@
 			<a @onclick="LogOut">Odhlášení</a>
 		}
 		<a class="this">Imperit</a>
-		<a @onclick="@(() => Switch(Mode.Players, null, null, null))">@(players[LoggedIn].Money)@Sym.Money</a>
-		<a @onclick="@(() => Switch(Mode.Preview, null, null, null))">Náhled</a>
+		<a @onclick="() => Switch(Mode.Players, null, null, null)">@(players[LoggedIn].Money)@Sym.Money</a>
+		<a @onclick="() => Switch(Mode.Preview, null, null, null)">Náhled</a>
 		@if (powers.Count > 2)
 		{
-			<a @onclick="@(() => Switch(Mode.Powers, null, null, null))">Výsledky</a>
+			<a @onclick="() => Switch(Mode.Powers, null, null, null)">Výsledky</a>
 		}
 	}
 </nav>
 <main>
-	<Map Width="1000" Height="1000" Provinces="@(Preview ? ProvincesPreview : provinces)" OnClick="OnClick" FontSize="9" SelectedColor="@(new Color(0, 0, 0, 100))" />
+	<Map Width="1000" Height="1000" Provinces="Preview ? ProvincesPreview : provinces" OnClick="OnClick" FontSize="9" SelectedColor="new Color(0, 0, 0, 100)" />
 </main>

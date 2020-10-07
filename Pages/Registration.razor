@@ -1,23 +1,19 @@
-@inject Services.ISettingsLoader sl;
 @inject Services.IProvincesLoader provinces;
-@inject Services.IPlayersLoader players;
 @inject Services.INewGame newgame;
-
-@using Mode = StartSwitch.Mode; 
 
 <label>Jméno:<br/><input type="text" @bind-value="@Username"/></label><br/>
 <label>Heslo:<br/><input type="password" @bind-value="@Password"/></label><br/>
 <p>Vyber si zemi, kde budeš začínat:</p>
-<Map Width="1000" Height="1000" Provinces="@provinces" SelectedColor="@newgame.NextColor" OnClick="OnClick"
-	 FontSize="9" Name="@(p => (p is State.Land L && L.IsStart ? Sym.Flag : "") + p.Name)"/>
+<Map Width="1000" Height="1000" Provinces="provinces" SelectedColor="newgame.NextColor" OnClick="OnClick"
+	 FontSize="9" Name="p => p is State.Land L && L.IsStart ? Sym.Flag + p.Name : p.Name"/>
 <button @onclick="OnSubmit">Registrovat</button>
 
 @code{
-	[Parameter] public Action<Mode> GoTo { get; set; } = (m => { });
+	[Parameter] public Action Return { get; set; } = (() => { });
 	string Username { get; set; } = "";
 	string Password { get; set; } = "";
 	Land? Selected = null;
-	static bool IsValidLand(Province prov) => prov is State.Land land && !land.Occupied && land.IsStart;
+	static bool IsValidLand(Province prov) => prov is Land land && !land.Occupied && land.IsStart;
 	Province? OnClick(int i, Province? from)
 	{
 		if (IsValidLand(provinces[i]))
@@ -28,10 +24,10 @@
 	}
 	void OnSubmit()
 	{
-		if (Username != "" && Password != "" && Selected is Land)
+		if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && Selected is Land)
 		{
 			newgame.Registration(Username, new Password(Password), Selected);
-			GoTo(Mode.Login);
+			Return();
 		}
 	}
 }

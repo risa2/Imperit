@@ -23,9 +23,10 @@ namespace Imperit.State.SoldierTypes
 			Speed = speed;
 			RecruitPlaces = recruitPlaces;
 		}
+		int Difficulty(Province to) => to is Land || to is Mountains ? 1 : Speed + 1;
 		public override int CanMove(IProvinces provinces, int from, int to)
 		{
-			return provinces.Distance(from, to) <= Speed && provinces[from] is Land && provinces[to] is Land ? Weight + Capacity : 0;
+			return provinces[from] is Land && provinces[to] is Land && provinces.Passable(from, to, Speed, (_, dest) => Difficulty(dest)) ? Weight + Capacity : 0;
 		}
 		public override int CanSustain(Province province) => province is Land ? Capacity + Weight : Weight;
 		public override bool IsRecruitable(Province province) => RecruitPlaces.Contains(province.Id);

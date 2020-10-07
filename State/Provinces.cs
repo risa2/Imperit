@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace Imperit.State
 	{
 		new Province this[int i] { get; set; }
 		Province IReadOnlyList<Province>.this[int index] => this[index];
-		bool Passable(int from, int to);
-		int? Distance(int from, int to);
+		bool Passable(int from, int to, int distance, Func<Province, Province, int> difficulty);
+		bool Passable(int from, int to, int distance = 1) => Passable(from, to, distance, (a, b) => 1);
 		int NeighborCount(int prov);
 		IEnumerable<Province> NeighborsOf(int prov);
 		Provinces With(Province[] provinces);
@@ -25,8 +26,10 @@ namespace Imperit.State
 			this.graph = graph;
 		}
 		public Provinces With(Province[] new_provinces) => new Provinces(new_provinces, graph);
-		public bool Passable(int from, int to) => graph.Passable(from, to);
-		public int? Distance(int from, int to) => graph.Distance(from, to);
+		public bool Passable(int from, int to, int distance, Func<Province, Province, int> difficulty)
+		{
+			return graph.Passable(from, to, distance, (start, dest) => difficulty(this[start], this[dest]));
+		}
 		public int NeighborCount(int id) => graph.NeighborCount(id);
 		public IEnumerable<Province> NeighborsOf(int id) => graph[id].Select(vertex => provinces[vertex]);
 

@@ -1,10 +1,5 @@
 @inject Services.IPlayersLoader players;
-@inject Services.ISettingsLoader sl;
 @inject Services.ILoginSession login;
-@inject Services.IGameLoader game;
-@inject Services.INewGame newgame;
-@inject Services.IPowersLoader powers;
-@inject Services.IFormerPlayersLoader former;
 
 @code{
 	[Parameter] public Action<string> Navigate { get; set; } = (x => { });
@@ -22,46 +17,18 @@
 			model.Password = "";
 		}
 	}
-	protected override void OnInitialized()
-	{
-		if (game.TimeSinceFirstRegistration > TimeSpan.FromMinutes(4))
-		{
-			newgame.Start();
-		}
-	}
 }
 
 @if (Wrong)
 {
 	<p>Zadané heslo není správné</p>
 }
-@if (game.IsActive)
-{
-	<EditForm Model="@model" OnSubmit="LoginAction">
-		<DataAnnotationsValidator/><ValidationSummary/>
-		<label>
-			Hráč:<br/>
-			<IntSelect @bind-Value="model.Id" Options="@players.Where(p => !(p is Robot) && !(p is Savage))" Id="p => p.Id" Text="p => p.Name"/><br/>
-		</label>
-		<label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
-		<button type="submit">Přihlásit se</button>
-	</EditForm>
-}
-else
-{
-	if (game.TimeSinceFirstRegistration > TimeSpan.Zero)
-	{
-		<p>Hra začne za @((TimeSpan.FromMinutes(4) - game.TimeSinceFirstRegistration).ToString("mm\\:ss"))</p>
-	}
-	<p>Hra ještě nezačala. Zaregistrovaní hráči:</p>
-	@foreach (var player in players.Where(p => !(p is Savage)))
-	{
-		<p><Name Who="player"/></p>
-	}
-	@if (powers.Count > 3)
-	{
-		<br/>
-		<p>Výsledek minulé hry:</p>
-		<PowerGraphs players="@former"/>
-	}
-}
+<EditForm Model="model" OnSubmit="LoginAction">
+	<DataAnnotationsValidator/><ValidationSummary/>
+	<label>
+		Hráč:<br/>
+		<IntSelect @bind-Value="model.Id" Options="players.Where(p => !(p is Robot) && !(p is Savage))" Id="p => p.Id" Text="p => p.Name"/><br/>
+	</label>
+	<label>Heslo:<br/><InputText type="password" @bind-Value="model.Password"/><br/></label>
+	<button type="submit">Přihlásit se</button>
+</EditForm>

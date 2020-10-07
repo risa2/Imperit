@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Imperit.State
 			this.edges = edges;
 			this.starts = starts;
 		}
-		int? Distance(int from, int to, int limit)
+		public bool Passable(int from, int to, int limit, Func<int, int, int> difficulty)
 		{
 			var stack = new List<(int Pos, int Distance)>() { (from, 0) };
 			var visited = new bool[Count];
@@ -21,21 +22,19 @@ namespace Imperit.State
 			{
 				if (stack[i].Pos == to)
 				{
-					return stack[i].Distance;
+					return true;
 				}
-				if (stack[i].Distance < limit)
+				foreach (int vertex in this[stack[i].Pos].Where(n => !visited[n]))
 				{
-					foreach (int vertex in this[stack[i].Pos].Where(n => !visited[n]))
+					if (stack[i].Distance + difficulty(stack[i].Pos, vertex) <= limit)
 					{
-						stack.Add((vertex, stack[i].Distance + 1));
+						stack.Add((vertex, stack[i].Distance + difficulty(stack[i].Pos, vertex)));
 						visited[vertex] = true;
 					}
 				}
 			}
-			return null;
+			return false;
 		}
-		public int? Distance(int from, int to) => Distance(from, to, int.MaxValue);
-		public bool Passable(int from, int to) => Distance(from, to, 1) is int;
 		public int NeighborCount(int vertex) => starts[vertex + 1] - starts[vertex];
 		public IEnumerable<int> this[int vertex] => edges.Take(starts[vertex + 1]).Skip(starts[vertex]);
 		public int Count => starts.Length - 1;

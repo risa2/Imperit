@@ -22,9 +22,9 @@
 </style>
 
 <nav>
-	<a class="@ClassFor(Mode.Login)" @onclick="@(() => GoTo(Mode.Login))">Přihlášení</a>
+	<a class="@ClassFor(Mode.Login)" @onclick="() => GoTo(Mode.Login)">Přihlášení</a>
 	@if (!game.IsActive)
 	{
-		<a class="@ClassFor(Mode.Registration)" @onclick="@(() => GoTo(Mode.Registration))">Registrace</a>
+		<a class="@ClassFor(Mode.Registration)" @onclick="() => GoTo(Mode.Registration)">Registrace</a>
 	}
 </nav>

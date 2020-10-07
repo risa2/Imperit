@@ -9,6 +9,7 @@
 	[Parameter] public Player? LoggedIn { get; set; }
 	[Parameter] public Action<Mode, Land?, Land?, Player?> Switch { get; set; } = ((a, x, y, z) => { });
 	void Donate(Player player) => Switch(Mode.CmdDonation, null, null, player);
+	void DoGiveUp() => actions.Add(new GiveUp(LoggedIn!.Id));
 }
 <nav>
 	<a @onclick="@(() => Switch(Mode.Map, null, null, null))">Zpět</a>
@@ -27,11 +28,11 @@
 					<td>(+@provinces.ControlledBy(player.Id).Sum(p => p.Earnings)@Sym.Money)</td>
 					@if (player != LoggedIn)
 					{
-						<td class="link-like" @onclick="@(() => Donate(player))">Věnovat</td>
+						<td class="link-like" @onclick="() => Donate(player)">Věnovat</td>
 					}
 					else
 					{
-						<td>Hraje</td>
+						<td class="link-like" @onclick="DoGiveUp">Vzdát se</td>
 					}
 				}
 				else

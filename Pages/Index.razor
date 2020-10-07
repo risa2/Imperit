@@ -15,7 +15,7 @@
 }
 @if (!string.IsNullOrWhiteSpace(LoginId) && LoggedIn is int loggedIn)
 {
-	<GameSwitch LoggedIn="@loggedIn" Navigate="Navigate" LoginId="@LoginId"/>
+	<GameSwitch LoggedIn="loggedIn" Navigate="Navigate" LoginId="LoginId"/>
 }
 else
 {

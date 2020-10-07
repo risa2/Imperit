@@ -5,7 +5,7 @@ namespace Imperit.Services
 {
 	public interface IEndOfTurn
 	{
-		void NextTurn();
+		bool NextTurn();
 	}
 	public class EndOfTurn : IEndOfTurn
 	{
@@ -14,15 +14,13 @@ namespace Imperit.Services
 		readonly IActionLoader actions;
 		readonly IActivePlayer active;
 		readonly IPowersLoader powers;
-		readonly INewGame newgame;
-		public EndOfTurn(IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers, INewGame newgame)
+		public EndOfTurn(IPlayersLoader players, IProvincesLoader pr, IActionLoader actions, IActivePlayer active, IPowersLoader powers)
 		{
 			this.players = players;
 			this.pr = pr;
 			this.actions = actions;
 			this.active = active;
 			this.powers = powers;
-			this.newgame = newgame;
 		}
 		int LivingHumans => players.Count(player => !(player is Robot) && !(player is Savage) && player.Alive);
 		void End()
@@ -39,17 +37,14 @@ namespace Imperit.Services
 				End();
 			}
 		}
-		public void NextTurn()
+		public bool NextTurn()
 		{
 			End();
 			AllRobotsActions();
 			players.Save();
 			pr.Save();
 			actions.Save();
-			if (LivingHumans < 1 || powers.Last.MajorityReached)
-			{
-				newgame.Finish();
-			}
+			return LivingHumans > 0 && !powers.Last.MajorityReached;
 		}
 	}
 }

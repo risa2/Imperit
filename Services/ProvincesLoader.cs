@@ -1,4 +1,5 @@
 using Imperit.State;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,7 @@ namespace Imperit.Services
 		}
 		public IEnumerator<Province> GetEnumerator() => provinces.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		public bool Passable(int from, int to) => provinces.Passable(from, to);
-		public int? Distance(int from, int to) => provinces.Distance(from, to);
+		public bool Passable(int from, int to, int dist, Func<Province, Province, int> dif) => provinces.Passable(from, to, dist, dif);
 		public int NeighborCount(int id) => provinces.NeighborCount(id);
 		public IEnumerable<Province> NeighborsOf(int id) => provinces.NeighborsOf(id);
 		public int Count => provinces.Count;
