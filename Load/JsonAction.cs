@@ -18,7 +18,7 @@ namespace Imperit.Load
 			return Type switch
 			{
 				"Reinforcement" => new Reinforcement(Province.Must(), Army!.Convert(i, (players, settings.SoldierTypes))),
-				"Battle" => new Battle(Province.Must(), Army!.Convert(i, (players, settings.SoldierTypes))),
+				"Battle" => new Fight(Province.Must(), Army!.Convert(i, (players, settings.SoldierTypes))),
 				"Earnings" => new Earnings(),
 				"Instability" => new Instability(),
 				"Loan" => new Loan(Player.Must(), Debt ?? 0, settings),
@@ -32,7 +32,7 @@ namespace Imperit.Load
 			return action switch
 			{
 				Reinforcement Add => new JsonAction { Type = "Reinforcement", Province = Add.Province, Army = JsonArmy.From(Add.Army) },
-				Battle Attack => new JsonAction { Type = "Battle", Province = Attack.Province, Army = JsonArmy.From(Attack.Army) },
+				Fight Attack => new JsonAction { Type = "Battle", Province = Attack.Province, Army = JsonArmy.From(Attack.Army) },
 				Earnings _ => new JsonAction { Type = "Earnings" },
 				Instability _ => new JsonAction { Type = "Instability" },
 				Loan Loan => new JsonAction { Type = "Loan", Player = Loan.Debtor, Debt = Loan.Debt },

@@ -23,6 +23,6 @@ namespace Imperit.Services
 		public Player this[int i] => players[i];
 		public IEnumerator<Player> GetEnumerator() => (players as IEnumerable<Player>).GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-		public void Reset(IEnumerable<Player> new_players) => players = new_players.ToImmutableArray();
+		public void Reset(IEnumerable<Player> new_players) => loader.Save(players = new_players.ToImmutableArray());
 	}
 }

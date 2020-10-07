@@ -1,7 +1,7 @@
-﻿using Imperit.State;
-using Imperit.State.SoldierTypes;
+﻿using System.Collections.Immutable;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Imperit.State;
+using Imperit.State.SoldierTypes;
 
 namespace Imperit.Load
 {
@@ -21,6 +21,7 @@ namespace Imperit.Load
 			"P" => new Pedestrian(i, Description.Convert(), AttackPower, DefensePower, Weight, Price),
 			"S" => new Ship(i, Description.Convert(), AttackPower, DefensePower, Weight, Price, Capacity.Must()),
 			"E" => new Elephant(i, Description.Convert(), AttackPower, DefensePower, Weight, Price, Capacity.Must(), Speed.Must(), RecruitPlaces!.ToImmutableArray()),
+			"ES" => new ElephantShip(i, Description.Convert(), AttackPower, DefensePower, Weight, Price, Capacity.Must(), Speed.Must(), RecruitPlaces!.ToImmutableArray()),
 			_ => throw new System.Exception("Unknown State.SoldierType type: " + Type)
 		};
 		public static JsonSoldierType From(SoldierType type) => type switch
@@ -28,6 +29,7 @@ namespace Imperit.Load
 			Pedestrian P => new JsonSoldierType { Type = "P", Description = JsonDescription.From(P.Description), AttackPower = P.AttackPower, DefensePower = P.DefensePower, Weight = P.Weight, Price = P.Price },
 			Ship S => new JsonSoldierType { Type = "S", Description = JsonDescription.From(S.Description), AttackPower = S.AttackPower, DefensePower = S.DefensePower, Weight = S.Weight, Price = S.Price, Capacity = S.Capacity },
 			Elephant E => new JsonSoldierType { Type = "E", Description = JsonDescription.From(E.Description), AttackPower = E.AttackPower, DefensePower = E.DefensePower, Weight = E.Weight, Price = E.Price, Capacity = E.Capacity, Speed = E.Speed, RecruitPlaces = E.RecruitPlaces },
+			ElephantShip ES => new JsonSoldierType { Type = "ES", Description = JsonDescription.From(ES.Description), AttackPower = ES.AttackPower, DefensePower = ES.DefensePower, Weight = ES.Weight, Price = ES.Price, Capacity = ES.Capacity, Speed = ES.Speed, RecruitPlaces = ES.RecruitPlaces },
 			_ => throw new System.Exception("Unknown State.SoldierType type: " + type.GetType())
 		};
 	}

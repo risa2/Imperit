@@ -3,7 +3,7 @@ using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {
-	public class Reinforcement : ArmyAction
+	public class Reinforcement : Movement
 	{
 		public Reinforcement(int province, Army army) : base(province, army) { }
 		public override (IAction?, Province) Perform(Province province, Player active)

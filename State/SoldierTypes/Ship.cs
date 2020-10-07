@@ -19,13 +19,12 @@ namespace Imperit.State.SoldierTypes
 			Price = price;
 			Capacity = capacity;
 		}
+		public static bool IsPassable(Province p) => p is Port || p is Sea;
 		protected override IComparable Identity => (base.Identity, Capacity);
-		public override int CanMove(IProvinces provinces, int from, int to)
+		public override int CanMove(IProvinces provinces, int from, int dest)
 		{
-			return ((provinces[from] is Port && provinces[to] is Sea)
-				  || (provinces[from] is Sea && provinces[to] is Sea)
-				  || (provinces[from] is Sea && provinces[to] is Port))
-				  && provinces.Passable(from, to) ? Capacity + Weight : 0;
+			return IsPassable(provinces[from]) && IsPassable(provinces[dest])
+				&& provinces.Passable(from, dest) ? Capacity + Weight : 0;
 		}
 		public override bool IsRecruitable(Province province) => province is Port;
 		public override int CanSustain(Province province) => province is Sea ? Capacity + Weight : province is Port ? Weight : 0;

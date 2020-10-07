@@ -47,7 +47,7 @@
 	{
 		<p><Name Who="players[loan.Debtor]"/> dluží @(loan.Debt)@Sym.Money</p>
 	}
-	@foreach (var battle in actions.OfType<Battle>())
+	@foreach (var battle in actions.OfType<Fight>())
 	{
 		<p><Name Who="@players[battle.Army.PlayerId]"/> pochoduje s <SoldiersByType Soldiers="@battle.Soldiers" /> vojáky směr <Name What="provinces[battle.Province]"/> s úmyslem zaútočit</p>
 	}

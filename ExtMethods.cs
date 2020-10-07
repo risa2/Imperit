@@ -10,6 +10,7 @@ namespace Imperit
 	{
 		public static CultureInfo Culture { get; } = CultureInfo.InvariantCulture;
 		public static T FirstOr<T>(this IEnumerable<T> e, T x) => e.DefaultIfEmpty(x).First();
+		public static IEnumerable<T> Reverse<T>(this IEnumerable<T> e, bool reverse) => reverse ? e.Reverse() : e;
 		public static IEnumerable<(int i, T v)> Index<T>(this IEnumerable<T> e) => e.Select((v, i) => (i, v));
 		public static T? MinBy<T, TC>(this IEnumerable<T> e, Func<T, TC> selector, T? v = default) where T : class => e.OrderBy(selector).FirstOr(v);
 		public static T Must<T>(this T? value) where T : struct => value ?? throw new ArgumentNullException();

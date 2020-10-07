@@ -17,142 +17,145 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>03/11/2020 21:11:20</publishTime>
     </File>
     <File Include="cs/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:08:58</publishTime>
+      <publishTime>12/09/2019 17:08:58</publishTime>
     </File>
     <File Include="cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="cs/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="cs/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="de/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:08:58</publishTime>
+      <publishTime>12/09/2019 17:08:58</publishTime>
     </File>
     <File Include="de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="de/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="de/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="DocumentFormat.OpenXml.dll">
       <publishTime>05/21/2020 21:48:48</publishTime>
     </File>
     <File Include="dotnet-aspnet-codegenerator-design.dll">
-      <publishTime>08/03/2020 18:30:10</publishTime>
+      <publishTime>03/08/2020 18:30:10</publishTime>
     </File>
     <File Include="es/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="es/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="es/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="Files/Actions.json">
-      <publishTime>10/05/2020 20:21:41</publishTime>
+      <publishTime>10/07/2020 16:52:19</publishTime>
     </File>
     <File Include="Files/Active.json">
-      <publishTime>10/05/2020 19:55:04</publishTime>
+      <publishTime>10/07/2020 16:52:19</publishTime>
+    </File>
+    <File Include="Files/FormerPlayers.json">
+      <publishTime>10/07/2020 13:07:32</publishTime>
     </File>
     <File Include="Files/Game.json">
-      <publishTime>10/05/2020 20:21:41</publishTime>
+      <publishTime>10/07/2020 16:52:19</publishTime>
     </File>
     <File Include="Files/Graph.json">
-      <publishTime>10/04/2020 19:15:36</publishTime>
+      <publishTime>04/10/2020 19:15:36</publishTime>
     </File>
     <File Include="Files/Players.json">
-      <publishTime>10/05/2020 20:21:41</publishTime>
+      <publishTime>10/07/2020 16:52:19</publishTime>
     </File>
     <File Include="Files/Powers.json">
-      <publishTime>10/05/2020 20:21:41</publishTime>
+      <publishTime>10/07/2020 16:52:19</publishTime>
     </File>
     <File Include="Files/Provinces.json">
-      <publishTime>10/05/2020 20:23:35</publishTime>
+      <publishTime>10/07/2020 16:52:20</publishTime>
     </File>
     <File Include="Files/Settings.json">
-      <publishTime>10/05/2020 20:21:41</publishTime>
+      <publishTime>10/06/2020 18:26:13</publishTime>
     </File>
     <File Include="Files/Shapes.json">
-      <publishTime>10/04/2020 18:36:20</publishTime>
+      <publishTime>04/10/2020 18:36:20</publishTime>
     </File>
     <File Include="fr/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="fr/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="fr/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="Imperit.deps.json">
-      <publishTime>10/05/2020 20:25:53</publishTime>
+      <publishTime>10/07/2020 16:55:46</publishTime>
     </File>
     <File Include="Imperit.dll">
-      <publishTime>10/05/2020 20:25:47</publishTime>
+      <publishTime>10/07/2020 16:55:43</publishTime>
     </File>
     <File Include="Imperit.exe">
-      <publishTime>10/05/2020 20:25:47</publishTime>
+      <publishTime>10/07/2020 16:55:43</publishTime>
     </File>
     <File Include="Imperit.pdb">
-      <publishTime>10/05/2020 20:25:47</publishTime>
+      <publishTime>10/07/2020 16:55:43</publishTime>
     </File>
     <File Include="Imperit.runtimeconfig.json">
-      <publishTime>10/05/2020 20:25:48</publishTime>
+      <publishTime>05/10/2020 20:25:48</publishTime>
     </File>
     <File Include="Imperit.Views.dll">
-      <publishTime>10/05/2020 20:25:47</publishTime>
+      <publishTime>10/07/2020 16:55:44</publishTime>
     </File>
     <File Include="Imperit.Views.pdb">
-      <publishTime>10/05/2020 20:25:47</publishTime>
+      <publishTime>10/07/2020 16:55:44</publishTime>
     </File>
     <File Include="it/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="it/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="it/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="ja/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="ja/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="ja/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="ko/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="ko/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="ko/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="Microsoft.AspNetCore.Cryptography.Internal.dll">
       <publishTime>08/21/2020 21:25:58</publishTime>
@@ -182,19 +185,19 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>11/15/2019 08:38:50</publishTime>
     </File>
     <File Include="Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>09/12/2019 17:08:58</publishTime>
+      <publishTime>12/09/2019 17:08:58</publishTime>
     </File>
     <File Include="Microsoft.CodeAnalysis.CSharp.Workspaces.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="Microsoft.CodeAnalysis.dll">
-      <publishTime>09/12/2019 17:07:46</publishTime>
+      <publishTime>12/09/2019 17:07:46</publishTime>
     </File>
     <File Include="Microsoft.CodeAnalysis.Razor.dll">
       <publishTime>11/16/2019 06:08:52</publishTime>
     </File>
     <File Include="Microsoft.CodeAnalysis.Workspaces.dll">
-      <publishTime>09/12/2019 17:08:34</publishTime>
+      <publishTime>12/09/2019 17:08:34</publishTime>
     </File>
     <File Include="Microsoft.Data.SqlClient.dll">
       <publishTime>05/15/2020 23:07:32</publishTime>
@@ -221,7 +224,7 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>08/20/2020 23:49:38</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.Binder.dll">
-      <publishTime>08/20/2020 23:50:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Configuration.dll">
       <publishTime>08/20/2020 23:49:38</publishTime>
@@ -275,25 +278,25 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>06/24/2019 19:56:06</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll">
-      <publishTime>08/03/2020 18:29:50</publishTime>
+      <publishTime>03/08/2020 18:29:50</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Core.dll">
-      <publishTime>08/03/2020 18:30:02</publishTime>
+      <publishTime>03/08/2020 18:30:02</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.dll">
-      <publishTime>08/03/2020 18:30:04</publishTime>
+      <publishTime>03/08/2020 18:30:04</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll">
-      <publishTime>08/03/2020 18:30:02</publishTime>
+      <publishTime>03/08/2020 18:30:02</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll">
-      <publishTime>08/03/2020 18:29:58</publishTime>
+      <publishTime>03/08/2020 18:29:58</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll">
-      <publishTime>08/03/2020 18:29:56</publishTime>
+      <publishTime>03/08/2020 18:29:56</publishTime>
     </File>
     <File Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll">
-      <publishTime>08/03/2020 18:30:06</publishTime>
+      <publishTime>03/08/2020 18:30:06</publishTime>
     </File>
     <File Include="Newtonsoft.Json.dll">
       <publishTime>04/22/2019 01:06:16</publishTime>
@@ -302,40 +305,40 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>04/24/2018 21:27:10</publishTime>
     </File>
     <File Include="pl/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:12</publishTime>
+      <publishTime>12/09/2019 17:09:12</publishTime>
     </File>
     <File Include="pl/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="pl/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:14</publishTime>
+      <publishTime>12/09/2019 17:09:14</publishTime>
     </File>
     <File Include="pt-BR/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="ru/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:14</publishTime>
+      <publishTime>12/09/2019 17:09:14</publishTime>
     </File>
     <File Include="ru/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="ru/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="runtimes/unix/lib/netcoreapp2.0/System.Runtime.Caching.dll">
       <publishTime>05/15/2018 13:29:40</publishTime>
@@ -344,13 +347,13 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>05/15/2020 23:07:24</publishTime>
     </File>
     <File Include="runtimes/win-arm64/native/sni.dll">
-      <publishTime>07/02/2019 10:05:37</publishTime>
+      <publishTime>02/07/2019 10:05:37</publishTime>
     </File>
     <File Include="runtimes/win-x64/native/sni.dll">
-      <publishTime>07/02/2019 10:05:38</publishTime>
+      <publishTime>02/07/2019 10:05:38</publishTime>
     </File>
     <File Include="runtimes/win-x86/native/sni.dll">
-      <publishTime>07/02/2019 10:05:38</publishTime>
+      <publishTime>02/07/2019 10:05:38</publishTime>
     </File>
     <File Include="runtimes/win/lib/netcoreapp2.0/System.Runtime.Caching.dll">
       <publishTime>05/15/2018 13:29:40</publishTime>
@@ -365,19 +368,19 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>04/14/2020 22:38:40</publishTime>
     </File>
     <File Include="System.Composition.AttributedModel.dll">
-      <publishTime>11/05/2016 04:55:42</publishTime>
+      <publishTime>05/11/2016 04:55:42</publishTime>
     </File>
     <File Include="System.Composition.Convention.dll">
-      <publishTime>11/05/2016 04:55:42</publishTime>
+      <publishTime>05/11/2016 04:55:42</publishTime>
     </File>
     <File Include="System.Composition.Hosting.dll">
-      <publishTime>11/05/2016 04:55:42</publishTime>
+      <publishTime>05/11/2016 04:55:42</publishTime>
     </File>
     <File Include="System.Composition.Runtime.dll">
-      <publishTime>11/05/2016 04:55:44</publishTime>
+      <publishTime>05/11/2016 04:55:44</publishTime>
     </File>
     <File Include="System.Composition.TypedParts.dll">
-      <publishTime>11/05/2016 04:55:46</publishTime>
+      <publishTime>05/11/2016 04:55:46</publishTime>
     </File>
     <File Include="System.Configuration.ConfigurationManager.dll">
       <publishTime>05/15/2018 13:29:38</publishTime>
@@ -398,25 +401,25 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>05/15/2018 13:29:44</publishTime>
     </File>
     <File Include="tr/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:14</publishTime>
+      <publishTime>12/09/2019 17:09:14</publishTime>
     </File>
     <File Include="tr/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="tr/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>10/05/2020 20:25:53</publishTime>
+      <publishTime>10/07/2020 16:55:47</publishTime>
     </File>
     <File Include="wwwroot/css/site.css">
-      <publishTime>10/05/2020 19:54:15</publishTime>
+      <publishTime>10/06/2020 14:23:44</publishTime>
     </File>
     <File Include="wwwroot/favicon.ico">
-      <publishTime>04/07/2020 17:56:29</publishTime>
+      <publishTime>07/04/2020 17:56:29</publishTime>
     </File>
     <File Include="wwwroot/Identity/css/site.css">
       <publishTime>08/21/2020 21:16:02</publishTime>
@@ -527,28 +530,28 @@ Tento soubor je používán procesem publikování nebo balení webového projek
       <publishTime>08/21/2020 21:16:02</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:14</publishTime>
+      <publishTime>12/09/2019 17:09:14</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
     <File Include="zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll">
-      <publishTime>09/12/2019 17:09:00</publishTime>
+      <publishTime>12/09/2019 17:09:00</publishTime>
     </File>
     <File Include="zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:09:14</publishTime>
+      <publishTime>12/09/2019 17:09:14</publishTime>
     </File>
     <File Include="zh-Hant/Microsoft.CodeAnalysis.resources.dll">
-      <publishTime>09/12/2019 17:07:48</publishTime>
+      <publishTime>12/09/2019 17:07:48</publishTime>
     </File>
     <File Include="zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll">
-      <publishTime>09/12/2019 17:08:36</publishTime>
+      <publishTime>12/09/2019 17:08:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

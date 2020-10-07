@@ -43,7 +43,7 @@
 		}
 		return from;
 	}
-	IProvinces ProvincesPreview => new ActionQueue(actions.OfType<ArmyAction>()).EndOfTurn(players, provinces, active.Id).Item3;
+	IProvinces ProvincesPreview => new ActionQueue(actions.OfType<Movement>()).EndOfTurn(players, provinces, active.Id).Item3;
 }
 <nav>
 	@if (Preview)

@@ -15,12 +15,14 @@ namespace Imperit.Dynamics.Commands
 			To = to;
 			Army = army;
 		}
-		public bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
-			=> provinces[From].IsAllyOf(Player) && Army.CanMove(provinces, From, To.Id);
-		protected abstract Actions.ArmyAction Action { get; }
+		public virtual bool Allowed(IReadOnlyList<Player> players, IProvinces provinces)
+		{
+			return provinces[From].IsAllyOf(Player) && Army.CanMove(provinces, From, To.Id) && provinces[To.Id].Subtract(Army.Soldiers).CanSoldiersSurvive;
+		}
+		protected abstract Actions.Movement Action { get; }
 		public (IAction?, Province) Perform(Province province)
 		{
-			return province.Id == From ? (Action, province.StartMove(To, Army.Soldiers)) : (null, province);
+			return province.Id == From ? (Action, province.Subtract(Army.Soldiers)) : (null, province);
 		}
 		public Soldiers Soldiers => Army.Soldiers;
 	}

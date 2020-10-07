@@ -2,11 +2,11 @@ using Imperit.State;
 
 namespace Imperit.Dynamics.Actions
 {
-	public abstract class ArmyAction : IAction
+	public abstract class Movement : IAction
 	{
 		public readonly int Province;
 		public readonly Army Army;
-		public ArmyAction(int province, Army army)
+		public Movement(int province, Army army)
 		{
 			Province = province;
 			Army = army;

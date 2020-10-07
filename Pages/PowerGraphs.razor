@@ -1,10 +1,10 @@
 ﻿@inject Services.IPowersLoader powers;
 
 @code{
-	[Parameter] public IReadOnlyList<Player> players { get; set; } = new Player[0];
-	static string Polyline(IEnumerable<int> y_values, int count, int max_y, int x_offset, int y_offset, int width, int height)
+	[Parameter] public IReadOnlyList<Player> players { get; set; } = Array.Empty<Player>();
+	static string Polyline(IEnumerable<int> y_values, int count, int max_y, int x_offset, int y_offset, int width, int height, bool reverse = false)
 	{
-		return string.Join(' ', y_values.Select((y, i) => ((long)i * width / count + x_offset) + "," + ((long)height - y * height / max_y + y_offset)));
+		return string.Join(' ', y_values.Select((y, i) => ((long)i * width / count + x_offset) + "," + ((long)height - y * height / max_y + y_offset)).Reverse(reverse));
 	}
 	static string ToString(double num) => num.ToString(ExtMethods.Culture);
 }
@@ -17,6 +17,7 @@
 	var total_avg = powers.Select(p => p.TotalAvg);
 	var total_max = powers.Max(p => p.TotalMax);
 	var ratios = powers.Select(p => p.GetRatios()).ToArray();
+	var ratio_sums = new double[ratios.Length];
 	var life = players.Select((_, i) => powers.TakeWhile(p => p[i].Alive).Count()).ToArray();
 }
 <table class="players">
@@ -50,8 +51,8 @@
 			@for (int c = 0; c < changes.Length && c < life[p]; ++c)
 			{
 				<line y1="@ToString(300 - (300 * changes[c][p]))" y2="300"
-						x1="@(1200 * (2 * c + 1) / (2 * powers.Count - 2))" x2="@(1200 * (2 * c + 1) / (2 * powers.Count - 2))"
-						stroke="@players[p].Color" stroke-width="@ToString(1200.0 / (powers.Count - 1))"></line>
+					x1="@(1200 * (2 * c + 1) / (2 * powers.Count - 2))" x2="@(1200 * (2 * c + 1) / (2 * powers.Count - 2))"
+					stroke="@players[p].Color" stroke-width="@ToString(1200.0 / (powers.Count - 1))"></line>
 			}
 		}
 	</svg>
@@ -60,6 +61,8 @@
 <svg viewBox="-10 -10 1220 620" class="diagram">
 	@for (int i = 0; i < players.Count; ++i)
 	{
-		<polyline points="@Polyline(ratios.Select(r => (int)(r[i] * 2000)).Take(life[i]), ratios.Length, 2000, 0, 0, 1200, 600)" fill="none" stroke="@players[i].Color" stroke-width="3"></polyline>
+		<polyline points="@(Polyline(ratio_sums.Select(r => (int)(r * 2000)).Take(life[i]), ratios.Length, 2000, 0, 0, 1200, 600) + " " +
+							Polyline(ratio_sums.Select((r,j) => (int)((r + ratios[j][i]) * 2000)).Take(life[i]), ratios.Length, 2000, 0, 0, 1200, 600, true))" fill="@players[i].Color"></polyline>
+		ratio_sums = ratio_sums.Select((r, j) => r + ratios[j][i]).ToArray();
 	}
 </svg>
